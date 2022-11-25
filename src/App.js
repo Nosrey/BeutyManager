@@ -1,16 +1,17 @@
 import './App.css';
-import { Route } from 'react-router-dom';
+import { Routes, Route } from "react-router-dom";
 import Login from './components/login/Login.jsx'
 import Home from './components/home/Home.jsx'
+import React from 'react';
 
 function App() {
   return (
-    <React.Fragment>
-      <div>
-        <Route exact path='/login'><Login /></Route>
-        <Route path='/'><Home /></Route>
-      </div>
-    </React.Fragment>
+    <div>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route exact path="/login" element={<Login />} />
+      </Routes>
+    </div>
   );
 }
 
