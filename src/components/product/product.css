@@ -1,0 +1,11 @@
+h3 {
+    display: inline;
+}
+
+.caja {
+    display: flex;
+    flex-flow:row;
+    justify-content: space-around;
+    border: 2px solid black;
+    margin: 1%;
+}

@@ -1,5 +1,4 @@
-import React from 'react';
-import { useState } from 'react';
+import React, { useState } from 'react';
 import { connect } from "react-redux";
 import './Login.css'
 
@@ -51,12 +50,12 @@ function Login({ dataUser }) {
         <div className="form">
             <form onSubmit={handleSubmit}>
                 <div className="input-container">
-                    <label>Username </label>
+                    <label>Usuario </label>
                     <input type="text" name="uname" required />
                     {renderErrorMessage("uname")}
                 </div>
                 <div className="input-container">
-                    <label>Password </label>
+                    <label>Contraseña </label>
                     <input type="password" name="pass" required />
                     {renderErrorMessage("pass")}
                 </div>
@@ -71,7 +70,7 @@ function Login({ dataUser }) {
         <div className="form">
             <form onSubmit={continuar}>
                 <h2>
-                    User is successfully logged in
+                    Usuario validado correctamente
                 </h2>
                 <div className="button-container">
                     <input type="submit" value='Continuar' />
@@ -84,7 +83,7 @@ function Login({ dataUser }) {
 
     return (
         <div className="login-form">
-            <div className="title">Sign In</div>
+            <div className="title">Acceder</div>
             {isSubmitted ? userIsLogged : renderForm}
         </div>
     )
