@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -8,6 +8,7 @@ const initialState = {
         }
     ],
     mostrarForm: false,
+    mostrarEdit: false,
     productos: [],
 };
 
@@ -17,6 +18,11 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 mostrarForm: !state.mostrarForm
+            }
+        case SET_EDIT:
+            return {
+                ...state,
+                mostrarEdit: !state.mostrarEdit
             }
         case SET_PRODUCTOS:
             return {

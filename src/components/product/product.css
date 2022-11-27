@@ -8,4 +8,10 @@ h3 {
     justify-content: space-around;
     border: 2px solid black;
     margin: 1%;
+    height: 10vh;
+
+}
+
+.caja img {
+    height: 100%
 }
