@@ -43,7 +43,7 @@ function Login({ dataUser }) {
 
     const continuar = (e) => {
         e.preventDefault();
-        window.location.replace("http://localhost:3000/");
+        window.location.replace("http://localhost:3000/products");
     }
 
     const renderForm = (
