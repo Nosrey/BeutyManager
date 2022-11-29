@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT } from "./actions-types";
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS } from "./actions-types";
 
 export function setForm() {
     return function (dispatch) {
@@ -8,10 +8,14 @@ export function setForm() {
     }
 }
 
-export function setEdit() {
+export function setEdit(id, productoLista) {
+    let producto = {}
+    for (let i = 0; i < productoLista.length; i++) {
+        if (productoLista[i].id === id)  producto = productoLista[i]
+    }
     return function (dispatch) {
         return (
-            dispatch({ type: SET_EDIT })
+            dispatch({ type: SET_EDIT, payload: producto })
         )
     }
 }
@@ -28,3 +32,10 @@ export function setProductos() {
     }
 }
 
+export function filtrarProductos(lista, filtro) {
+    return function(dispatch) {
+        let resultados = lista.filter((el) => el.name.toLowerCase().includes(filtro.toLowerCase()))
+        if (filtro === '' || filtro === ' ' || filtro === '  ') resultados = []
+        dispatch({ type: FILTRAR_PRODUCTOS, payload: resultados })
+    }
+}

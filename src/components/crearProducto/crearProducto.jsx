@@ -11,7 +11,6 @@ function CrearProducto({ setForm, visible, setProductos }) {
     function cerrar(e) {
         e.preventDefault();
         setForm()
-        console.log('presionado')
     }
 
     function showUploadWidget(e) {
@@ -83,9 +82,7 @@ function CrearProducto({ setForm, visible, setProductos }) {
         var { pname, pstock, pprice } = document.forms[0];
 
         if (pname.value && pstock.value && pprice.value) {
-            console.log('entre')
             const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true }
-            console.log(productData)
             Axios.post('http://localhost:3001/products', productData)
                 .then((el) => alert('fue publicado correctamente: ', el))
                 .then(() => setForm())

@@ -1,10 +1,9 @@
 import React from 'react';
-import CambiarProducto from '../cambiarProducto/cambiarProducto.jsx'
 import { setEdit } from '../../actions';
 import { connect } from "react-redux";
 import './product.css'
 
-function Product({ id, name, imagen, stock, price, avaible, setEdit, mostrarEdit }) {
+function Product({ productos, id, name, imagen, stock, price, avaible, setEdit, mostrarEdit }) {
     if (avaible === false) avaible = "no";
     else avaible = "si"
 
@@ -14,9 +13,8 @@ function Product({ id, name, imagen, stock, price, avaible, setEdit, mostrarEdit
             <h3>{stock}</h3>
             <h3>{price}</h3>
             <h3>{avaible}</h3>
-            <img src={imagen} alt="Product"/>
-            <CambiarProducto productId={id} visible={mostrarEdit} pname={name} pstock={stock} pprice={price}/>
-            <button onClick={setEdit}>Editar</button>
+            <img src={imagen} alt="Product" />
+            <button onClick={() => setEdit(id, productos)}>Editar</button>
         </div>
     )
 }
@@ -24,13 +22,14 @@ function Product({ id, name, imagen, stock, price, avaible, setEdit, mostrarEdit
 
 const mapStateToProps = (state) => {
     return {
+        productos: state.productos,
         mostrarEdit: state.mostrarEdit,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        setEdit: () => dispatch(setEdit()),
+        setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
     };
 }
 

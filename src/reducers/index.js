@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -9,7 +9,9 @@ const initialState = {
     ],
     mostrarForm: false,
     mostrarEdit: false,
+    productoToEdit: {},
     productos: [],
+    productosFiltrados: [],
 };
 
 function rootReducer(state = initialState, action) {
@@ -22,12 +24,18 @@ function rootReducer(state = initialState, action) {
         case SET_EDIT:
             return {
                 ...state,
-                mostrarEdit: !state.mostrarEdit
+                mostrarEdit: !state.mostrarEdit,
+                productoToEdit: action.payload
             }
         case SET_PRODUCTOS:
             return {
                 ...state,
                 productos: action.payload
+            }
+        case FILTRAR_PRODUCTOS:
+            return {
+                ...state,
+                productosFiltrados: action.payload
             }
         default:
             return state;

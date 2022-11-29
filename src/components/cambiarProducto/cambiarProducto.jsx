@@ -4,13 +4,12 @@ import { setEdit, setProductos } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
 
-function CambiarProducto({ productId, setEdit, visible, setProductos, productos, pname, pstock, pprice }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit }) {
     const [image, setImage] = useState('')
 
     function cerrar(e) {
         e.preventDefault();
-        setEdit()
-        console.log('presionado')
+        setEdit(productoToEdit.id, productos)
     }
 
     function showUploadWidget(e) {
@@ -71,24 +70,17 @@ function CambiarProducto({ productId, setEdit, visible, setProductos, productos,
         let productData = {}
 
         for (let i = 0; i < productos.length; i++) {
-            if (productos[i].id === productId)  productData = productos[i]
+            if (productos[i].id === productoToEdit.id) productData = productos[i]
         }
-        console.log('hola soy el item encontrado en productos: ', productData)
-        console.log('soy pname: ', !!pname.value)
-        console.log('soy pstock: ', pstock.value)
-        console.log('soy pprice: ', pprice.value)
-
-
 
         if (pname.value) productData.name = pname.value
         if (pstock.value) productData.stock = pstock.value
         if (pprice.value) productData.price = pprice.value
         if (image) productData.imagen = image
 
-        console.log('soy el producto final', productData)
-        Axios.put('http://localhost:3001/products/' + productId, productData)
+        Axios.put('http://localhost:3001/products/' + productoToEdit.id, productData)
             .then((el) => alert('fue editado correctamente: ', el))
-            .then(() => setEdit())
+            .then(() => setEdit(productoToEdit.id, productos))
             .then(() => setProductos())
             .then(() => {
                 pname.value = '';
@@ -106,19 +98,19 @@ function CambiarProducto({ productId, setEdit, visible, setProductos, productos,
                 <form>
                     <div className="input-container">
                         <label>Nombre del producto: </label>
-                        <input type="text" name="pname" placeholder={pname} />
+                        <input type="text" name="pname" placeholder={productoToEdit.name} />
                     </div>
                     <div className="input-container">
                         <label>Cantidad Disponible: </label>
-                        <input type="text" name="pstock" placeholder={pstock} />
+                        <input type="text" name="pstock" placeholder={productoToEdit.stock} />
                     </div>
                     <div className="input-container">
                         <label>Precio del producto: </label>
-                        <input type="text" name="pprice" placeholder={pprice} />
+                        <input type="text" name="pprice" placeholder={productoToEdit.price} />
                     </div>
-                    <button className='boton-imagen' onClick={showUploadWidget}>Subir imagen</button>
+                    <button className='boton-imagen' onClick={showUploadWidget}>Subir Imagen</button>
 
-                    <button className='boton-imagen' onClick={handleSubmit}>Crear producto</button>
+                    <button className='boton-imagen' onClick={handleSubmit}>Actualizar Producto</button>
                 </form>
             </div>
         </div>
@@ -128,12 +120,13 @@ function CambiarProducto({ productId, setEdit, visible, setProductos, productos,
 const mapStateToProps = (state) => {
     return {
         productos: state.productos,
+        productoToEdit: state.productoToEdit,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
-        setEdit: () => dispatch(setEdit()),
+        setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
         setProductos: () => dispatch(setProductos()),
     };
 }
