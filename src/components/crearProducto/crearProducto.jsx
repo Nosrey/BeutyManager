@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setForm, setProductos } from '../../actions/index'
+import { setForm, setProductos, filtrarProductos } from '../../actions/index'
 import { connect } from "react-redux";
 import './crearProducto.css'
 
-function CrearProducto({ setForm, visible, setProductos }) {
+function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos }) {
     const [errorMessages, setErrorMessages] = useState({});
     const [image, setImage] = useState('')
 
@@ -16,51 +16,51 @@ function CrearProducto({ setForm, visible, setProductos }) {
     function showUploadWidget(e) {
         e.preventDefault();
         window.cloudinary.openUploadWidget({
-           cloudName: "dyg5hutpb",
-           uploadPreset: "ejemplo",
-           sources: [
-               "local",
-               "url"
-           ],
-           googleApiKey: "<image_search_google_api_key>",
-           showAdvancedOptions: true,
-           //  multiple: false, debe ser eliminado para que funcione bien
-           //  cropping: true, esta tambien
-           defaultSource: "local",
-           styles: {
-               palette: {
-                   window: "#ffffff",
-                   sourceBg: "#f4f4f5",
-                   windowBorder: "#90a0b3",
-                   tabIcon: "#000000",
-                   inactiveTabIcon: "#555a5f",
-                   menuIcons: "#555a5f",
-                   link: "#0433ff",
-                   action: "#339933",
-                   inProgress: "#000519",
-                   complete: "#339933",
-                   error: "#cc0000",
-                   textDark: "#000000",
-                   textLight: "#fcfffd"
-               },
-               fonts: {
-                   default: null,
-                   "'Acme', sans-serif": {
-                       url: "https://fonts.googleapis.com/css?family=Acme",
-                       active: true
-                   }
-               }
-           }
-       },
-          (error, result) => {
-            if (!error && result && result.event === "success") {
-              console.log('Done! Here is the image info: ', result.info.secure_url);
-              setImage(result.info.secure_url)
+            cloudName: "dyg5hutpb",
+            uploadPreset: "ejemplo",
+            sources: [
+                "local",
+                "url"
+            ],
+            googleApiKey: "<image_search_google_api_key>",
+            showAdvancedOptions: true,
+            //  multiple: false, debe ser eliminado para que funcione bien
+            //  cropping: true, esta tambien
+            defaultSource: "local",
+            styles: {
+                palette: {
+                    window: "#ffffff",
+                    sourceBg: "#f4f4f5",
+                    windowBorder: "#90a0b3",
+                    tabIcon: "#000000",
+                    inactiveTabIcon: "#555a5f",
+                    menuIcons: "#555a5f",
+                    link: "#0433ff",
+                    action: "#339933",
+                    inProgress: "#000519",
+                    complete: "#339933",
+                    error: "#cc0000",
+                    textDark: "#000000",
+                    textLight: "#fcfffd"
+                },
+                fonts: {
+                    default: null,
+                    "'Acme', sans-serif": {
+                        url: "https://fonts.googleapis.com/css?family=Acme",
+                        active: true
+                    }
+                }
             }
-            else if (error) { console.log('parece que hubo un error: ', error) }
-          }
+        },
+            (error, result) => {
+                if (!error && result && result.event === "success") {
+                    console.log('Done! Here is the image info: ', result.info.secure_url);
+                    setImage(result.info.secure_url)
+                }
+                else if (error) { console.log('parece que hubo un error: ', error) }
+            }
         );
-      }
+    }
 
 
 
@@ -87,11 +87,14 @@ function CrearProducto({ setForm, visible, setProductos }) {
                 .then((el) => alert('fue publicado correctamente: ', el))
                 .then(() => setForm())
                 .then(() => setProductos())
-                .then(() =>  {
+                .then(() => {
                     pname.value = '';
                     pstock.value = '';
                     pprice.value = '';
                     setImage('')
+                })
+                .then(() => {
+                    filtrarProductos(productos, '')
                 })
         } else {
             // Username not found
@@ -133,7 +136,7 @@ function CrearProducto({ setForm, visible, setProductos }) {
 
 const mapStateToProps = (state) => {
     return {
-
+        productos: state.productos,
     }
 }
 
@@ -141,6 +144,7 @@ function mapDispatchToProps(dispatch) {
     return {
         setForm: () => dispatch(setForm()),
         setProductos: () => dispatch(setProductos()),
+        filtrarProductos: (lista, filtro) => dispatch(filtrarProductos(lista, filtro)),
     };
 }
 

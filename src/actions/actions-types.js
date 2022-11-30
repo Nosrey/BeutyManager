@@ -2,3 +2,6 @@ export const SET_FORM = 'SET_FORM';
 export const SET_EDIT = 'SET_EDIT';
 export const SET_PRODUCTOS = 'SET_PRODUCTOS';
 export const FILTRAR_PRODUCTOS = 'FILTRAR_PRODUCTOS'
+export const ORDENAR_NOMBRE = 'ORDENAR_NOMBRE'
+export const ORDENAR_PRECIO = "ORDENAR_PRECIO"
+export const ORDENAR_STOCK = "ORDENAR_STOCK"
