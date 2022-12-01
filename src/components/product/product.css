@@ -4,12 +4,16 @@ h3 {
 
 .caja {
     display: flex;
-    flex-flow:row;
+    flex-flow: row;
     justify-content: space-around;
     border: 2px solid black;
     margin: 1%;
     height: 10vh;
 
+}
+
+.elemento {
+    width: 20vw;
 }
 
 .caja img {

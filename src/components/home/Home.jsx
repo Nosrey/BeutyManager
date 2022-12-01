@@ -37,19 +37,23 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         <div>
             <BuscarProducto />
             <button onClick={ordenNombre}>Ordenar A - Z</button>
-            <button onClick={ordenPrecio}>Ordenar por precio</button>
             <button onClick={ordenStock}>Ordenar por Stock</button>
+            <button onClick={ordenPrecio}>Ordenar por precio</button>
 
             <CrearProducto visible={mostrarForm} />
             <CambiarProducto visible={mostrarEdit} />
             <h1>Home screen</h1>
             <button onClick={setForm}>Crear producto</button>
-            <p>{productosFiltrados.length}</p>
+            <div className='caja titulos'>
+                <h2 className='elemento titu'>Nombre</h2>
+                <h2 className='elemento'>Stock</h2>
+                <h2 className='elemento'>Precio</h2>
+                <h2 className='elemento'>Disponible</h2>
+            </div>
             <div>
                 {!productos.length ? <h1>No hay productos disponibles</h1> : (productosFiltrados.length ? productosFiltrados : productos).map(el => {
                     return <Product key={el.id} id={el.id} name={el.name} imagen={el.imagen} stock={el.stock} price={el.price} avaible={el.avaible} />
                 })}
-                {productosFiltrados.length ? <p>entre con pf</p> : <p>entre con p</p>}
             </div>
         </div>
     )

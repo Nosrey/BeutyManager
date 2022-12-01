@@ -9,16 +9,15 @@ function Product({ productos, id, name, imagen, stock, price, avaible, setEdit, 
 
     return (
         <div className='caja'>
-            <h3>{name}</h3>
-            <h3>{stock}</h3>
-            <h3>{price}</h3>
-            <h3>{avaible}</h3>
-            <img src={imagen} alt="Product" />
+            <h3 className='elemento'>{name}</h3>
+            <h3 className='elemento'>{stock}</h3>
+            <h3 className='elemento'>{price}</h3>
+            <h3 className='elemento'>{avaible}</h3>
+            <img src={imagen} alt="Product" sizes='' />
             <button onClick={() => setEdit(id, productos)}>Editar</button>
         </div>
     )
 }
-
 
 const mapStateToProps = (state) => {
     return {

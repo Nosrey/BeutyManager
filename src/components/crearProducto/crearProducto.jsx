@@ -7,10 +7,15 @@ import './crearProducto.css'
 function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos }) {
     const [errorMessages, setErrorMessages] = useState({});
     const [image, setImage] = useState('')
+    const [pcategory, setPcategory] = useState('')
 
     function cerrar(e) {
         e.preventDefault();
         setForm()
+    }
+
+    function handlePcategory(e) {
+        setPcategory(e.target.value)
     }
 
     function showUploadWidget(e) {
@@ -107,7 +112,6 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
     return (
         <div className={visible ? "formularioProducto" : 'invisible'}>
             <button className='cerrar-btn' onClick={cerrar}>X</button>
-            <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
             <div className="form">
                 <form>
                     <div className="input-container">
@@ -124,6 +128,12 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         <label>Precio del producto: </label>
                         <input type="text" name="pprice" placeholder="Precio..." required />
                         {renderErrorMessage("pprice")}
+                    </div>
+                    <div className="input-container">
+                        <label>Categorias: </label>
+                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." required />
+                        {renderErrorMessage("pcategory")}
+                        <p>{pcategory}</p>
                     </div>
                     <button className='boton-imagen' onClick={showUploadWidget}>Subir imagen</button>
 
