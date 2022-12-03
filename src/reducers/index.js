@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -11,6 +11,7 @@ const initialState = {
     mostrarEdit: false,
     productoToEdit: {},
     productos: [],
+    categorias: [],
     productosFiltrados: [],
     activo: true,
 };
@@ -106,7 +107,6 @@ function rootReducer(state = initialState, action) {
                 productosFiltrados: precioFiltros,
                 activo: !state.activo
             }
-
         case ORDENAR_STOCK:
             let stockProductos = state.productos;
             let stockFiltros = state.productosFiltrados;
@@ -141,7 +141,11 @@ function rootReducer(state = initialState, action) {
                 activo: !state.activo
             }
 
-
+        case SET_CATEGORIAS:
+            return {
+                ...state,
+                categorias: action.payload
+            }
         default:
             return state;
     }

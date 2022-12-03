@@ -4,10 +4,11 @@ import { setForm, setProductos, filtrarProductos } from '../../actions/index'
 import { connect } from "react-redux";
 import './crearProducto.css'
 
-function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos }) {
+function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos, categorias }) {
     const [errorMessages, setErrorMessages] = useState({});
     const [image, setImage] = useState('')
     const [pcategory, setPcategory] = useState('')
+    const [filterCategories, setFilterCategories] = useState('')
 
     function cerrar(e) {
         e.preventDefault();
@@ -16,6 +17,9 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
 
     function handlePcategory(e) {
         setPcategory(e.target.value)
+        let filtro = categorias.find((el) => el.name.toLowerCase().includes(e.target.value.toLowerCase()))
+        if (!filtro) filtro = {name:'No existe esa categoria'}
+        setFilterCategories(filtro.name)
     }
 
     function showUploadWidget(e) {
@@ -133,7 +137,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         <label>Categorias: </label>
                         <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." required />
                         {renderErrorMessage("pcategory")}
-                        <p>{pcategory}</p>
+                        <p>{filterCategories}</p>
                     </div>
                     <button className='boton-imagen' onClick={showUploadWidget}>Subir imagen</button>
 
@@ -147,6 +151,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
 const mapStateToProps = (state) => {
     return {
         productos: state.productos,
+        categorias: state.categorias
     }
 }
 

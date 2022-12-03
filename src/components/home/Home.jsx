@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Product from '../product/product.jsx'
 import CrearProducto from '../crearProducto/crearProducto.jsx';
-import { setForm, setProductos, ordenarNombre, ordenarPrecio, ordenarStock } from '../../actions/index'
+import { setForm, setProductos, ordenarNombre, ordenarPrecio, ordenarStock, setCategorias } from '../../actions/index'
 import { connect } from "react-redux";
 import CambiarProducto from '../cambiarProducto/cambiarProducto.jsx';
 import BuscarProducto from '../buscarProducto/buscarProducto.jsx';
@@ -11,7 +11,7 @@ let gatilloNombre = true;
 let gatilloPrecio = true;
 let gatilloStock = true;
 
-function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, activo }) {
+function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, setCategorias, activo, categorias }) {
 
     const ordenNombre = function () {
         ordenarNombre(gatilloNombre)
@@ -30,7 +30,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     useEffect(() => {
         // Your code here
-        setProductos()
+        setProductos();
+        setCategorias();
     }, []); //eslint-disable-line
 
     return (
@@ -42,6 +43,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
             <CrearProducto visible={mostrarForm} />
             <CambiarProducto visible={mostrarEdit} />
+            <h1>{categorias.length}</h1>
             <h1>Home screen</h1>
             <button onClick={setForm}>Crear producto</button>
             <div className='caja titulos'>
@@ -65,7 +67,8 @@ const mapStateToProps = (state) => {
         mostrarEdit: state.mostrarEdit,
         productos: state.productos,
         productosFiltrados: state.productosFiltrados,
-        activo: state.activo
+        activo: state.activo,
+        categorias: state.categorias
     }
 }
 
@@ -73,6 +76,7 @@ function mapDispatchToProps(dispatch) {
     return {
         setForm: () => dispatch(setForm()),
         setProductos: () => dispatch(setProductos()),
+        setCategorias: () => dispatch(setCategorias()),
         ordenarNombre: (gatillo) => dispatch(ordenarNombre(gatillo)),
         ordenarPrecio: (gatillo) => dispatch(ordenarPrecio(gatillo)),
         ordenarStock: (gatillo) => dispatch(ordenarStock(gatillo)),

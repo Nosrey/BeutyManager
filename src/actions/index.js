@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK } from "./actions-types";
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS } from "./actions-types";
 
 export function setForm() {
     return function (dispatch) {
@@ -60,3 +60,14 @@ export function ordenarStock(gatillo) {
     }
 }
 
+export function setCategorias() {
+    return function (dispatch) {
+        return (
+            fetch('http://localhost:3001/categories')
+                .then((res) => res.json())
+                .then((json) => {
+                    dispatch({ type: SET_CATEGORIAS, payload: json })
+                })
+        )
+    }
+}
