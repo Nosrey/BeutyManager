@@ -5,6 +5,7 @@ import { connect } from "react-redux";
 import './crearProducto.css'
 
 function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos, categorias }) {
+    const notFound = 'No existe esa categoria';
     const [errorMessages, setErrorMessages] = useState({});
     const [image, setImage] = useState('')
     const [pcategory, setPcategory] = useState('')
@@ -15,10 +16,29 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         setForm()
     }
 
+    function comas(valorArray) {
+        for (let i = 0; i < valorArray.length; i++) {  // para quitar espacio post comas
+            if (valorArray[i + 1] === ' ' && valorArray[i] === ',') {
+                valorArray.splice(i + 1, 1)
+                i = 0;
+            }
+        }
+        return valorArray.join('')
+    }
+
+    function finalElement(valorArray) {
+        let ultimoValor = comas(valorArray)
+        let final = ultimoValor.split(',')
+        return final[final.length - 1]
+    }
+
     function handlePcategory(e) {
-        setPcategory(e.target.value)
-        let filtro = categorias.find((el) => el.name.toLowerCase().includes(e.target.value.toLowerCase()))
-        if (!filtro) filtro = {name:'No existe esa categoria'}
+        let valor = e.target.value; // valor del input
+        let valorArray = valor.split(''); //input separado en array
+        let ultimoValor = finalElement(valorArray);
+        setPcategory(valor);
+        let filtro = categorias.find((el) => el.name.toLowerCase().includes(ultimoValor.toLowerCase()))
+        if (!filtro || ultimoValor === '' || ultimoValor === ' ') filtro = { name: notFound }
         setFilterCategories(filtro.name)
     }
 
@@ -88,10 +108,26 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         //Prevent page reload
         e.preventDefault();
 
-        var { pname, pstock, pprice } = document.forms[0];
+        var { pname, pstock, pprice, pcategory } = document.forms[0];
 
-        if (pname.value && pstock.value && pprice.value) {
-            const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true }
+        if (pname.value && pstock.value && pprice.value && pcategory.value) {
+            let categoryNums = []
+            let noCreated = []
+            let items = comas(pcategory.value).split(',')
+            for (let i = 0; i < items.length; i++) {
+                let conteo = 0
+                for (let j = 0; j < categorias.length; j++) {
+                    if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
+                        conteo = 1;
+                        return categoryNums.push(categorias[i].id);
+                    }
+                }
+                if (conteo === 0) noCreated.push(items[i])
+            }
+
+            Axios.post('http://localhost:3001/categories', noCreated) // para enviar el array de categorias por crear
+
+            const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true, categoryNums: categoryNums }
             Axios.post('http://localhost:3001/products', productData)
                 .then((el) => alert('fue publicado correctamente: ', el))
                 .then(() => setForm())
@@ -137,7 +173,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         <label>Categorias: </label>
                         <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." required />
                         {renderErrorMessage("pcategory")}
-                        <p>{filterCategories}</p>
+                        <p>{(finalElement(pcategory.split('')) === filterCategories && finalElement(pcategory.split('')).length) ? '' : (filterCategories === notFound) ? filterCategories : 'Sugerencia: ' + filterCategories}</p>
                     </div>
                     <button className='boton-imagen' onClick={showUploadWidget}>Subir imagen</button>
 
