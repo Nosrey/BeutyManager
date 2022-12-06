@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setForm, setProductos, filtrarProductos } from '../../actions/index'
+import { setForm, setProductos, filtrarProductos, setCategorias } from '../../actions/index'
 import { connect } from "react-redux";
 import './crearProducto.css'
 
-function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos, categorias }) {
+function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos, categorias, setCategorias }) {
     const notFound = 'No existe esa categoria';
     const [errorMessages, setErrorMessages] = useState({});
     const [image, setImage] = useState('')
@@ -17,6 +17,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
     }
 
     function comas(valorArray) {
+        valorArray = valorArray.split('')
         for (let i = 0; i < valorArray.length; i++) {  // para quitar espacio post comas
             if (valorArray[i + 1] === ' ' && valorArray[i] === ',') {
                 valorArray.splice(i + 1, 1)
@@ -29,13 +30,13 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
     function finalElement(valorArray) {
         let ultimoValor = comas(valorArray)
         let final = ultimoValor.split(',')
-        return final[final.length - 1]
+        if (final.length) return final[final.length - 1]
+        else return ''
     }
 
     function handlePcategory(e) {
         let valor = e.target.value; // valor del input
-        let valorArray = valor.split(''); //input separado en array
-        let ultimoValor = finalElement(valorArray);
+        let ultimoValor = finalElement(valor);
         setPcategory(valor);
         let filtro = categorias.find((el) => el.name.toLowerCase().includes(ultimoValor.toLowerCase()))
         if (!filtro || ultimoValor === '' || ultimoValor === ' ') filtro = { name: notFound }
@@ -107,39 +108,59 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
     const handleSubmit = (e) => {
         //Prevent page reload
         e.preventDefault();
-
+        console.log("1 entre al submit")
         var { pname, pstock, pprice, pcategory } = document.forms[0];
 
-        if (pname.value && pstock.value && pprice.value && pcategory.value) {
-            let categoryNums = []
-            let noCreated = []
-            let items = comas(pcategory.value).split(',')
-            for (let i = 0; i < items.length; i++) {
-                let conteo = 0
-                for (let j = 0; j < categorias.length; j++) {
-                    if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
-                        conteo = 1;
-                        return categoryNums.push(categorias[i].id);
+        if (pname.value && pstock.value && pprice.value) {
+            let salir = 0; // para disparar la salida
+            // eslint-disable-next-line
+            productos.map(el => {
+                if (el.name === pname.value) return salir = 1 
+            })
+            if (salir > 0) return alert("Este producto ya existe, no puede ser agregado")
+            console.log("2 confirme que los valores llegaron en el primer if")
+
+            let categoryNames = []  // para guardar el name de las categorias validas
+            if (pcategory.value) { // para que si no hay categorias no cree problemas
+                let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
+                let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
+                console.log('hola soy items: ', items)
+                for (let i = 0; i < items.length; i++) {
+                    let conteo = 0 // para averiguar que categorias no estan en la database
+                    for (let j = 0; j < categorias.length; j++) {
+                        if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
+                            conteo = 1;
+                            categoryNames.push(categorias[i].name);
+                        }
                     }
+                    if (!conteo > 0) noCreated.push(items[i])
+                    console.log('Termine una vuelta')
+                    console.log(categoryNames)
                 }
-                if (conteo === 0) noCreated.push(items[i])
-            }
 
-            Axios.post('http://localhost:3001/categories', noCreated) // para enviar el array de categorias por crear
+                if (noCreated.length) Axios.post('http://localhost:3001/categories', {arr: noCreated}) // para enviar las categorias por crear
+                categoryNames = categoryNames.concat(noCreated)
+                console.log("3 agregue las nuevas categorias")
+                console.log("por cierto, las nuevas categorias son: ", categoryNames)
+            } 
 
-            const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true, categoryNums: categoryNums }
+            const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true, categoryNames: categoryNames }
+            console.log('4 hola soy el producto que enviaras: ', productData)
             Axios.post('http://localhost:3001/products', productData)
                 .then((el) => alert('fue publicado correctamente: ', el))
-                .then(() => setForm())
-                .then(() => setProductos())
-                .then(() => {
+                .then(() => setForm()) // para mostrar el formulario
+                .then(() => setProductos()) // para pedir los productos actualizados
+                .then(() => setCategorias()) // para pedir los productos actualizados
+                .then(() => {  // vaciamos el formulario
                     pname.value = '';
                     pstock.value = '';
                     pprice.value = '';
-                    setImage('')
+                    setPcategory('');
+                    setImage('');
+                    setFilterCategories('');
                 })
                 .then(() => {
-                    filtrarProductos(productos, '')
+                    filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
                 })
         } else {
             // Username not found
@@ -153,7 +174,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         <div className={visible ? "formularioProducto" : 'invisible'}>
             <button className='cerrar-btn' onClick={cerrar}>X</button>
             <div className="form">
-                <form>
+                <form autoComplete="off">
                     <div className="input-container">
                         <label>Nombre del producto: </label>
                         <input type="text" name="pname" placeholder='Nombre...' required />
@@ -173,7 +194,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         <label>Categorias: </label>
                         <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." required />
                         {renderErrorMessage("pcategory")}
-                        <p>{(finalElement(pcategory.split('')) === filterCategories && finalElement(pcategory.split('')).length) ? '' : (filterCategories === notFound) ? filterCategories : 'Sugerencia: ' + filterCategories}</p>
+                        <p>{(finalElement(pcategory).toLowerCase() === filterCategories.toLowerCase() && finalElement(pcategory).length) ? '' : (filterCategories === notFound) ? filterCategories : 'Sugerencia: ' + filterCategories}</p>
                     </div>
                     <button className='boton-imagen' onClick={showUploadWidget}>Subir imagen</button>
 
@@ -196,6 +217,7 @@ function mapDispatchToProps(dispatch) {
         setForm: () => dispatch(setForm()),
         setProductos: () => dispatch(setProductos()),
         filtrarProductos: (lista, filtro) => dispatch(filtrarProductos(lista, filtro)),
+        setCategorias: () => dispatch(setCategorias()),
     };
 }
 
