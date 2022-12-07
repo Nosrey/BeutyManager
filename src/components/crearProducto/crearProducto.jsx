@@ -130,7 +130,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     for (let j = 0; j < categorias.length; j++) {
                         if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
                             conteo = 1;
-                            categoryNames.push(categorias[i].name);
+                            categoryNames.push(categorias[j].name);
                         }
                     }
                     if (!conteo > 0) noCreated.push(items[i])

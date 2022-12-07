@@ -5,6 +5,7 @@ import { setForm, setProductos, ordenarNombre, ordenarPrecio, ordenarStock, setC
 import { connect } from "react-redux";
 import CambiarProducto from '../cambiarProducto/cambiarProducto.jsx';
 import BuscarProducto from '../buscarProducto/buscarProducto.jsx';
+import BuscarCategorias from '../buscarCategorias/buscarCategorias.jsx';
 import './Home.css'
 
 let gatilloNombre = true;
@@ -37,13 +38,13 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     return (
         <div>
             <BuscarProducto />
+            <BuscarCategorias />
             <button onClick={ordenNombre}>Ordenar A - Z</button>
             <button onClick={ordenStock}>Ordenar por Stock</button>
             <button onClick={ordenPrecio}>Ordenar por precio</button>
 
             <CrearProducto visible={mostrarForm} />
             <CambiarProducto visible={mostrarEdit} />
-            <h1>{categorias.length}</h1>
             <h1>Home screen</h1>
             <button onClick={setForm}>Crear producto</button>
             <div className='caja titulos'>
@@ -51,10 +52,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 <h2 className='elemento'>Stock</h2>
                 <h2 className='elemento'>Precio</h2>
                 <h2 className='elemento'>Disponible</h2>
+                <h2 className='elemento'>Categorias</h2>
             </div>
             <div>
                 {!productos.length ? <h1>No hay productos disponibles</h1> : (productosFiltrados.length ? productosFiltrados : productos).map(el => {
-                    return <Product key={el.id} id={el.id} name={el.name} imagen={el.imagen} stock={el.stock} price={el.price} avaible={el.avaible} />
+                    return <Product key={el.id} id={el.id} name={el.name} imagen={el.imagen} stock={el.stock} price={el.price} avaible={el.avaible} Categories={el.Categories} />
                 })}
             </div>
         </div>
