@@ -4,6 +4,7 @@ import { setEdit, setProductos, setCategorias } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
 
+let ready = true;
 function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, categorias, setCategorias }) {
     const notFound = 'No existe esa categoria';
     const [image, setImage] = useState('')
@@ -94,65 +95,103 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
     const handleSubmit = (e) => {
         //Prevent page reload
         e.preventDefault();
-        console.log('entre a enviar')
 
-        var { pname, pstock, pprice, pcategory } = document.forms[1];
+        if (ready) {
+            ready = false;
 
-        let productData = {}
+            var { pname, pstock, pprice, pcategory } = document.forms[1];
 
-        for (let i = 0; i < productos.length; i++) {
-            if (productos[i].id === productoToEdit.id) productData = productos[i]
-        }
 
-        let categoryNames = []  // para guardar el name de las categorias validas
-        if (pcategory.value) { // para que si no hay categorias no cree problemas
-            let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
-            let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
-            console.log('hola soy items: ', items)
-            for (let i = 0; i < items.length; i++) {
-                let conteo = 0 // para averiguar que categorias no estan en la database
-                for (let j = 0; j < categorias.length; j++) {
-                    if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
-                        conteo = 1;
-                        categoryNames.push(categorias[j].name);
+            if (pprice.value.length) {
+                if (!isNaN(pprice.value)) {
+                    let letra = pprice.value.toString().split('');
+                    for (let i = 0; i < letra.length; i++) {
+                        if (letra[0] === '.' || letra[0] === ',') {
+                            if (letra[0] === ',') letra[0] = '.'
+                            letra.unshift('0')
+                            i = 0;
+                        }
+                        else if (letra[i] === ',') letra[i] = '.';
                     }
+                    pprice.value = Number(letra.join(''))
+                } else {
+                    pprice.value = '';
+                    alert('El precio ingresado debe ser un numero, tu valor sera ignorado')
                 }
-                if (!conteo > 0) noCreated.push(items[i])
-                console.log('Termine una vuelta')
-                console.log(categoryNames)
             }
-            console.log('las no creadas son: ', noCreated)
-            if (noCreated.length) Axios.post('http://localhost:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
-            categoryNames = categoryNames.concat(noCreated)
-            console.log("3 agregue las nuevas categorias")
-            console.log("por cierto, las nuevas categorias son: ", categoryNames)
-        }
+
+            if (pstock.value.length) {
+                if (!isNaN(pstock.value)) {
+                    let letra = pstock.value.toString().split('');
+                    for (let i = 0; i < letra.length; i++) {
+                        if (letra[i] === '.' || letra[i] === ',') pstock.value = ''
+                    }
+                    if (!pstock.value.length) {
+                        pstock.value = '';
+                        alert('Debes introducir un numero entero en la cantidad de stock del producto, tu valor sera ignorado')
+                    }
+                } else {
+                    pstock.value = '';
+                    alert('La cantidad ingresada debe ser un numero, tu valor sera ignorado')
+                }
+            }
+
+            let productData = {}
+
+            for (let i = 0; i < productos.length; i++) {
+                if (productos[i].id === productoToEdit.id) productData = productos[i]
+            }
+
+            let categoryNames = []  // para guardar el name de las categorias validas
+            if (pcategory.value) { // para que si no hay categorias no cree problemas
+                let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
+                let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
+                for (let i = 0; i < items.length; i++) {
+                    let conteo = 0 // para averiguar que categorias no estan en la database
+                    for (let j = 0; j < categorias.length; j++) {
+                        if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
+                            conteo = 1;
+                            categoryNames.push(categorias[j].name);
+                        }
+                    }
+                    if (!conteo > 0) noCreated.push(items[i])
+                }
+                if (noCreated.length) Axios.post('http://localhost:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
+                categoryNames = categoryNames.concat(noCreated)
+            }
 
 
-        if (pname.value) productData.name = pname.value
-        if (pstock.value) productData.stock = pstock.value
-        if (pprice.value) productData.price = pprice.value
-        if (categoryNames.length) productData.categoryNames = categoryNames
-        if (!categoryNames.length) productData.categoryNames = []
+            if (pname.value) productData.name = pname.value
+            if (pstock.value) productData.stock = pstock.value
+            if (pprice.value) productData.price = pprice.value
+            if (categoryNames.length) productData.categoryNames = categoryNames
+            if (!categoryNames.length) productData.categoryNames = []
 
-        if (image) productData.imagen = image
+            if (image) productData.imagen = image
 
-        console.log('el producto a enviar es: ', productData)
+            console.log('el producto a enviar es: ', productData)
 
-        Axios.put('http://localhost:3001/products/' + productoToEdit.id, productData)
-            .then((el) => alert('fue editado correctamente: ', el))
-            .then(() => setEdit(productoToEdit.id, productos))
-            .then(() => setProductos())
-            .then(() => setCategorias()) // para pedir los productos actualizados
-            .then(() => {
-                pname.value = '';
-                pstock.value = '';
-                pprice.value = '';
-                setPcategory('')
-                setImage('')
-                setFilterCategories2('');
-            })
-    };
+            Axios.put('http://localhost:3001/products/' + productoToEdit.id, productData)
+                .then((el) => alert('fue editado correctamente: ', el))
+                .then(() => setEdit(productoToEdit.id, productos))
+                .then(() => setProductos())
+                .then(() => setCategorias()) // para pedir los productos actualizados
+                .then(() => {
+                    pname.value = '';
+                    pstock.value = '';
+                    pprice.value = '';
+                    setPcategory('')
+                    setImage('')
+                    setFilterCategories2('');
+                })
+                .then(() => ready = true)
+
+                .catch((err) => {
+                    console.log('error en cambiar producto: ', err);
+                    ready = true;
+                })
+        };
+    }
 
     return (
         <div className={visible ? "formularioProducto" : 'invisible'}>

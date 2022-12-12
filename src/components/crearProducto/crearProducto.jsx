@@ -4,9 +4,9 @@ import { setForm, setProductos, filtrarProductos, setCategorias } from '../../ac
 import { connect } from "react-redux";
 import './crearProducto.css'
 
+let ready = true;
 function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos, categorias, setCategorias }) {
     const notFound = 'No existe esa categoria';
-    const [errorMessages, setErrorMessages] = useState({});
     const [image, setImage] = useState('')
     const [pcategory, setPcategory] = useState('')
     const [filterCategories, setFilterCategories] = useState('')
@@ -92,83 +92,109 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         );
     }
 
-
-
-    const renderErrorMessage = (name) =>
-        name === errorMessages.name && (
-            <div className="error">{errorMessages.message}</div>
-        );
-
-    const errors = {
-        pname: "Por favor ingresa el nombre",
-        pstock: "Por favor ingresa cantidad",
-        pprice: 'Por favor ingresa un precio',
-    };
-
     const handleSubmit = (e) => {
-        //Prevent page reload
         e.preventDefault();
-        console.log("1 entre al submit")
-        var { pname, pstock, pprice, pcategory } = document.forms[0];
+        //Prevent page reload
 
-        if (pname.value && pstock.value && pprice.value) {
-            let salir = 0; // para disparar la salida
-            // eslint-disable-next-line
-            productos.map(el => {
-                if (el.name === pname.value) return salir = 1 
-            })
-            if (salir > 0) return alert("Este producto ya existe, no puede ser agregado")
-            console.log("2 confirme que los valores llegaron en el primer if")
+        if (ready) {
+            ready = false;
 
-            let categoryNames = []  // para guardar el name de las categorias validas
-            if (pcategory.value) { // para que si no hay categorias no cree problemas
-                let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
-                let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
-                console.log('hola soy items: ', items)
-                for (let i = 0; i < items.length; i++) {
-                    let conteo = 0 // para averiguar que categorias no estan en la database
-                    for (let j = 0; j < categorias.length; j++) {
-                        if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
-                            conteo = 1;
-                            categoryNames.push(categorias[j].name);
+            var { pname, pstock, pprice, pcategory } = document.forms[0];
+
+            if (pprice.value.length) {
+                if (!isNaN(pprice.value)) {
+                    let letra = pprice.value.toString().split('');
+                    for (let i = 0; i < letra.length; i++) {
+                        if (letra[0] === '.' || letra[0] === ',') {
+                            if (letra[0] === ',') letra[0] = '.'
+                            letra.unshift('0')
+                            i = 0;
                         }
+                        else if (letra[i] === ',') letra[i] = '.';
                     }
-                    if (!conteo > 0) noCreated.push(items[i])
-                    console.log('Termine una vuelta')
-                    console.log(categoryNames)
+                    pprice.value = Number(letra.join(''))
+                } else {
+                    pprice.value = '';
+                    alert('El precio ingresado debe ser un numero, tu valor sera ignorado')
+                }
+            }
+
+            if (pstock.value.length) {
+                if (isNaN(pstock.value)) {
+                    pstock.value = '';
+                }
+                let letra = pstock.value.toString().split('');
+                for (let i = 0; i < letra.length; i++) {
+                    if (letra[i] === '.' || letra[i] === ',') pstock.value = ''
+                }
+                if (!pstock.value.length) {
+                    pstock.value = '';
+                    alert('Debes introducir un numero entero en la cantidad de stock del producto, tu valor sera ignorado')
+                }
+            }
+            else {
+                pstock.value = 0
+            }
+
+            if (pname.value && pstock.value && pprice.value) {
+                let salir = 0; // para disparar la salida
+                // eslint-disable-next-line
+                productos.map(el => {
+                    if (el.name === pname.value) return salir = 1
+                })
+                if (salir > 0) return alert("Este producto ya existe, no puede ser agregado")
+
+                let categoryNames = []  // para guardar el name de las categorias validas
+                if (pcategory.value) { // para que si no hay categorias no cree problemas
+                    let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
+                    let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
+                    for (let i = 0; i < items.length; i++) {
+                        let conteo = 0 // para averiguar que categorias no estan en la database
+                        for (let j = 0; j < categorias.length; j++) {
+                            if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
+                                conteo = 1;
+                                categoryNames.push(categorias[j].name);
+                            }
+                        }
+                        if (!conteo > 0) noCreated.push(items[i])
+                    }
+
+                    if (noCreated.length) Axios.post('http://localhost:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
+                    categoryNames = categoryNames.concat(noCreated)
                 }
 
-                if (noCreated.length) Axios.post('http://localhost:3001/categories', {arr: noCreated}) // para enviar las categorias por crear
-                categoryNames = categoryNames.concat(noCreated)
-                console.log("3 agregue las nuevas categorias")
-                console.log("por cierto, las nuevas categorias son: ", categoryNames)
-            } 
+                const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true, categoryNames: categoryNames }
+                console.log('Soy el producto que enviaras: ', productData)
+                Axios.post('http://localhost:3001/products', productData)
+                    .then((el) => alert('fue publicado correctamente: ', el))
+                    .then(() => setForm()) // para mostrar el formulario
+                    .then(() => setProductos()) // para pedir los productos actualizados
+                    .then(() => setCategorias()) // para pedir los productos actualizados
+                    .then(() => {  // vaciamos el formulario
+                        pname.value = '';
+                        pstock.value = '';
+                        pprice.value = '';
+                        setPcategory('');
+                        setImage('');
+                        setFilterCategories('');
+                    })
+                    .then(() => {
+                        filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
+                    })
+                    .then(() => ready = true)
 
-            const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, avaible: true, categoryNames: categoryNames }
-            console.log('4 hola soy el producto que enviaras: ', productData)
-            Axios.post('http://localhost:3001/products', productData)
-                .then((el) => alert('fue publicado correctamente: ', el))
-                .then(() => setForm()) // para mostrar el formulario
-                .then(() => setProductos()) // para pedir los productos actualizados
-                .then(() => setCategorias()) // para pedir los productos actualizados
-                .then(() => {  // vaciamos el formulario
-                    pname.value = '';
-                    pstock.value = '';
-                    pprice.value = '';
-                    setPcategory('');
-                    setImage('');
-                    setFilterCategories('');
-                })
-                .then(() => {
-                    filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
-                })
-        } else {
-            // Username not found
-            if (!pname) setErrorMessages({ name: "pname", message: errors.pname });
-            if (!pstock) setErrorMessages({ name: "pstock", message: errors.pstock });
-            if (!pprice) setErrorMessages({ name: "pprice", message: errors.pprice });
-        }
-    };
+                    .catch((err) => {
+                        ready = true;
+                    })
+            } else {
+                // Username not found
+                if (!pname) alert('Debes agregar un nombre')
+                if (!pstock) alert('debes agregar la cantidad de stock')
+                if (!pprice) alert('debes agregar el precio')
+                ready = true
+            }
+        };
+    }
 
     return (
         <div className={visible ? "formularioProducto" : 'invisible'}>
@@ -178,22 +204,22 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     <div className="input-container">
                         <label>Nombre del producto: </label>
                         <input type="text" name="pname" placeholder='Nombre...' required />
-                        {renderErrorMessage("pname")}
+
                     </div>
                     <div className="input-container">
                         <label>Cantidad Disponible: </label>
                         <input type="text" name="pstock" placeholder='Cantidad...' required />
-                        {renderErrorMessage("pstock")}
+
                     </div>
                     <div className="input-container">
                         <label>Precio del producto: </label>
                         <input type="text" name="pprice" placeholder="Precio..." required />
-                        {renderErrorMessage("pprice")}
+
                     </div>
                     <div className="input-container">
                         <label>Categorias: </label>
                         <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." required />
-                        {renderErrorMessage("pcategory")}
+
                         <p>{(finalElement(pcategory).toLowerCase() === filterCategories.toLowerCase() && finalElement(pcategory).length) ? '' : (filterCategories === notFound) ? filterCategories : 'Sugerencia: ' + filterCategories}</p>
                     </div>
                     <button className='boton-imagen' onClick={showUploadWidget}>Subir imagen</button>

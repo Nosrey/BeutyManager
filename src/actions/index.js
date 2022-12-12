@@ -37,7 +37,7 @@ export function filtrarProductos(lista, filtro, filtro2) {
     // console.log('entro filtrar productos')
     return function (dispatch) {
         let resultados = []
-        if (filtro2.length) {
+        if (filtro2.length && lista.length) {
             for (let i = 0; i < lista.length; i++) {
                 let aprobado = 0; // para confirmar que cumple los valores del buscador
                 for (let j = 0; j < filtro2.length; j++) {
