@@ -27,9 +27,9 @@ function BuscarCategorias({ filtrarCategorias, productos, productosFiltrados, se
     }, [input2]); //eslint-disable-line
 
     return (
-        <div>
-            <label><strong>Buscar categorias:  </strong></label>
-            <input type="search" value={input2} onChange={handleInputForFilter} />
+        <div className="m-2">
+            <input type="search" value={input2} onChange={handleInputForFilter} className="font-medium mt-1 mr-0 inline w-64 px-3 py-0.5 bg-white border border-slate-400 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 rounded-r-none" />
+            <label><strong className='m-0 text-lg bg-sky-500 text-white px-2 py-1 rounded-md border border-sky-500 rounded-l-none'>Buscar categorias</strong></label>
         </div>
     )
 }

@@ -2,7 +2,7 @@ import React, { useState } from 'react';
 import Axios from 'axios';
 import { setEdit, setProductos, setCategorias } from '../../actions/index'
 import { connect } from "react-redux";
-import './cambiarProducto.css'
+// import './cambiarProducto.css'
 
 let ready = true;
 function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, categorias, setCategorias }) {
@@ -198,10 +198,10 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             <button className='cerrar-btn' onClick={cerrar}>X</button>
             <script src="https://upload-widget.cloudinary.com/global/all.js" type="text/javascript"></script>
             <div className="form">
-                <form autoComplete="off">
+                <form onSubmit={handleSubmit} autoComplete="off">
                     <div className="input-container">
                         <label>Nombre del producto: </label>
-                        <input type="text" name="pname" placeholder={productoToEdit.name} />
+                        <input type="text" name="pname" placeholder={productoToEdit.name} className="mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-sm shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
                     </div>
                     <div className="input-container">
                         <label>Cantidad Disponible: </label>
@@ -216,9 +216,9 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                         <input type="text" value={pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.Categories?.map(el => { return el.name })} />
                         <p>{(finalElement(pcategory).toLowerCase() === filterCategories2.toLowerCase() && finalElement(pcategory).length) ? '' : (filterCategories2 === notFound) ? filterCategories2 : 'Sugerencia: ' + filterCategories2}</p>
                     </div>
-                    <button className='boton-imagen' onClick={showUploadWidget}>Subir Imagen</button>
+                    <button type="button" className='boton-imagen' onClick={showUploadWidget}>Subir Imagen</button>
 
-                    <button className='boton-imagen' onClick={handleSubmit}>Actualizar Producto</button>
+                    <button type="submit" className='boton-imagen'>Actualizar Producto</button>
                 </form>
             </div>
         </div>
