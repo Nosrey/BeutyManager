@@ -21,14 +21,14 @@ function Product({ productos, id, name, imagen, stock, price, avaible, setEdit, 
     }
 
     return (
-        <div className='caja'>
-            <h3 className='elemento'>{name}</h3>
-            <h3 className='elemento'>{stock}</h3>
-            <h3 className='elemento'>{price}</h3>
-            <h3 className='elemento'>{avaible}</h3>
-            <p className='elemento'>{Categories.length?mostrarCategorias(Categories) : ''}</p>
-            <img src={imagen} alt="Product" sizes='' />
-            <button onClick={() => setEdit(id, productos)}>Editar</button>
+        <div className='font-serif flex flex-row items-center justify-center text-center w-screen flex-auto flex justify-around'>
+            <h3 className='basis-0 flex-grow'>{name}</h3>
+            <h3 className='basis-0 flex-grow'>{stock}</h3>
+            <h3 className='basis-0 flex-grow'>{price}</h3>
+            <h3 className='basis-0 flex-grow'>{avaible}</h3>
+            <h3 className='basis-0 flex-grow'>{Categories.length?mostrarCategorias(Categories) : ''}</h3>
+            <img className='basis-0 flex-grow w-auto' src={imagen} alt="Product" />
+            <button className="basis-0 flex-grow " onClick={() => setEdit(id, productos)}>Editar</button>
         </div>
     )
 }

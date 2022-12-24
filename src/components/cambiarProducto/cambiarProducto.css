@@ -21,3 +21,65 @@
     top: 1%;
     right: 2%;
 }
+
+
+.potb {
+    transform-origin: top right;
+    bottom: 10%;
+    display: block;
+    position: fixed;
+    animation: linear 1;
+    animation-fill-mode: forwards;  
+    animation-name: runb;
+    animation-duration: 0.3s;
+
+}
+
+@keyframes runb {
+    0% {
+  
+        transform: translateX(100%);
+    }
+
+    /* 80% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform-origin: center;
+        transform: translateX(0%);
+    }
+}
+
+.pot2b {
+    bottom: 10%;
+    display: block;
+    position: fixed;
+    animation: linear 1;
+    animation-fill-mode: forwards;  
+    animation-name: run2b;
+    animation-duration: 0.3s;
+
+}
+
+@keyframes run2b {
+    0% {
+
+        transform: translateX(0%);
+    }
+
+    /* 20% {
+        right: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+ 
+        transform: translateX(100%);
+    }
+}
+
+.fuera {
+    transform: translateX(100%);
+}

@@ -6,7 +6,7 @@ import React from 'react';
 
 function App() {
   return (
-    <div>
+    <div className=''>
       <Routes>
         <Route exact path="/" element={<Login />} />
         <Route path="/products" element={<Home />} />

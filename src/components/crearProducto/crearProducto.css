@@ -21,3 +21,62 @@
     top: 1%;
     right: 2%;
 }
+
+.pot {
+    transform-origin: top left;
+    bottom: 10%;
+    display: block;
+    position: fixed;
+    animation: linear 1;
+    animation-fill-mode: forwards;
+    animation-name: run;
+    animation-duration: 0.3s;
+
+
+}
+
+@keyframes run {
+    0% {
+
+        transform: translateX(-100%);
+    }
+
+    /* 80% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform: translateX(0%);
+    }
+}
+
+.pot2 {
+    bottom: 10%;
+    display: block;
+    position: fixed;
+    animation: linear 1;
+    animation-fill-mode: forwards;
+    animation-name: run2;
+    animation-duration: 0.3s;
+
+}
+
+@keyframes run2 {
+    0% {
+        transform: translateX(0%);
+    }
+
+    /* 20% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform: translateX(-100%);
+    }
+}
+
+.fuera2 {
+    transform: translateX(-100%);
+}
