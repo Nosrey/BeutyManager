@@ -22,8 +22,6 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
     const [pcategory, setPcategory] = useState('')
     const [filterCategories, setFilterCategories] = useState('')
 
-    const [animacion, setAnimacion] = useState(true)
-
     function cerrar(e) {
         e.preventDefault();
         setForm()
@@ -81,7 +79,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         if (ready) {
             ready = false;
 
-            var { pname, pstock, pprice, ppriceBuy, pcategory } = document.forms[0];
+            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[0];
 
             if (pprice.value.length) {
                 if (!isNaN(pprice.value)) {
@@ -129,11 +127,28 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                 }
                 if (!pstock.value.length) {
                     pstock.value = '';
-                    alert('Debes introducir un numero entero en la cantidad de stock del producto, tu valor sera ignorado')
+                    alert('Debes introducir un numero entero en la cantidad de stock en deposito del producto, tu valor sera ignorado')
                 }
             }
             else {
                 pstock.value = 0
+            }
+
+            if (pstockDeposito.value.length) {
+                if (isNaN(pstockDeposito.value)) {
+                    pstockDeposito.value = '';
+                }
+                let letra = pstockDeposito.value.toString().split('');
+                for (let i = 0; i < letra.length; i++) {
+                    if (letra[i] === '.' || letra[i] === ',') pstockDeposito.value = ''
+                }
+                if (!pstockDeposito.value.length) {
+                    pstockDeposito.value = '';
+                    alert('Debes introducir un numero entero en la cantidad de stock en tienda del producto, tu valor sera ignorado')
+                }
+            }
+            else {
+                pstockDeposito.value = 0
             }
 
             if (pname.value) {
@@ -146,7 +161,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                 }
             }
 
-            if (pname.value && pstock.value && pprice.value && ppriceBuy.value) {
+            if (pname.value && pstock.value && pstockDeposito.value && pprice.value && ppriceBuy.value) {
                 let salir = 0; // para disparar la salida
                 // eslint-disable-next-line
                 productos.map(el => {
@@ -173,7 +188,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     categoryNames = categoryNames.concat(noCreated)
                 }
 
-                const productData = { name: pname.value, imagen: image, stock: pstock.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: categoryNames }
+                const productData = { name: pname.value, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: categoryNames }
                 console.log('Soy el producto que enviaras: ', productData)
                 Axios.post('http://localhost:3001/products', productData)
                     .then((el) => alert('fue publicado correctamente: ', el))
@@ -183,6 +198,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     .then(() => {  // vaciamos el formulario
                         pname.value = '';
                         pstock.value = '';
+                        pstockDeposito.value = '';
                         pprice.value = '';
                         ppriceBuy.value = '';
                         setPcategory('');
@@ -200,7 +216,8 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
             } else {
                 // Username not found
                 if (!pname) alert('Debes agregar un nombre')
-                if (!pstock) alert('debes agregar la cantidad de stock')
+                if (!pstock) alert('debes agregar la cantidad de para el deposito')
+                if (!pstockDeposito) alert('debes agregar la cantidad para la tienda')
                 if (!pprice) alert('debes agregar el precio')
                 ready = true
             }
@@ -241,24 +258,27 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
             <div className="font-serif ">
                 <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center'>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Nombre del producto</label>
-                        <input type="text" name="pname" placeholder='Nombre...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" required />
+                        <label className="font-serif text-xl font-semibold text-center">Nombre del Producto</label>
+                        <input type="text" name="pname" placeholder='Nombre...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 py-5 text-xl" required />
 
                     </div>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Cantidad Disponible</label>
-                        <input type="text" name="pstock" placeholder='Cantidad...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" required />
-
+                        <label className="font-serif text-xl font-semibold text-center">Cantidad en Deposito</label>
+                        <input type="number" step="1" name="pstock" placeholder='Cantidad en deposito...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
                     </div>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de venta del producto</label>
-                        <input id="price" type="text" name="pprice" placeholder="Precio de venta..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" required />
+                        <label className="font-serif text-xl font-semibold text-center">Cantidad en Tienda</label>
+                        <input type="number" step="1" name="pstockDeposito" placeholder='Cantidad en tienda...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                    </div>
+                    <div className="font-serif input-container">
+                        <label className="font-serif text-xl font-semibold text-center">Precio de Venta</label>
+                        <input id="price" type="number" step="0.01" name="pprice" placeholder="Precio de venta..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
 
                     </div>
 
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de compra del producto</label>
-                        <input id="priceBuy" type="text" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" required />
+                        <label className="font-serif text-xl font-semibold text-center">Precio de Compra</label>
+                        <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
 
                     </div>
                     <div className="font-serif input-container flex flex-col items-center">
@@ -267,7 +287,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         <label className="font-serif text-xl font-semibold text-center mb-0">Categorias</label>
                         <p className='my-0 text-sm text-gray-500 italic'>(Separadas por comas)</p>
                         </div>
-                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl py-5" />
 
                         <p>{(finalElement(pcategory).toLowerCase() === filterCategories.toLowerCase() && finalElement(pcategory).length) ? <p className='font-serif my-1'></p> : (filterCategories === notFound) ? <p className='font-serif my-1 text-gray-500 italic'>{filterCategories}</p> : <div className='font-serif my-1'><p className='font-serif inline text-gray-500 italic'>Sugerencia: </p><p className='font-serif inline'>{primeraMayuscula(filterCategories)}</p></div>}</p>
 

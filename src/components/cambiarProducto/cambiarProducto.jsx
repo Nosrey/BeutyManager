@@ -68,7 +68,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         textPrimeraVez = ''
         primeraVez = true;
         setEdit(productoToEdit.id, productos)
-        var { pname, pstock, pprice, pcategory } = document.forms[1];
+        var { pname, pstock, pprice } = document.forms[1];
         pname.value = '';
         pstock.value = '';
         pprice.value = '';
@@ -97,55 +97,6 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
     }
 
-    function showUploadWidget(e) {
-        e.preventDefault();
-        window.cloudinary.openUploadWidget({
-            cloudName: "dyg5hutpb",
-            uploadPreset: "ejemplo",
-            sources: [
-                "local",
-                "url"
-            ],
-            googleApiKey: "<image_search_google_api_key>",
-            showAdvancedOptions: true,
-            //  multiple: false, debe ser eliminado para que funcione bien
-            //  cropping: true, esta tambien
-            defaultSource: "local",
-            styles: {
-                palette: {
-                    window: "#ffffff",
-                    sourceBg: "#f4f4f5",
-                    windowBorder: "#90a0b3",
-                    tabIcon: "#000000",
-                    inactiveTabIcon: "#555a5f",
-                    menuIcons: "#555a5f",
-                    link: "#0433ff",
-                    action: "#339933",
-                    inProgress: "#000519",
-                    complete: "#339933",
-                    error: "#cc0000",
-                    textDark: "#000000",
-                    textLight: "#fcfffd"
-                },
-                fonts: {
-                    default: null,
-                    "'Acme', sans-serif": {
-                        url: "https://fonts.googleapis.com/css?family=Acme",
-                        active: true
-                    }
-                }
-            }
-        },
-            (error, result) => {
-                if (!error && result && result.event === "success") {
-                    console.log('Done! Here is the image info: ', result.info.secure_url);
-                    setImage(result.info.secure_url)
-                }
-                else if (error) { console.log('parece que hubo un error: ', error) }
-            }
-        );
-    }
-
     const handleSubmit = (e) => {
         //Prevent page reload
         e.preventDefault();
@@ -153,7 +104,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         if (ready) {
             ready = false;
 
-            var { pname, pstock, pprice, ppriceBuy, pcategory } = document.forms[1];
+            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[1];
 
 
             if (pprice.value.length) {
@@ -200,10 +151,26 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     }
                     if (!pstock.value.length) {
                         pstock.value = '';
-                        alert('Debes introducir un numero entero en la cantidad de stock del producto, tu valor sera ignorado')
+                        alert('Debes introducir un numero entero en la cantidad de stock en deposito, tu valor sera ignorado')
                     }
                 } else {
                     pstock.value = '';
+                    alert('La cantidad ingresada debe ser un numero, tu valor sera ignorado')
+                }
+            }
+
+            if (pstockDeposito.value.length) {
+                if (!isNaN(pstockDeposito.value)) {
+                    let letra = pstockDeposito.value.toString().split('');
+                    for (let i = 0; i < letra.length; i++) {
+                        if (letra[i] === '.' || letra[i] === ',') pstockDeposito.value = ''
+                    }
+                    if (!pstockDeposito.value.length) {
+                        pstockDeposito.value = '';
+                        alert('Debes introducir un numero entero en la cantidad de stock en tienda, tu valor sera ignorado')
+                    }
+                } else {
+                    pstockDeposito.value = '';
                     alert('La cantidad ingresada debe ser un numero, tu valor sera ignorado')
                 }
             }
@@ -235,6 +202,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
             if (pname.value) productData.name = pname.value
             if (pstock.value) productData.stock = pstock.value
+            if (pstockDeposito.value) productData.stockDeposito = pstockDeposito.value
             if (pprice.value) productData.price = pprice.value
             if (ppriceBuy.value) productData.priceBuy = ppriceBuy.value
             if (categoryNames.length) productData.categoryNames = categoryNames
@@ -252,6 +220,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                 .then(() => {
                     pname.value = '';
                     pstock.value = '';
+                    pstockDeposito.value = '';
                     pprice.value = '';
                     ppriceBuy.value = '';
                     setPcategory('')
@@ -298,28 +267,32 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             <div className="font-serif ">
                 <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center'>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Nombre del producto: </label>
-                        <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                        <label className="font-serif text-xl font-semibold text-center">Nombre del producto</label>
+                        <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 py-5 text-xl" />
                     </div>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Cantidad Disponible: </label>
-                        <input type="text" name="pstock" placeholder={productoToEdit.stock} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                        <label className="font-serif text-xl font-semibold text-center">Cantidad en Deposito</label>
+                        <input type="number" step="1" name="pstock" placeholder={productoToEdit.stock} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
                     </div>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de venta del producto: </label>
-                        <input type="text" name="pprice" placeholder={productoToEdit.price} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                        <label className="font-serif text-xl font-semibold text-center">Cantidad en Tienda</label>
+                        <input type="number" step="1" name="pstockDeposito" placeholder={productoToEdit.stockDeposito} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
                     </div>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de compra del producto: </label>
-                        <input type="text" name="ppriceBuy" placeholder={productoToEdit.priceBuy} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                        <label className="font-serif text-xl font-semibold text-center">Precio de venta</label>
+                        <input type="number" step="0.01" name="pprice" placeholder={productoToEdit.price} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
                     </div>
                     <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Categorias del producto: </label>
-                        <input type="text" value={primeraVez? productoToEdit.Categories?.map(el => { return el.name }) : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.Categories?.map(el => { return el.name })} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500" />
+                        <label className="font-serif text-xl font-semibold text-center">Precio de compra</label>
+                        <input type="number" step="0.01" name="ppriceBuy" placeholder={productoToEdit.priceBuy} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                    </div>
+                    <div className="font-serif input-container text-center">
+                        <label className="font-serif text-xl font-semibold text-center">Categorias del producto</label>
+                        <input type="text" value={primeraVez? productoToEdit.Categories?.map(el => { return el.name }) : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.Categories?.map(el => { return el.name })} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl py-5" />
 
                         <p>{(finalElement(pcategory).toLowerCase() === filterCategories2.toLowerCase() && finalElement(pcategory).length) ? <p className='font-serif my-1'></p> : (filterCategories2 === notFound) ? <p className='font-serif my-1 text-gray-500 italic'>{filterCategories2}</p> : <div className='font-serif my-1'><p className='font-serif inline text-gray-500 italic'>Sugerencia: </p><p className='font-serif inline'>{primeraMayuscula(filterCategories2)}</p></div>}</p>
 
-                        <ul className='font-serif flex flex-wrap justify-center'>
+                        <ul className='font-serif flex flex-wrap justify-center mb-3 '>
                             {
                                 (primeraVez? 
                                     (comas(textPrimeraVez).split(',')[0] !== '') ? (

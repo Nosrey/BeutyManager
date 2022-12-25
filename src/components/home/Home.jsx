@@ -1,5 +1,4 @@
-import React, { useState, useEffect } from 'react';
-import Product from '../product/product.jsx'
+import React, { useEffect } from 'react';
 import CrearProducto from '../crearProducto/crearProducto.jsx';
 import { setForm, setProductos, ordenarNombre, ordenarPrecio, ordenarStock, setCategorias, setEdit } from '../../actions/index'
 import { connect } from "react-redux";
@@ -107,12 +106,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-8 flex justify-around w-max'>
                 <li className='font-serif flex flex-row w-screen text-2xl my-3 font-bold pl-4'>
                     <h2 className='font-serif flex-grow min-w-0 basis-0'>Nombre</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Stock</h2>
+                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Deposito</h2>
+                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Tienda</h2>
+                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Total</h2>
                     <h2 className='font-serif flex-grow min-w-0 basis-0'>Precio de venta</h2>
                     <h2 className='font-serif flex-grow min-w-0 basis-0'>Precio de compra</h2>
                     <h2 className='font-serif flex-grow min-w-0 basis-0'>Categorias</h2>
                     <h2 className='font-serif flex-grow min-w-0 basis-0'>Imagen</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'></h2>
+                    <h2 className='font-serif flex-grow min-w-0 basis-0'> </h2>
                 </li>
 
                 {!productos.length ?
@@ -125,9 +126,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             {/* <Product key={el.id} id={el.id} name={el.name} imagen={el.imagen} stock={el.stock} price={el.price} avaible={el.avaible} Categories={el.Categories} /> */}
 
                             <h3 className='flex-grow min-w-0 basis-0 my-auto break-all'>{el.name}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.stock}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.price}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.priceBuy}</h3>
+                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-3xl'>{el.stock}</h3>
+                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-3xl'>{el.stockDeposito}</h3>
+                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.stock + el.stockDeposito}</h3>
+                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.price + '$'}</h3>
+                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.priceBuy + '$'}</h3>
 
                             <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.Categories.length ?
                                 <ul className='font-serif flex flex-wrap justify-center text-base'>
@@ -151,7 +154,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             </div>
 
                             <div className='flex-grow min-w-0 basis-0 my-auto flex flex-col items-center justify-center'>
-                                <button className="hover:animate-pulse bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-3 mx-0 rounded block my-auto " onClick={() => setEdit(el.id, productos)}>Editar</button>
+                                <button className="hover:animate-pulse bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-2 mx-1 mx-0 rounded block my-auto " onClick={() => setEdit(el.id, productos)}>Editar</button>
                             </div>
                         </li>
                     })}
