@@ -6,7 +6,7 @@ import React from 'react';
 
 function App() {
   return (
-    <div className=''>
+    <div className='w-full'>
       <Routes>
         <Route exact path="/" element={<Login />} />
         <Route path="/products" element={<Home />} />

@@ -11,7 +11,7 @@ let gatilloNombre = true;
 let gatilloPrecio = true;
 let gatilloStock = true;
 
-function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, setCategorias, activo, categorias, setEdit }) {
+function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, setCategorias, activo, categorias, setEdit, input1 }) {
 
     const paleta = ["text-fuchsia-400", "text-purple-500", "text-violet-500", "text-indigo-500", "text-blue-500", "text-sky-500", "text-cyan-500", "text-teal-500"]
 
@@ -48,7 +48,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         setCategorias();
     }, []); //eslint-disable-line
 
-
     function mostrarCategorias(arr) {
         // console.log('soy el arr prohibido de ' + name +': ' ,arr)
         if (arr.length) {
@@ -61,7 +60,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             return arr
         }
     }
-
 
     function primeraMayuscula(palabra) {
         if (palabra) {
@@ -82,83 +80,86 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         return valorArray.join('')
     }
 
-
     return (
-        <div className='m-2'>
+        <div className=''>
             <nav className='ml-1 mt-4'>
-                <div className='ml-3'>
+                <div className='flex flex-col'>
                     <BuscarProducto />
-                    <BuscarCategorias />
                 </div>
-                <hr className='font-serif my-6' />
-                <div className='text-xl'>
-                    <button onClick={setForm} className="hover:animate-pulse bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-2 m-2 mx-5 rounded">Crear producto</button>
+                <hr className='font-serif my-3 ' />
+                <div className='text-xl flex flex-col mb-1 items-center xl:flex-row'>
+                    <button onClick={setForm} className=" hover:animate-pulse bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-2 px-2 my-2 mx-auto inline xl:m-2 mx-5 rounded text-base xl:text-xl w-1/2">Crear producto</button>
 
-                    <button onClick={ordenNombre} className="hover:animate-pulse bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-2 m-2 mx-5 rounded">Ordenar A - Z</button>
-                    <button onClick={ordenStock} className="hover:animate-pulse bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-2 m-2 mx-5 rounded">Ordenar por Stock</button>
-                    <button onClick={ordenPrecio} className="hover:animate-pulse bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-2 m-2 mx-5 rounded">Ordenar por precio</button>
+                    <button onClick={ordenNombre} className=" hover:animate-pulse bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-2 my-2 mx-auto inline xl:m-2 mx-5 rounded text-base xl:text-xl w-1/2">Ordenar A - Z</button>
+                    <button onClick={ordenStock} className=" hover:animate-pulse bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-2 my-2 mx-auto inline xl:m-2 mx-5 rounded text-base xl:text-xl w-1/2">Ordenar por Stock</button>
+                    <button onClick={ordenPrecio} className=" hover:animate-pulse bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-2 my-2 mx-auto inline xl:m-2 mx-5 rounded text-base xl:text-xl w-1/2">Ordenar por precio</button>
                 </div>
             </nav>
 
             <CrearProducto visible={mostrarForm} />
             <CambiarProducto visible={mostrarEdit} />
-
-            <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-8 flex justify-around w-max'>
-                <li className='font-serif flex flex-row w-screen text-2xl my-3 font-bold pl-4'>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Nombre</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Deposito</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Tienda</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Total</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Precio de venta</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Precio de compra</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Categorias</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'>Imagen</h2>
-                    <h2 className='font-serif flex-grow min-w-0 basis-0'> </h2>
-                </li>
-
-                {!productos.length ?
-                    <li className='flex flex-col items-center'>
-                        <h1 className='font-serif text-4xl text-center font-bold font-serif block mt-8'>No hay productos disponibles</h1>
-                        <img className="w-1/3 absolute bottom-1" src="https://chryslergroup.navigation.com/static/WFS/Shop-Site/-/Shop/en_US/Product%20Not%20Found.png" alt="notFound" />
+            <div className='w-screen overflow-x-auto'>
+                {(input1.length && !productosFiltrados.length)? <h1 className='text-center text-2xl font-serif bg-red-600 mx-20 text-white font-bold  py-4 my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
+                
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-6 flex justify-around overflow-x-auto w-[250%] xl:w-screen'>
+                    <li className='font-serif flex flex-row xl:text-2xl my-3 font-bold pl-4 flex w-full'>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Nombre</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Deposito</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Tienda</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Total</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Precio de venta</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Precio de compra</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Categorias</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Imagen</h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-0'> </h2>
                     </li>
-                    : (productosFiltrados.length ? productosFiltrados : productos).map(el => {
-                        return <li className='font-serif flex flex-row w-screen text-xl odd:bg-white even:bg-slate-100 py-6 pl-4'>
-                            {/* <Product key={el.id} id={el.id} name={el.name} imagen={el.imagen} stock={el.stock} price={el.price} avaible={el.avaible} Categories={el.Categories} /> */}
 
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto break-all'>{el.name}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-3xl'>{el.stock}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-3xl'>{el.stockDeposito}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.stock + el.stockDeposito}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.price + '$'}</h3>
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.priceBuy + '$'}</h3>
-
-                            <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.Categories.length ?
-                                <ul className='font-serif flex flex-wrap justify-center text-base'>
-                                    {
-                                        (comas(mostrarCategorias(el.Categories)).split(',')[0] !== '') ? (
-                                            comas(mostrarCategorias(el.Categories)).split(',').map((el, i) => {
-                                                return (
-                                                    <li className={colores(i)}>{primeraMayuscula(el)}</li>
-                                                )
-                                            })
-
-                                        ) : ''
-                                    }
-
-                                </ul>
-                                : ''}
-                            </h3>
-
-                            <div className='flex-grow min-w-0 basis-0 my-auto'>
-                                <img className='w-24 m-auto' src={el.imagen} alt="Product" />
-                            </div>
-
-                            <div className='flex-grow min-w-0 basis-0 my-auto flex flex-col items-center justify-center'>
-                                <button className="hover:animate-pulse bg-indigo-500 hover:bg-indigo-700 text-white font-bold py-3 px-2 mx-1 mx-0 rounded block my-auto " onClick={() => setEdit(el.id, productos)}>Editar</button>
-                            </div>
+                    {!productos.length ?
+                        <li className='w-full flex flex-col items-center justify-center xl:mt-6 italic'>
+                            <h1 className='font-serif text-2xl xl:text-4xl mx-auto font-bold font-serif block mt-0'>No hay productos disponibles</h1>
+                            <img className="w-3/4 xl:w-1/2 bottom-1" src="https://chryslergroup.navigation.com/static/WFS/Shop-Site/-/Shop/en_US/Product%20Not%20Found.png" alt="notFound" />
                         </li>
-                    })}
-            </ul>
+
+
+                        : (productosFiltrados.length ? productosFiltrados : productos).map(el => {
+                            // permitir que mi elemento li se expanda a lo anchos de la pantalla
+                            return <li className='font-serif flex flex-row text-xl py-6 pl-4 odd:bg-white even:bg-slate-100 w-full '>
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto break-all static'>{el.name}</h3>
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-3xl'>{el.stock}</h3>
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-3xl'>{el.stockDeposito}</h3>
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.stock + el.stockDeposito}</h3>
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.price + '$'}</h3>
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.priceBuy + '$'}</h3>
+
+                                <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.Categories.length ?
+                                    <ul className='font-serif flex flex-wrap justify-center text-base'>
+                                        {
+                                            (comas(mostrarCategorias(el.Categories)).split(',')[0] !== '') ? (
+                                                comas(mostrarCategorias(el.Categories)).split(',').map((el, i) => {
+                                                    return (
+                                                        <li className={colores(i)}>{primeraMayuscula(el)}</li>
+                                                    )
+                                                })
+
+                                            ) : ''
+                                        }
+
+                                    </ul>
+                                    : ''}
+                                </h3>
+
+                                <div className='flex-grow min-w-0 basis-0 my-auto'>
+                                    <img className='w-24 m-auto' src={el.imagen} alt="Product" />
+                                </div>
+
+                                <div className='flex-grow min-w-0 basis-0 my-auto flex flex-col items-center justify-center'>
+                                    <button className="hover:animate-pulse bg-indigo-500 hover:bg-indigo-700 text-white font-bold px-1 py-1 xl:py-3 xl:px-2 mx-1 mx-0 rounded block my-auto " onClick={() => setEdit(el.id, productos)}>Editar</button>
+                                </div>
+                            </li>
+                        })}
+                </ul>
+            </div>
+
         </div>
     )
 }
@@ -170,7 +171,9 @@ const mapStateToProps = (state) => {
         productos: state.productos,
         productosFiltrados: state.productosFiltrados,
         activo: state.activo,
-        categorias: state.categorias
+        categorias: state.categorias,
+        // importar de mi reducer el estado input1
+        input1: state.input1,
     }
 }
 

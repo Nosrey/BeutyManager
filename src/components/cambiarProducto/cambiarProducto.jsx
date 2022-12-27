@@ -28,12 +28,12 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         if (productoToEdit.Categories) {
             for (let i = 0; i < productoToEdit.Categories.length; i++) {
                 textPrimeraVez = textPrimeraVez + productoToEdit.Categories[i].name;
-                if (i+1 < productoToEdit.Categories.length) textPrimeraVez += ', ' 
+                if (i + 1 < productoToEdit.Categories.length) textPrimeraVez += ', '
             }
         }
-        
+
         console.log('hola soy yo tu padre: ', textPrimeraVez)
-    } 
+    }
 
     function comas(valorArray) {
         valorArray = valorArray.split('')
@@ -75,6 +75,12 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         setPcategory('')
         setImage(imagenNotFound)
         setFilterCategories2('');
+    }
+
+    // funcion para eliminar acentos de una palabra dada
+    function eliminarAcentos(palabra) {
+        let palabraSinAcentos = palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return palabraSinAcentos
     }
 
     function handleFileChange(e) {
@@ -195,12 +201,14 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     }
                     if (!conteo > 0) noCreated.push(items[i])
                 }
-                if (noCreated.length) Axios.post('http://localhost:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
+                if (noCreated.length) Axios.post('http://192.168.1.108:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
                 categoryNames = categoryNames.concat(noCreated)
             }
 
-
-            if (pname.value) productData.name = pname.value
+            if (pname.value) {
+                let nombre = eliminarAcentos(pname.value);
+                productData.name = nombre;
+            }
             if (pstock.value) productData.stock = pstock.value
             if (pstockDeposito.value) productData.stockDeposito = pstockDeposito.value
             if (pprice.value) productData.price = pprice.value
@@ -212,7 +220,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
             console.log('el producto a enviar es: ', productData)
 
-            Axios.put('http://localhost:3001/products/' + productoToEdit.id, productData)
+            Axios.put('http://192.168.1.108:3001/products/' + productoToEdit.id, productData)
                 .then((el) => alert('fue editado correctamente: ', el))
                 .then(() => setEdit(productoToEdit.id, productos))
                 .then(() => setProductos())
@@ -263,7 +271,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             + (arranque ? (visible ? "potb" : "pot2b") : 'fuera')
         }
         >
-            <button className='font-serif bg-red-600 text-white absolute top-2 right-2 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
+            <button className='font-serif bg-red-600 text-white absolute top-2 right-3 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
             <div className="font-serif ">
                 <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center'>
                     <div className="font-serif input-container">
@@ -288,42 +296,42 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     </div>
                     <div className="font-serif input-container text-center">
                         <label className="font-serif text-xl font-semibold text-center">Categorias del producto</label>
-                        <input type="text" value={primeraVez? productoToEdit.Categories?.map(el => { return el.name }) : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.Categories?.map(el => { return el.name })} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl py-5" />
+                        <input type="text" value={primeraVez ? productoToEdit.Categories?.map(el => { return el.name }) : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.Categories?.map(el => { return el.name })} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl py-5" />
 
                         <p>{(finalElement(pcategory).toLowerCase() === filterCategories2.toLowerCase() && finalElement(pcategory).length) ? <p className='font-serif my-1'></p> : (filterCategories2 === notFound) ? <p className='font-serif my-1 text-gray-500 italic'>{filterCategories2}</p> : <div className='font-serif my-1'><p className='font-serif inline text-gray-500 italic'>Sugerencia: </p><p className='font-serif inline'>{primeraMayuscula(filterCategories2)}</p></div>}</p>
 
                         <ul className='font-serif flex flex-wrap justify-center mb-3 '>
                             {
-                                (primeraVez? 
+                                (primeraVez ?
                                     (comas(textPrimeraVez).split(',')[0] !== '') ? (
                                         comas(textPrimeraVez).split(',').map((el, i) => {
                                             return (
                                                 <li className={colores(i)}>{primeraMayuscula(el)}</li>
                                             )
                                         })
-    
-                                    ) : ''
-                                    
-                                    
-                                    : (comas(pcategory).split(',')[0] !== '') ? (
-                                    comas(pcategory).split(',').map((el, i) => {
-                                        return (
-                                            <li className={colores(i)}>{primeraMayuscula(el)}</li>
-                                        )
-                                    })
 
-                                ) : '')
+                                    ) : ''
+
+
+                                    : (comas(pcategory).split(',')[0] !== '') ? (
+                                        comas(pcategory).split(',').map((el, i) => {
+                                            return (
+                                                <li className={colores(i)}>{primeraMayuscula(el)}</li>
+                                            )
+                                        })
+
+                                    ) : '')
                             }
 
                         </ul>
                     </div>
-                    
+
                     <label class="block">
                         <span class="sr-only">Subir imagen</span>
                         <input type="file" accept="image/x-png,image/gif,image/jpeg" onChange={handleFileChange} class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-200 ml-2" />
                     </label>
 
-                    <img src={(image !== imagenNotFound)? image : (productoToEdit.imagen) ? productoToEdit.imagen : image } alt='product' className='font-serif w-28 inline py-4' />
+                    <img src={(image !== imagenNotFound) ? image : (productoToEdit.imagen) ? productoToEdit.imagen : image} alt='product' className='font-serif w-28 inline py-4' />
 
                     <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl'>Actualizar Producto</button>
                 </form>

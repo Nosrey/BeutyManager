@@ -24,7 +24,7 @@ export function setEdit(id, productoLista) {
 export function setProductos() {
     return function (dispatch) {
         return (
-            fetch('http://localhost:3001/products')
+            fetch('http://192.168.1.108:3001/products')
                 .then((res) => res.json())
                 .then((json) => {
                     dispatch({ type: SET_PRODUCTOS, payload: json })
@@ -34,29 +34,60 @@ export function setProductos() {
 }
 
 export function filtrarProductos(lista, filtro, filtro2) {
-    // console.log('entro filtrar productos')
     return function (dispatch) {
+        // funcion para eliminar acentos de una palabra dada
+        function eliminarAcentos(palabra) {
+            let palabraSinAcentos = palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+            return palabraSinAcentos
+        }
+
+        
+
+        // una funcion que separe palabras por espacio entre ellas y las guarde en un array
+        function separarPalabras(texto) {
+            let palabras = []
+            let palabra = ''
+            for (let i = 0; i < texto.length; i++) {
+                if (texto[i] === ' ') {
+                    palabras.push(palabra)
+                    palabra = ''
+                }
+                else palabra = palabra + texto[i]
+            }
+            palabras.push(palabra)
+            return palabras
+        }
+
+
+        let palabrasJuntas = separarPalabras(eliminarAcentos(filtro))
+
+        // declaramos resultados para guardar las coincidencias
         let resultados = []
-        if (filtro2.length && lista.length) {
+
+        // un filtro que recibe un input y las separa por espacios en un array, luego revisa si cada una de esas palabras coincide con el nombre del producto o si tiene coincidencia con las categorias del producto, las coincidencias se guardan en un array y se retorna ese array
+        if (palabrasJuntas.length && lista.length) {
             for (let i = 0; i < lista.length; i++) {
                 let aprobado = 0; // para confirmar que cumple los valores del buscador
-                for (let j = 0; j < filtro2.length; j++) {
+                for (let j = 0; j < palabrasJuntas.length; j++) {
                     for (let k = 0; k < lista[i].Categories.length; k++) {
-                        if (lista[i].Categories[k].name.toLowerCase() === filtro2[j].toLowerCase() && filtro2[j].length) { aprobado = aprobado + 1; break; }
+                        if (lista[i].Categories[k].name.toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }
                     }
-                    if (aprobado === filtro2.length) resultados.push(lista[i])
+
+                    if (lista[i].name.toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }
                 }
+                // pushear el elemento de la lista si la variable aprobado es mayor o igual a la longitud de palabrasJuntas
+                if (aprobado >= palabrasJuntas.length) resultados.push(lista[i])
             }
-            let resultados2 = resultados.filter((el) => el.name.toLowerCase().includes(filtro.toLowerCase()) )
-            if (resultados2.length) resultados = resultados2
         }
 
-        if (!resultados.length) {
-            let resultados2 = lista.filter((el) => (el.name.toLowerCase().includes(filtro.toLowerCase()) && filtro.length))
-            if (resultados2.length) resultados = resultados2
+        // revisar coincidencias en palabrasJuntas con respecto al nombre de los productos
+        if (palabrasJuntas.length && lista.length) {
+            for (let i = 0; i < lista.length; i++) {
+
+            }
         }
 
-        if (!resultados.length && !filtro2.length) { resultados = []; dispatch({ type: FILTRAR_PRODUCTOS, payload: [] }) }
+        if (!resultados.length) { resultados = []; dispatch({ type: FILTRAR_PRODUCTOS, payload: resultados }) }
         else dispatch({ type: FILTRAR_PRODUCTOS, payload: resultados })
     }
 }
@@ -87,7 +118,7 @@ export function ordenarStock(gatillo) {
 export function setCategorias() {
     return function (dispatch) {
         return (
-            fetch('http://localhost:3001/categories')
+            fetch('http://192.168.1.108:3001/categories')
                 .then((res) => res.json())
                 .then((json) => {
                     dispatch({ type: SET_CATEGORIAS, payload: json })

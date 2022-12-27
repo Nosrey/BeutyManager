@@ -72,6 +72,12 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         setFilterCategories(filtro.name)
     }
 
+    // funcion para eliminar acentos de una palabra dada
+    function eliminarAcentos(palabra) {
+        let palabraSinAcentos = palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
+        return palabraSinAcentos
+    }
+
     const handleSubmit = (e) => {
         e.preventDefault();
         //Prevent page reload
@@ -184,13 +190,15 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         if (!conteo > 0) noCreated.push(items[i])
                     }
 
-                    if (noCreated.length) Axios.post('http://localhost:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
+                    if (noCreated.length) Axios.post('http://192.168.1.108:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
                     categoryNames = categoryNames.concat(noCreated)
                 }
 
-                const productData = { name: pname.value, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: categoryNames }
+                let nombre
+                if (pname.value) nombre = eliminarAcentos(pname.value)
+                const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: categoryNames }
                 console.log('Soy el producto que enviaras: ', productData)
-                Axios.post('http://localhost:3001/products', productData)
+                Axios.post('http://192.168.1.108:3001/products', productData)
                     .then((el) => alert('fue publicado correctamente: ', el))
                     .then(() => setForm()) // para mostrar el formulario
                     .then(() => setProductos()) // para pedir los productos actualizados
@@ -249,12 +257,12 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
 
     return (
         <div className={
-            "left-[0%] fixed bg-white w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
+            "left-[0%] fixed bg-white w-full xl:w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
             // max-h-screen
             + (arranque ? (visible ? "pot" : "pot2") : 'fuera2')
         }
         >
-            <button className='font-serif bg-red-600 text-white absolute top-2 right-2 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
+            <button className='font-serif bg-red-600 text-white absolute top-2 right-3 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
             <div className="font-serif ">
                 <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center'>
                     <div className="font-serif input-container">
@@ -283,9 +291,9 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     </div>
                     <div className="font-serif input-container flex flex-col items-center">
                         <div className='text-center'>
-                            
-                        <label className="font-serif text-xl font-semibold text-center mb-0">Categorias</label>
-                        <p className='my-0 text-sm text-gray-500 italic'>(Separadas por comas)</p>
+
+                            <label className="font-serif text-xl font-semibold text-center mb-0">Categorias</label>
+                            <p className='my-0 text-sm text-gray-500 italic'>(Separadas por comas)</p>
                         </div>
                         <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl py-5" />
 
