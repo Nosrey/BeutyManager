@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2 } from "./actions-types";
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA } from "./actions-types";
 
 export function setForm() {
     return function (dispatch) {
@@ -41,7 +41,7 @@ export function filtrarProductos(lista, filtro, filtro2) {
             return palabraSinAcentos
         }
 
-        
+
 
         // una funcion que separe palabras por espacio entre ellas y las guarde en un array
         function separarPalabras(texto) {
@@ -99,15 +99,6 @@ export function ordenarNombre(gatillo) {
     }
 }
 
-
-export function ordenarPrecio(gatillo) {
-    // console.log('entro ordenar precio')
-    return function (dispatch) {
-        dispatch({ type: ORDENAR_PRECIO, payload: gatillo })
-    }
-}
-
-
 export function ordenarStock(gatillo) {
     // console.log('entro ordenar stock')
     return function (dispatch) {
@@ -160,5 +151,70 @@ export function setInput1(text) {
 export function setInput2(text) {
     return function (dispatch) {
         dispatch({ type: SET_INPUT2, payload: text })
+    }
+}
+
+// una action que ordena dos listas de mayor a menor y recibe una variable booleana, si la variable esta en false entonces ordena ambas listas de menor a mayor
+export function ordenarDeposito(lista, lista2, gatillo) {
+    return function (dispatch) {
+        if (gatillo) {
+            lista.sort((a, b) => (a.stockDeposito > b.stockDeposito) ? 1 : -1)
+            lista2.sort((a, b) => (a.stockDeposito > b.stockDeposito) ? 1 : -1)
+        }
+        else {
+            lista.sort((a, b) => (a.stockDeposito < b.stockDeposito) ? 1 : -1)
+            lista2.sort((a, b) => (a.stockDeposito < b.stockDeposito) ? 1 : -1)
+        }
+        let listas = { listaOrdenada: lista, listaOrdenada2: lista2 }
+        console.log('hola soy el activo: ', gatillo)
+        dispatch({ type: ORDENAR_DEPOSITO, payload: listas })
+    }
+}
+
+// una action que ordena dos listas de mayor a menor en base a la suma del stock y del stockDeposito de cada producto, tambien recibe una variable booleana y si la variable esta en false entonces ordena ambas listas de menor a mayor
+export function ordenarTotal(lista, lista2, gatillo) {
+    return function (dispatch) {
+        if (gatillo) {
+            lista.sort((a, b) => (a.stock + a.stockDeposito > b.stock + b.stockDeposito) ? 1 : -1)
+            lista2.sort((a, b) => (a.stock + a.stockDeposito > b.stock + b.stockDeposito) ? 1 : -1)
+        }
+        else {
+            lista.sort((a, b) => (a.stock + a.stockDeposito < b.stock + b.stockDeposito) ? 1 : -1)
+            lista2.sort((a, b) => (a.stock + a.stockDeposito < b.stock + b.stockDeposito) ? 1 : -1)
+        }
+        let listas = { listaOrdenada: lista, listaOrdenada2: lista2 }
+        dispatch({ type: ORDENAR_TOTAL, payload: listas })
+    }
+}
+
+// una action que ordena dos listas de mayor a menor en base al precio de cada producto, tambien recibe una variable booleana y si la variable esta en false entonces ordena ambas listas de menor a mayor
+export function ordenarPrecio(lista, lista2, gatillo) {
+    return function (dispatch) {
+        if (gatillo) {
+            lista.sort((a, b) => (a.price > b.price) ? 1 : -1)
+            lista2.sort((a, b) => (a.price > b.price) ? 1 : -1)
+        }
+        else {
+            lista.sort((a, b) => (a.price < b.price) ? 1 : -1)
+            lista2.sort((a, b) => (a.price < b.price) ? 1 : -1)
+        }
+        let listas = { listaOrdenada: lista, listaOrdenada2: lista2 }
+        dispatch({ type: ORDENAR_PRECIO, payload: listas })
+    }
+}
+
+// una action que ordena dos listas de mayor a menor en base al precio de compra de cada producto, tambien recibe una variable booleana y si la variable esta en false entonces ordena ambas listas de menor a mayor
+export function ordenarPrecioCompra(lista, lista2, gatillo) {
+    return function (dispatch) {
+        if (gatillo) {
+            lista.sort((a, b) => (a.priceBuy > b.priceBuy) ? 1 : -1)
+            lista2.sort((a, b) => (a.priceBuy > b.priceBuy) ? 1 : -1)
+        }
+        else {
+            lista.sort((a, b) => (a.priceBuy < b.priceBuy) ? 1 : -1)
+            lista2.sort((a, b) => (a.priceBuy < b.priceBuy) ? 1 : -1)
+        }
+        let listas = { listaOrdenada: lista, listaOrdenada2: lista2 }
+        dispatch({ type: ORDENAR_PRECIO_COMPRA, payload: listas })
     }
 }

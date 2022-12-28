@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2 } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -76,38 +76,13 @@ function rootReducer(state = initialState, action) {
             }
 
         case ORDENAR_PRECIO:
-            let precioProductos = state.productos;
-            let precioFiltros = state.productosFiltrados;
-
-            if (action.payload) {
-                precioProductos.sort(function (a, b) {
-                    if (a.price < b.price) { return -1; }
-                    if (a.price > b.price) { return 1; }
-                    return 0;
-                })
-                precioFiltros.sort(function (a, b) {
-                    if (a.price < b.price) { return -1; }
-                    if (a.price > b.price) { return 1; }
-                    return 0;
-                })
-            } else {
-                precioProductos.sort(function (a, b) {
-                    if (a.price > b.price) { return -1; }
-                    if (a.price < b.price) { return 1; }
-                    return 0;
-                })
-                precioFiltros.sort(function (a, b) {
-                    if (a.price > b.price) { return -1; }
-                    if (a.price < b.price) { return 1; }
-                    return 0;
-                })
-            }
             return {
                 ...state,
-                productos: precioProductos,
-                productosFiltrados: precioFiltros,
+                productos: action.payload.listaOrdenada,
+                productosFiltrados: action.payload.listaOrdenada2,
                 activo: !state.activo
             }
+            
         case ORDENAR_STOCK:
             let stockProductos = state.productos;
             let stockFiltros = state.productosFiltrados;
@@ -158,6 +133,27 @@ function rootReducer(state = initialState, action) {
                 ...state,
                 categorias: action.payload
             }
+        case ORDENAR_DEPOSITO:
+            return {
+                ...state,
+                productos: action.payload.listaOrdenada,
+                productosFiltrados: action.payload.listaOrdenada2,
+                activo: !state.activo,
+            }
+        case ORDENAR_TOTAL:
+            return {
+                ...state,
+                productos: action.payload.listaOrdenada,
+                productosFiltrados: action.payload.listaOrdenada2,
+                activo: !state.activo,
+            }
+            case ORDENAR_PRECIO_COMPRA:
+                return {
+                    ...state,
+                    productos: action.payload.listaOrdenada,
+                    productosFiltrados: action.payload.listaOrdenada2,
+                    activo: !state.activo,                    
+                }
         default:
             return state;
     }

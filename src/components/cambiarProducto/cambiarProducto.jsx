@@ -31,8 +31,6 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                 if (i + 1 < productoToEdit.Categories.length) textPrimeraVez += ', '
             }
         }
-
-        console.log('hola soy yo tu padre: ', textPrimeraVez)
     }
 
     function comas(valorArray) {
