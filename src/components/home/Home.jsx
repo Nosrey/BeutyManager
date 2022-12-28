@@ -81,21 +81,21 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     return (
         <div className=''>
-            <nav className='ml-1 mt-4'>
-                <div className='flex flex-col'>
-                    <BuscarProducto />
-                    <button onClick={setForm} className='hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:top-0 xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-3 shadow rounded hover:animate-pulse items-center justify-center'>
-                        <h1 className='mr-3 inline text-black font-bold text-1xl'>Agregar Producto</h1>
-                        <img className='inline rounded text-base xl:text-xl w-8' src={addBtn} alt='addBtn' />
-                    </button>
-                </div>
-                <hr className='font-serif my-3 ' />
+            {/*un div que sirve para header e interfaz de busqueda*/}
+            <nav className='flex flex-col bg-violet-900 py-3 pt-0'>
+                <BuscarProducto />
+
+                <button onClick={setForm} className='hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-0 xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
+                    <h1 className='mr-3 inline text-black font-bold text-1xl'>Agregar Producto</h1>
+                    <img className='inline rounded text-base xl:text-xl w-8' src={addBtn} alt='addBtn' />
+                </button>
             </nav>
+ 
 
             <CrearProducto visible={mostrarForm} />
             <CambiarProducto visible={mostrarEdit} />
             <div className='w-screen overflow-x-auto'>
-                {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-2xl font-serif bg-red-600 mx-20 text-white font-bold  py-4 my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
+                {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-20 text-white font-bold py-2 xl:py-4 my-2 xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
 
                 <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-6 flex justify-around overflow-x-auto w-[280%] xl:w-screen'>
                     <li className='font-serif flex flex-row xl:text-2xl my-3 font-bold pl-4 flex w-full'>
