@@ -20,7 +20,7 @@ import rightArrow from '../../images/rightArrow.png'
 import leftArrow from '../../images/leftArrow.png'
 
 const ip = "https://vercel-api-hazel-five.vercel.app"
-const ipPagina = "https://inventorymanager.onrender.com/"
+const ipPagina = "https://inventorymanager.onrender.com"
 
 // exporto las constantes ip e ipPagina
 export { ip, ipPagina }
