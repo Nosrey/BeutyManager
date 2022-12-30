@@ -85,7 +85,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         if (ready) {
             ready = false;
 
-            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[0];
+            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[1];
 
             if (pprice.value.length) {
                 if (!isNaN(pprice.value)) {
@@ -257,7 +257,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
 
     return (
         <div className={
-            "left-[0%] fixed bg-white w-full xl:w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
+            "z-10 left-[0%] fixed bg-white w-full xl:w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
             // max-h-screen
             + (arranque ? (visible ? "pot" : "pot2") : 'fuera2')
         }
@@ -321,7 +321,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     </label>
 
                     <img src={image ? image : imagenNotFound} alt='product' className='font-serif w-28 inline py-4 mb-1' />
-                    <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl mb-4'>Crear producto</button>
+                    <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl mb-4 mb-20'>Crear producto</button>
                 </form>
             </div>
         </div>

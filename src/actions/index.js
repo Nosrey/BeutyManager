@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA } from "./actions-types";
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from "./actions-types";
 
 export function setForm() {
     return function (dispatch) {
@@ -13,7 +13,6 @@ export function setEdit(id, productoLista) {
     for (let i = 0; i < productoLista.length; i++) {
         if (productoLista[i].id === id) producto = productoLista[i]
     }
-    console.log('soy el producto: ', producto)
     return function (dispatch) {
         return (
             dispatch({ type: SET_EDIT, payload: producto })
@@ -33,7 +32,7 @@ export function setProductos() {
     }
 }
 
-export function filtrarProductos(lista, filtro, filtro2) {
+export function filtrarProductos(lista, filtro) {
     return function (dispatch) {
         // funcion para eliminar acentos de una palabra dada
         function eliminarAcentos(palabra) {
@@ -60,9 +59,12 @@ export function filtrarProductos(lista, filtro, filtro2) {
 
 
         let palabrasJuntas = separarPalabras(eliminarAcentos(filtro))
+        palabrasJuntas = palabrasJuntas.filter((el) => el !== '')
 
         // declaramos resultados para guardar las coincidencias
         let resultados = []
+
+        console.log('soy las palabrasJuntas: ', palabrasJuntas)
 
         // un filtro que recibe un input y las separa por espacios en un array, luego revisa si cada una de esas palabras coincide con el nombre del producto o si tiene coincidencia con las categorias del producto, las coincidencias se guardan en un array y se retorna ese array
         if (palabrasJuntas.length && lista.length) {
@@ -216,5 +218,36 @@ export function ordenarPrecioCompra(lista, lista2, gatillo) {
         }
         let listas = { listaOrdenada: lista, listaOrdenada2: lista2 }
         dispatch({ type: ORDENAR_PRECIO_COMPRA, payload: listas })
+    }
+}
+
+// action para establecer el producto que se esta editando
+export function cambiarStock(id, lista) {
+    return function (dispatch) {
+        let producto = lista.find(producto => producto.id === id)
+        dispatch({ type: CAMBIAR_STOCK, payload: producto })
+    }
+}
+
+// action para ordenar dos listas de productos de mayor a menor en base a el id del producto y si ya esta ordenado de mayor a menor entonces lo ordena de menor a mayor en base a un booleando que recibe
+export function ordenarCodigo(lista, lista2, gatillo) {
+    return function (dispatch) {
+        if (gatillo) {
+            lista.sort((a, b) => (a.id > b.id) ? 1 : -1)
+            lista2.sort((a, b) => (a.id > b.id) ? 1 : -1)
+        }
+        else {
+            lista.sort((a, b) => (a.id < b.id) ? 1 : -1)
+            lista2.sort((a, b) => (a.id < b.id) ? 1 : -1)
+        }
+        let listas = { listaOrdenada: lista, listaOrdenada2: lista2 }
+        dispatch({ type: ORDENAR_CODIGO, payload: listas })
+    }
+}
+
+// action para cambiar el booleano de gatilloEliminar que esta en el estado del reducer
+export function cambiarGatilloEliminar() {
+    return function (dispatch) {
+        dispatch({ type: CAMBIAR_GATILLO_ELIMINAR })
     }
 }

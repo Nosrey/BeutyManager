@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -16,6 +16,7 @@ const initialState = {
     activo: true,
     input1: '',
     input2: '',
+    gatilloEliminar : false,
 };
 
 function rootReducer(state = initialState, action) {
@@ -82,7 +83,7 @@ function rootReducer(state = initialState, action) {
                 productosFiltrados: action.payload.listaOrdenada2,
                 activo: !state.activo
             }
-            
+
         case ORDENAR_STOCK:
             let stockProductos = state.productos;
             let stockFiltros = state.productosFiltrados;
@@ -147,13 +148,31 @@ function rootReducer(state = initialState, action) {
                 productosFiltrados: action.payload.listaOrdenada2,
                 activo: !state.activo,
             }
-            case ORDENAR_PRECIO_COMPRA:
-                return {
-                    ...state,
-                    productos: action.payload.listaOrdenada,
-                    productosFiltrados: action.payload.listaOrdenada2,
-                    activo: !state.activo,                    
-                }
+        case ORDENAR_PRECIO_COMPRA:
+            return {
+                ...state,
+                productos: action.payload.listaOrdenada,
+                productosFiltrados: action.payload.listaOrdenada2,
+                activo: !state.activo,
+            }
+        // implemento CAMBIAR_STOCK en el reducer
+        case CAMBIAR_STOCK:
+            return {
+                ...state,
+                productoToEdit: action.payload
+            }
+        case ORDENAR_CODIGO:
+            return {
+                ...state,
+                productos: action.payload.listaOrdenada,
+                productosFiltrados: action.payload.listaOrdenada2,
+                activo: !state.activo,                
+            }
+        case CAMBIAR_GATILLO_ELIMINAR:
+            return {
+                ...state,
+                gatilloEliminar: !state.gatilloEliminar
+            }
         default:
             return state;
     }

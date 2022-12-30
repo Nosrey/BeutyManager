@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setEdit, setProductos, setCategorias } from '../../actions/index'
+import { setEdit, setProductos, setCategorias, cambiarGatilloEliminar } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
 
@@ -8,7 +8,7 @@ let ready = true;
 let arranque = false;
 let primeraVez = true;
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, categorias, setCategorias }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, categorias, setCategorias, cambiarGatilloEliminar }) {
 
     if (visible) { arranque = true; }
 
@@ -66,7 +66,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         textPrimeraVez = ''
         primeraVez = true;
         setEdit(productoToEdit.id, productos)
-        var { pname, pstock, pprice } = document.forms[1];
+        var { pname, pstock, pprice } = document.forms[2];
         pname.value = '';
         pstock.value = '';
         pprice.value = '';
@@ -97,7 +97,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             .then(data => {
                 setImage(data.secure_url)
             })
-            .catch(err => console.log('hubo un error: ', err))
+            .catch(err => console.log('hubo un error: ', err.response.data))
 
     }
 
@@ -108,7 +108,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         if (ready) {
             ready = false;
 
-            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[1];
+            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[2];
 
 
             if (pprice.value.length) {
@@ -217,6 +217,8 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             if (image && image !== imagenNotFound) productData.imagen = image
 
             console.log('el producto a enviar es: ', productData)
+            // hacer console.log al documents.forms
+            console.log('el formulario es: ', document)
 
             Axios.put('http://192.168.1.108:3001/products/' + productoToEdit.id, productData)
                 .then((el) => alert('fue editado correctamente: ', el))
@@ -236,7 +238,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                 .then(() => ready = true)
 
                 .catch((err) => {
-                    console.log('error en cambiar producto: ', err);
+                    console.log('error en cambiar producto: ', err.response.data);
                     ready = true;
                 })
         };
@@ -262,9 +264,29 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         return Math.floor(Math.random() * (max - min)) + min;
     }
 
+    // funcion llamada eliminarProducto que envia a una direccion de la api tipo .delete el id del producto a eliminar
+    function eliminarProducto(id) {
+        if (ready) {
+            ready = false;
+            cambiarGatilloEliminar()
+            let { pname, pstock, pstockDeposito, pprice, ppriceBuy } = document.forms[2];
+
+            pname.value = '';
+            pstock.value = '';
+            pstockDeposito.value = '';
+            pprice.value = '';
+            ppriceBuy.value = '';
+            setPcategory('')
+            setImage(imagenNotFound)
+            setFilterCategories2('');
+            ready = true
+            setEdit(productoToEdit.id, productos)
+        }
+    }
+
     return (
         <div className={
-            "right-[0%] fixed bg-white w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
+            "z-10 right-[0%] fixed bg-white w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
             // max-h-screen
             + (arranque ? (visible ? "potb" : "pot2b") : 'fuera')
         }
@@ -278,11 +300,11 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     </div>
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Cantidad en Deposito</label>
-                        <input type="number" step="1" name="pstock" placeholder={productoToEdit.stock} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                        <input type="number" step="1" name="pstockDeposito" placeholder={productoToEdit.stockDeposito} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
                     </div>
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Cantidad en Tienda</label>
-                        <input type="number" step="1" name="pstockDeposito" placeholder={productoToEdit.stockDeposito} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                        <input type="number" step="1" name="pstock" placeholder={productoToEdit.stock} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
                     </div>
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Precio de venta</label>
@@ -331,7 +353,9 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
                     <img src={(image !== imagenNotFound) ? image : (productoToEdit.imagen) ? productoToEdit.imagen : image} alt='product' className='font-serif w-28 inline py-4' />
 
-                    <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl'>Actualizar Producto</button>
+                    <button type='button' onClick={() => eliminarProducto()} className='font-serif bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-xl my-5 mb-10'>Eliminar Producto</button>
+
+                    <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl mb-20'>Actualizar Producto</button>
                 </form>
             </div>
         </div>
@@ -351,6 +375,8 @@ function mapDispatchToProps(dispatch) {
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
         setProductos: () => dispatch(setProductos()),
         setCategorias: () => dispatch(setCategorias()),
+        // implemento cambiarGatilloEliminar
+        cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
     };
 }
 
