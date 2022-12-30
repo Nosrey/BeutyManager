@@ -268,28 +268,28 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
             <button className='font-serif bg-red-600 text-white absolute top-2 right-3 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
             <div className="font-serif ">
                 <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center'>
-                    <div className="font-serif input-container">
+                    <div className="font-serif input-container mt-4">
                         <label className="font-serif text-xl font-semibold text-center">Nombre del Producto</label>
-                        <input type="text" name="pname" placeholder='Nombre...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 py-5 text-xl" required />
+                        <input type="text" name="pname" placeholder='Nombre...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" required />
 
                     </div>
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Cantidad en Deposito</label>
-                        <input type="number" step="1" name="pstock" placeholder='Cantidad en deposito...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input type="number" step="1" name="pstock" placeholder='Cantidad en deposito...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" required />
                     </div>
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Cantidad en Tienda</label>
-                        <input type="number" step="1" name="pstockDeposito" placeholder='Cantidad en tienda...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input type="number" step="1" name="pstockDeposito" placeholder='Cantidad en tienda...' className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" required />
                     </div>
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Precio de Venta</label>
-                        <input id="price" type="number" step="0.01" name="pprice" placeholder="Precio de venta..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input id="price" type="number" step="0.01" name="pprice" placeholder="Precio de venta..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" required />
 
                     </div>
 
                     <div className="font-serif input-container">
                         <label className="font-serif text-xl font-semibold text-center">Precio de Compra</label>
-                        <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" required />
 
                     </div>
                     <div className="font-serif input-container flex flex-col items-center">
@@ -298,11 +298,11 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                             <label className="font-serif text-xl font-semibold text-center mb-0">Categorias</label>
                             <p className='my-0 text-sm text-gray-500 italic'>(Separadas por comas)</p>
                         </div>
-                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl py-5" />
+                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6 mb-0" />
 
                         <p>{(finalElement(pcategory).toLowerCase() === filterCategories.toLowerCase() && finalElement(pcategory).length) ? <p className='font-serif my-1'></p> : (filterCategories === notFound) ? <p className='font-serif my-1 text-gray-500 italic'>{filterCategories}</p> : <div className='font-serif my-1'><p className='font-serif inline text-gray-500 italic'>Sugerencia: </p><p className='font-serif inline'>{primeraMayuscula(filterCategories)}</p></div>}</p>
 
-                        <ul className='font-serif flex flex-wrap justify-center mb-3'>
+                        <ul className='font-serif flex flex-wrap justify-center mb-6'>
                             {
                                 (comas(pcategory).split(',')[0] !== '') ? (
                                     comas(pcategory).split(',').map((el, i) => {
@@ -323,7 +323,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         <input type="file" accept="image/x-png,image/gif,image/jpeg" onChange={handleFileChange} class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-200 ml-2" />
                     </label>
 
-                    <img src={image ? image : imagenNotFound} alt='product' className='font-serif w-28 inline py-4 mb-1' />
+                    <img src={image ? image : imagenNotFound} alt='product' className='font-serif w-28 inline py-4 mb-4' />
                     <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl mb-4 mb-20'>Crear producto</button>
                 </form>
             </div>
