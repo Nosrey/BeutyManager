@@ -4,6 +4,9 @@ import { setForm, setProductos, filtrarProductos, setCategorias } from '../../ac
 import { connect } from "react-redux";
 import './crearProducto.css'
 
+// importo ip de Home.jsx
+import { ip } from '../home/Home.jsx'
+
 
 let ready = true;
 let arranque = false;
@@ -190,7 +193,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         if (!conteo > 0) noCreated.push(items[i])
                     }
 
-                    if (noCreated.length) Axios.post('http://192.168.1.108:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
+                    if (noCreated.length) Axios.post(ip + '/categories', { arr: noCreated }) // para enviar las categorias por crear
                     categoryNames = categoryNames.concat(noCreated)
                 }
 
@@ -198,7 +201,7 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                 if (pname.value) nombre = eliminarAcentos(pname.value)
                 const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: categoryNames }
                 console.log('Soy el producto que enviaras: ', productData)
-                Axios.post('http://192.168.1.108:3001/products', productData)
+                Axios.post(ip + '/products', productData)
                     .then((el) => alert('fue publicado correctamente: ', el))
                     .then(() => setForm()) // para mostrar el formulario
                     .then(() => setProductos()) // para pedir los productos actualizados

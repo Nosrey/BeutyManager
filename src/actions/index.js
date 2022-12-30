@@ -1,5 +1,8 @@
 import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from "./actions-types";
 
+// importo ip de Home.jsx
+import { ip } from '../components/home/Home.jsx'
+
 export function setForm() {
     return function (dispatch) {
         return (
@@ -23,7 +26,7 @@ export function setEdit(id, productoLista) {
 export function setProductos() {
     return function (dispatch) {
         return (
-            fetch('http://192.168.1.108:3001/products')
+            fetch(ip + '/products')
                 .then((res) => res.json())
                 .then((json) => {
                     dispatch({ type: SET_PRODUCTOS, payload: json })
@@ -111,7 +114,7 @@ export function ordenarStock(gatillo) {
 export function setCategorias() {
     return function (dispatch) {
         return (
-            fetch('http://192.168.1.108:3001/categories')
+            fetch(ip + '/categories')
                 .then((res) => res.json())
                 .then((json) => {
                     dispatch({ type: SET_CATEGORIAS, payload: json })

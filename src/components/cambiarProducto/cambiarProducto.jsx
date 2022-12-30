@@ -3,6 +3,8 @@ import Axios from 'axios';
 import { setEdit, setProductos, setCategorias, cambiarGatilloEliminar } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
+// importo ip de Home.jsx
+import { ip } from '../home/Home.jsx'
 
 let ready = true;
 let arranque = false;
@@ -199,7 +201,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     }
                     if (!conteo > 0) noCreated.push(items[i])
                 }
-                if (noCreated.length) Axios.post('http://192.168.1.108:3001/categories', { arr: noCreated }) // para enviar las categorias por crear
+                if (noCreated.length) Axios.post(ip + '/categories', { arr: noCreated }) // para enviar las categorias por crear
                 categoryNames = categoryNames.concat(noCreated)
             }
 
@@ -220,7 +222,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             // hacer console.log al documents.forms
             console.log('el formulario es: ', document)
 
-            Axios.put('http://192.168.1.108:3001/products/' + productoToEdit.id, productData)
+            Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then((el) => alert('fue editado correctamente: ', el))
                 .then(() => setEdit(productoToEdit.id, productos))
                 .then(() => setProductos())

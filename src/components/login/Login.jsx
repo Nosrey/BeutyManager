@@ -2,6 +2,8 @@ import React, { useState } from 'react';
 import { connect } from "react-redux";
 import './Login.css'
 
+// importo ipPagina de home.jsx
+import { ipPagina } from '../home/Home.jsx'
 
 function Login({ dataUser }) {
     const [errorMessages, setErrorMessages] = useState({});
@@ -43,7 +45,7 @@ function Login({ dataUser }) {
 
     const continuar = (e) => {
         e.preventDefault();
-        window.location.replace("http://192.168.1.108:3000/products");
+        window.location.replace(ipPagina + "/products");
     }
 
     const renderForm = (

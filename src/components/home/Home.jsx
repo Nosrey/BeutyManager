@@ -19,6 +19,12 @@ import rightArrow from '../../images/rightArrow.png'
 // importar leftArrow.png
 import leftArrow from '../../images/leftArrow.png'
 
+const ip = "https://vercel-api-hazel-five.vercel.app"
+const ipPagina = "https://inventorymanager.onrender.com/"
+
+// exporto las constantes ip e ipPagina
+export { ip, ipPagina }
+
 let gatilloNombre = true;
 let gatilloStock = true;
 
@@ -35,7 +41,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     const [sumarORestar, setSumarORestar] = useState(true);
 
     const flechaImagen = 'https://cdn-icons-png.flaticon.com/512/37/37808.png'
-    const ip = 'http://192.168.1.108:3001/products'
 
     const ordenNombre = function () {
         ordenarNombre(gatilloNombre)
@@ -76,7 +81,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
             console.log('soy el producto: ', productData)
 
-            Axios.put(ip + '/' + productoToEdit.id, productData)
+            Axios.put(ip  + '/products/' + productoToEdit.id, productData)
                 .then(() => alert('fue editado correctamente'))
                 .then(() => setProductos()) // para pedir los productos actualizados
                 .then(() => setCategorias()) // para pedir los productos actualizados
@@ -116,7 +121,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
             console.log('soy el producto: ', productData)
 
-            Axios.put(ip + '/' + productoToEdit.id, productData)
+            Axios.put(ip  + '/products/' + productoToEdit.id, productData)
                 .then(() => alert('fue editado correctamente'))
                 .then(() => setProductos()) // para pedir los productos actualizados
                 .then(() => setCategorias()) // para pedir los productos actualizados
@@ -141,7 +146,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     }
 
     function eliminar() {
-        Axios.delete(ip + '/' + productoToEdit.id, { id: productoToEdit.id })
+        Axios.delete(ip + '/products/' + productoToEdit.id, { id: productoToEdit.id })
         .then(() => setProductos())
         .then(() => setCategorias()) // para pedir los productos actualizados
         .then(() => {
