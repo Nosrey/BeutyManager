@@ -316,7 +316,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                     </button>
 
                                     <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.stock + el.stockDeposito}</h3>
-                                    <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.price + '$'}</h3>
+                                    <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{'$' + el.price}</h3>
                                     <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.priceBuy + '$'}</h3>
 
                                     <div className='flex-grow min-w-0 basis-0 my-auto flex flex-col items-center justify-center'>
