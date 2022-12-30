@@ -317,7 +317,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                                     <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.stock + el.stockDeposito}</h3>
                                     <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{'$' + el.price}</h3>
-                                    <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.priceBuy + '$'}</h3>
+                                    <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{'$' + el.priceBuy}</h3>
 
                                     <div className='flex-grow min-w-0 basis-0 my-auto flex flex-col items-center justify-center'>
                                         <button className="hover:animate-pulse font-bold px-1 py-1 xl:py-3 xl:px-2 mx-1 mx-0 rounded block my-auto flex flex-row items-center justify-center  hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-2xl" onClick={() => setEdit(el.id, productos)}>
