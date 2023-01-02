@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -11,7 +11,6 @@ const initialState = {
     mostrarEdit: false,
     productoToEdit: {},
     productos: [],
-    categorias: [],
     productosFiltrados: [],
     activo: true,
     input1: '',
@@ -129,11 +128,6 @@ function rootReducer(state = initialState, action) {
                 input2: action.payload
             }
 
-        case SET_CATEGORIAS:
-            return {
-                ...state,
-                categorias: action.payload
-            }
         case ORDENAR_DEPOSITO:
             return {
                 ...state,

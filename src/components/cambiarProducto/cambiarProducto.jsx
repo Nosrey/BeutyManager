@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setEdit, setProductos, setCategorias, cambiarGatilloEliminar } from '../../actions/index'
+import { setEdit, setProductos, cambiarGatilloEliminar } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
 // importo ip de Home.jsx
@@ -8,9 +8,9 @@ import { ip } from '../home/Home.jsx'
 
 let ready = true;
 let arranque = false;
-let primeraVez = true;
+
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, categorias, setCategorias, cambiarGatilloEliminar }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar }) {
 
     if (visible) { arranque = true; }
 
@@ -20,53 +20,38 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
     const imagenNotFound = 'https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-4.png'
 
-    const notFound = 'No existe esa categoria';
     const [image, setImage] = useState(imagenNotFound)
     const [pcategory, setPcategory] = useState('')
-    const [filterCategories2, setFilterCategories2] = useState('')
+    // declaro el estado primeraVez en true
+    const [primeraVez, setPrimeraVez] = useState(true)
 
     if (primeraVez) {
-        textPrimeraVez = '';
-        if (productoToEdit.Categories) {
-            for (let i = 0; i < productoToEdit.Categories.length; i++) {
-                textPrimeraVez = textPrimeraVez + productoToEdit.Categories[i].name;
-                if (i + 1 < productoToEdit.Categories.length) textPrimeraVez += ', '
-            }
-        }
+        textPrimeraVez = productoToEdit.categoryNames;
     }
 
     function comas(valorArray) {
-        valorArray = valorArray.split('')
-        for (let i = 0; i < valorArray.length; i++) {  // para quitar espacio post comas
-            if (valorArray[i + 1] === ' ' && valorArray[i] === ',') {
-                valorArray.splice(i + 1, 1)
-                i = 0;
-            }
-        }
-        return valorArray.join('')
-    }
+        if (valorArray) {
 
-    function finalElement(valorArray) {
-        let ultimoValor = comas(valorArray)
-        let final = ultimoValor.split(',')
-        if (final.length) return final[final.length - 1]
-        else return ''
+            valorArray = valorArray.split('')
+            for (let i = 0; i < valorArray.length; i++) {  // para quitar espacio post comas
+                if (valorArray[i + 1] === ' ' && valorArray[i] === ',') {
+                    valorArray.splice(i + 1, 1)
+                    i = 0;
+                }
+            }
+            return valorArray.join('')
+        } else return ''
     }
 
     function handlePcategory(e) {
-        primeraVez = false;
-        let valor = e.target.value; // valor del input
-        let ultimoValor = finalElement(valor);
-        setPcategory(valor);
-        let filtro = categorias.find((el) => el.name.toLowerCase().includes(ultimoValor.toLowerCase()))
-        if (!filtro || ultimoValor === '' || ultimoValor === ' ') filtro = { name: notFound }
-        setFilterCategories2(filtro.name)
+        setPrimeraVez(false)
+        setPcategory(e.target.value)
     }
 
     function cerrar(e) {
         e.preventDefault();
         textPrimeraVez = ''
-        primeraVez = true;
+        setPrimeraVez(true);
         setEdit(productoToEdit.id, productos)
         var { pname, pstock, pprice } = document.forms[2];
         pname.value = '';
@@ -74,7 +59,6 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         pprice.value = '';
         setPcategory('')
         setImage(imagenNotFound)
-        setFilterCategories2('');
     }
 
     // funcion para eliminar acentos de una palabra dada
@@ -103,7 +87,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         //Prevent page reload
         e.preventDefault();
 
@@ -187,24 +171,6 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                 if (productos[i].id === productoToEdit.id) productData = productos[i]
             }
 
-            let categoryNames = []  // para guardar el name de las categorias validas
-            if (pcategory.value) { // para que si no hay categorias no cree problemas
-                let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
-                let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
-                for (let i = 0; i < items.length; i++) {
-                    let conteo = 0 // para averiguar que categorias no estan en la database
-                    for (let j = 0; j < categorias.length; j++) {
-                        if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
-                            conteo = 1;
-                            categoryNames.push(categorias[j].name);
-                        }
-                    }
-                    if (!conteo > 0) noCreated.push(items[i])
-                }
-                if (noCreated.length) Axios.post(ip + '/categories', { arr: noCreated }) // para enviar las categorias por crear
-                categoryNames = categoryNames.concat(noCreated)
-            }
-
             if (pname.value) {
                 let nombre = eliminarAcentos(pname.value);
                 productData.name = nombre;
@@ -213,20 +179,16 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             if (pstockDeposito.value) productData.stockDeposito = pstockDeposito.value
             if (pprice.value) productData.price = pprice.value
             if (ppriceBuy.value) productData.priceBuy = ppriceBuy.value
-            if (categoryNames.length) productData.categoryNames = categoryNames
-            if (!categoryNames.length) productData.categoryNames = []
+            if (pcategory.value) productData.categoryNames = pcategory.value
 
             if (image && image !== imagenNotFound) productData.imagen = image
 
             console.log('el producto a enviar es: ', productData)
-            // hacer console.log al documents.forms
-            console.log('el formulario es: ', document)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then((el) => alert('fue editado correctamente: ', el))
-                .then(() => setEdit(productoToEdit.id, productos))
-                .then(() => setProductos())
-                .then(() => setCategorias()) // para pedir los productos actualizados
+                .then(() => {setProductos(); console.log('soy los productos obtenidos', productos)})
+                .then(() => setEdit((productoToEdit.id || 0), productos))
                 .then(() => {
                     pname.value = '';
                     pstock.value = '';
@@ -235,7 +197,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     ppriceBuy.value = '';
                     setPcategory('')
                     setImage(imagenNotFound)
-                    setFilterCategories2('');
+                    setPrimeraVez(true)
                 })
                 .then(() => ready = true)
 
@@ -280,7 +242,6 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             ppriceBuy.value = '';
             setPcategory('')
             setImage(imagenNotFound)
-            setFilterCategories2('');
             ready = true
             setEdit(productoToEdit.id, productos)
         }
@@ -318,11 +279,9 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     </div>
                     <div className="font-serif input-container text-center">
                         <label className="font-serif text-xl font-semibold text-center">Categorias del producto</label>
-                        <input type="text" value={primeraVez ? productoToEdit.Categories?.map(el => { return el.name }) : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.Categories?.map(el => { return el.name })} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0 my-6" />
+                        <input type="text" value={primeraVez ? productoToEdit.categoryNames : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.categoryNames} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0 my-6" />
 
-                        <p>{(finalElement(pcategory).toLowerCase() === filterCategories2.toLowerCase() && finalElement(pcategory).length) ? <p className='font-serif my-1'></p> : (filterCategories2 === notFound) ? <p className='font-serif my-1 text-gray-500 italic'>{filterCategories2}</p> : <div className='font-serif my-1'><p className='font-serif inline text-gray-500 italic'>Sugerencia: </p><p className='font-serif inline'>{primeraMayuscula(filterCategories2)}</p></div>}</p>
-
-                        <ul className='font-serif flex flex-wrap justify-center mb-6 '>
+                        <ul className='font-serif flex flex-wrap justify-center my-3 mb-6  '>
                             {
                                 (primeraVez ?
                                     (comas(textPrimeraVez).split(',')[0] !== '') ? (
@@ -376,7 +335,6 @@ function mapDispatchToProps(dispatch) {
     return {
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
         setProductos: () => dispatch(setProductos()),
-        setCategorias: () => dispatch(setCategorias()),
         // implemento cambiarGatilloEliminar
         cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
     };

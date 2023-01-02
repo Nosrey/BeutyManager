@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setForm, setProductos, filtrarProductos, setCategorias } from '../../actions/index'
+import { setForm, setProductos, filtrarProductos, setEdit } from '../../actions/index'
 import { connect } from "react-redux";
 import './crearProducto.css'
 
@@ -11,7 +11,7 @@ import { ip } from '../home/Home.jsx'
 let ready = true;
 let arranque = false;
 
-function CrearProducto({ setForm, visible, setProductos, productos, filtrarProductos, categorias, setCategorias }) {
+function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos, productos, filtrarProductos, categorias }) {
 
     if (visible) { arranque = true; }
 
@@ -20,10 +20,8 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
 
     const bordes = ["border-fuchsia-400", "border-purple-500", "border-violet-500", "border-indigo-500", "border-blue-500", "border-sky-500", "border-cyan-500", "border-teal-500"]
 
-    const notFound = 'No existe esa categoria';
     const [image, setImage] = useState(imagenNotFound)
     const [pcategory, setPcategory] = useState('')
-    const [filterCategories, setFilterCategories] = useState('')
 
     function cerrar(e) {
         e.preventDefault();
@@ -59,20 +57,9 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
         return valorArray.join('')
     }
 
-    function finalElement(valorArray) {
-        let ultimoValor = comas(valorArray)
-        let final = ultimoValor.split(',')
-        if (final.length) return final[final.length - 1]
-        else return ''
-    }
-
     function handlePcategory(e) {
-        let valor = e.target.value; // valor del input
-        let ultimoValor = finalElement(valor);
-        setPcategory(valor);
-        let filtro = categorias.find((el) => el.name.toLowerCase().includes(ultimoValor.toLowerCase()))
-        if (!filtro || ultimoValor === '' || ultimoValor === ' ') filtro = { name: notFound }
-        setFilterCategories(filtro.name)
+        // creo un formulario controlado por estado para el input de pcategory
+        setPcategory(e.target.value)
     }
 
     // funcion para eliminar acentos de una palabra dada
@@ -177,35 +164,20 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                     if (el.name === pname.value) return salir = 1
                 })
                 if (salir > 0) return alert("Este producto ya existe, no puede ser agregado")
-
-                let categoryNames = []  // para guardar el name de las categorias validas
-                if (pcategory.value) { // para que si no hay categorias no cree problemas
-                    let noCreated = []  // para guardar el nombre de las categorias que no estan creadas
-                    let items = comas(pcategory.value).split(',') // separamos en un array los elementos con comas
-                    for (let i = 0; i < items.length; i++) {
-                        let conteo = 0 // para averiguar que categorias no estan en la database
-                        for (let j = 0; j < categorias.length; j++) {
-                            if (items[i].toLowerCase() === categorias[j].name.toLowerCase()) {
-                                conteo = 1;
-                                categoryNames.push(categorias[j].name);
-                            }
-                        }
-                        if (!conteo > 0) noCreated.push(items[i])
-                    }
-
-                    if (noCreated.length) Axios.post(ip + '/categories', { arr: noCreated }) // para enviar las categorias por crear
-                    categoryNames = categoryNames.concat(noCreated)
+                
+                if (pcategory.value) {
+                    pcategory.value = comas(pcategory.value)
                 }
 
                 let nombre
                 if (pname.value) nombre = eliminarAcentos(pname.value)
-                const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: categoryNames }
+                const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: pcategory.value }
                 console.log('Soy el producto que enviaras: ', productData)
                 Axios.post(ip + '/products', productData)
                     .then((el) => alert('fue publicado correctamente: ', el))
                     .then(() => setForm()) // para mostrar el formulario
                     .then(() => setProductos()) // para pedir los productos actualizados
-                    .then(() => setCategorias()) // para pedir los productos actualizados
+                    .then(() => console.log('soy la lista de productos: ', productos))
                     .then(() => {  // vaciamos el formulario
                         pname.value = '';
                         pstock.value = '';
@@ -214,7 +186,6 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         ppriceBuy.value = '';
                         setPcategory('');
                         setImage(imagenNotFound);
-                        setFilterCategories('');
                     })
                     .then(() => {
                         filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
@@ -300,8 +271,6 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
                         </div>
                         <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6 mb-0" />
 
-                        <p>{(finalElement(pcategory).toLowerCase() === filterCategories.toLowerCase() && finalElement(pcategory).length) ? <p className='font-serif my-1'></p> : (filterCategories === notFound) ? <p className='font-serif my-1 text-gray-500 italic'>{filterCategories}</p> : <div className='font-serif my-1'><p className='font-serif inline text-gray-500 italic'>Sugerencia: </p><p className='font-serif inline'>{primeraMayuscula(filterCategories)}</p></div>}</p>
-
                         <ul className='font-serif flex flex-wrap justify-center mb-6'>
                             {
                                 (comas(pcategory).split(',')[0] !== '') ? (
@@ -334,7 +303,9 @@ function CrearProducto({ setForm, visible, setProductos, productos, filtrarProdu
 const mapStateToProps = (state) => {
     return {
         productos: state.productos,
-        categorias: state.categorias
+        categorias: state.categorias,
+        // implementar productoToEdit
+        productoToEdit: state.productoToEdit,
     }
 }
 
@@ -343,7 +314,8 @@ function mapDispatchToProps(dispatch) {
         setForm: () => dispatch(setForm()),
         setProductos: () => dispatch(setProductos()),
         filtrarProductos: (lista, filtro) => dispatch(filtrarProductos(lista, filtro)),
-        setCategorias: () => dispatch(setCategorias()),
+        // implementar setEdit
+        setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
     };
 }
 

@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_CATEGORIAS, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from "./actions-types";
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from "./actions-types";
 
 // importo ip de Home.jsx
 import { ip } from '../components/home/Home.jsx'
@@ -16,6 +16,9 @@ export function setEdit(id, productoLista) {
     for (let i = 0; i < productoLista.length; i++) {
         if (productoLista[i].id === id) producto = productoLista[i]
     }
+
+    console.log('soy el productoToEdit: ', producto)
+    
     return function (dispatch) {
         return (
             dispatch({ type: SET_EDIT, payload: producto })
@@ -108,18 +111,6 @@ export function ordenarStock(gatillo) {
     // console.log('entro ordenar stock')
     return function (dispatch) {
         dispatch({ type: ORDENAR_STOCK, payload: gatillo })
-    }
-}
-
-export function setCategorias() {
-    return function (dispatch) {
-        return (
-            fetch(ip + '/categories')
-                .then((res) => res.json())
-                .then((json) => {
-                    dispatch({ type: SET_CATEGORIAS, payload: json })
-                })
-        )
     }
 }
 
