@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from "./actions-types";
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR, CAMBIAR_PAGINA, ACTIVAR_SUMAR } from "./actions-types";
 
 // importo ip de Home.jsx
 import { ip } from '../components/home/Home.jsx'
@@ -243,5 +243,19 @@ export function ordenarCodigo(lista, lista2, gatillo) {
 export function cambiarGatilloEliminar() {
     return function (dispatch) {
         dispatch({ type: CAMBIAR_GATILLO_ELIMINAR })
+    }
+}
+
+// funcion que cambia de pagina en el componente de paginacion que muestra productos de 10 en 10
+export function cambiarPagina(pagina) {
+    return function (dispatch) {
+        dispatch({ type: CAMBIAR_PAGINA, payload: pagina })
+    }
+}
+
+// creamos una action llamada activarSumar que cambiara el booleano de sumar en el estado del reducer
+export function activarSumar() {
+    return function (dispatch) {
+        dispatch({ type: ACTIVAR_SUMAR })
     }
 }

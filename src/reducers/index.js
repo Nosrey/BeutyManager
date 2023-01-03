@@ -1,4 +1,4 @@
-import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR } from '../actions/actions-types'
+import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR, CAMBIAR_PAGINA, ACTIVAR_SUMAR } from '../actions/actions-types'
 
 const initialState = {
     dataUser: [
@@ -16,6 +16,8 @@ const initialState = {
     input1: '',
     input2: '',
     gatilloEliminar : false,
+    pagina: 1,
+    sumar: false,
 };
 
 function rootReducer(state = initialState, action) {
@@ -166,6 +168,16 @@ function rootReducer(state = initialState, action) {
             return {
                 ...state,
                 gatilloEliminar: !state.gatilloEliminar
+            }
+        case CAMBIAR_PAGINA:
+            return {
+                ...state,
+                pagina: action.payload
+            }
+        case ACTIVAR_SUMAR:
+            return {
+                ...state,
+                sumar: !state.sumar
             }
         default:
             return state;

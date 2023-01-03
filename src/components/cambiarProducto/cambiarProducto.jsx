@@ -1,16 +1,16 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setEdit, setProductos, cambiarGatilloEliminar } from '../../actions/index'
+import { setEdit, setProductos, cambiarGatilloEliminar, activarSumar } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
 // importo ip de Home.jsx
-import { ip } from '../home/Home.jsx'
+import { ip, addBtn } from '../home/Home.jsx'
 
 let ready = true;
 let arranque = false;
 
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar }) {
 
     if (visible) { arranque = true; }
 
@@ -187,7 +187,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then((el) => alert('fue editado correctamente: ', el))
-                .then(() => {setProductos(); console.log('soy los productos obtenidos', productos)})
+                .then(() => { setProductos(); console.log('soy los productos obtenidos', productos) })
                 .then(() => setEdit((productoToEdit.id || 0), productos))
                 .then(() => {
                     pname.value = '';
@@ -256,32 +256,52 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         >
             <button className='font-serif bg-red-600 text-white absolute top-2 right-3 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
             <div className="font-serif ">
-                <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center'>
-                    <div className="font-serif input-container mt-4">
-                        <label className="font-serif text-xl font-semibold text-center">Nombre del producto</label>
-                        <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" />
+                <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center justify-center w-[80%] mx-auto'>
+                    <div className="font-serif input-container mt-4 w-[100%] mb-6">
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Nombre del producto</label>
+                        <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
                     </div>
-                    <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Cantidad en Deposito</label>
-                        <input type="number" step="1" name="pstockDeposito" placeholder={productoToEdit.stockDeposito} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" />
+                    <div className="font-serif input-container w-[100%] mb-6">
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Deposito</label>
+                        <div className='flex flex-row w-auto items-center justify-center'>
+                            <input type="number" step="1" name="pstockDeposito" placeholder={productoToEdit.stockDeposito} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
+                            <button className='w-[20%] ml-3' type='button'>
+                                <img src={addBtn} alt='addItems' />
+                            </button>
+                        </div>
                     </div>
-                    <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Cantidad en Tienda</label>
-                        <input type="number" step="1" name="pstock" placeholder={productoToEdit.stock} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" />
+                    <div className="font-serif input-container w-[100%] mb-6">
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Tienda</label>
+                        <div className='flex flex-row w-auto items-center justify-center'>
+                            <input type="number" step="1" name="pstock" placeholder={productoToEdit.stock} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                            <button className='w-[20%] ml-3' type='button'>
+                                <img src={addBtn} alt='addItems' />
+                            </button>
+                        </div>
                     </div>
-                    <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de venta</label>
-                        <input type="number" step="0.01" name="pprice" placeholder={productoToEdit.price} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" />
+                    <div className="font-serif input-container w-[100%] mb-6">
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Precio de venta</label>
+                        <div className='flex flex-row w-auto items-center justify-center'>
+                            <input type="number" step="0.01" name="pprice" placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                            <button className='w-[20%] ml-3' type='button'>
+                                <img src={addBtn} alt='addItems' />
+                            </button>
+                        </div>
                     </div>
-                    <div className="font-serif input-container">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de compra</label>
-                        <input type="number" step="0.01" name="ppriceBuy" placeholder={productoToEdit.priceBuy} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl my-6" />
+                    <div className="font-serif input-container w-[100%] mb-6">
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Precio de compra</label>
+                        <div className='flex flex-row w-auto items-center justify-center'>
+                            <input type="number" step="0.01" name="ppriceBuy" placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                            <button className='w-[20%] ml-3' type='button'>
+                                <img src={addBtn} alt='addItems' />
+                            </button>
+                        </div>
                     </div>
-                    <div className="font-serif input-container text-center">
-                        <label className="font-serif text-xl font-semibold text-center">Categorias del producto</label>
-                        <input type="text" value={primeraVez ? productoToEdit.categoryNames : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.categoryNames} className="font-serif  mt-1 block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0 my-6" />
+                    <div className="font-serif input-container text-center w-[100%] mb-6">
+                        <h2 className="font-serif text-xl font-semibold text-center mb-1">Categorias del producto</h2>
+                        <input type="text" value={primeraVez ? productoToEdit.categoryNames : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.categoryNames} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0" />
 
-                        <ul className='font-serif flex flex-wrap justify-center my-3 mb-6  '>
+                        <ul className='font-serif flex flex-wrap justify-center my-3 mb-3  '>
                             {
                                 (primeraVez ?
                                     (comas(textPrimeraVez).split(',')[0] !== '') ? (
@@ -314,7 +334,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
                     <img src={(image !== imagenNotFound) ? image : (productoToEdit.imagen) ? productoToEdit.imagen : image} alt='product' className='font-serif w-28 inline py-4 mb-4' />
 
-                    <button type='button' onClick={() => eliminarProducto()} className='font-serif bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-xl my-5 mb-10'>Eliminar Producto</button>
+                    <button type='button' onClick={() => eliminarProducto()} className='font-serif bg-red-600 hover:bg-red-700 text-white font-bold py-2 px-4 rounded text-xl my-5 mb-6'>Eliminar Producto</button>
 
                     <button type='submit' className='font-serif bg-sky-500 hover:bg-sky-600 text-white font-bold py-2 px-4 rounded text-xl mb-20'>Actualizar Producto</button>
                 </form>
@@ -328,6 +348,8 @@ const mapStateToProps = (state) => {
         productos: state.productos,
         productoToEdit: state.productoToEdit,
         categorias: state.categorias,
+        // implemento el estado sumar
+        sumar: state.sumar,
     }
 }
 
@@ -337,6 +359,8 @@ function mapDispatchToProps(dispatch) {
         setProductos: () => dispatch(setProductos()),
         // implemento cambiarGatilloEliminar
         cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
+        // implemento activarSumar
+        activarSumar: () => dispatch(activarSumar()),
     };
 }
 
