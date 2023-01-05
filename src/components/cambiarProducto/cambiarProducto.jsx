@@ -1,16 +1,16 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { setEdit, setProductos, cambiarGatilloEliminar, activarSumar } from '../../actions/index'
 import { connect } from "react-redux";
 import './cambiarProducto.css'
 // importo ip de Home.jsx
-import { ip, addBtn } from '../home/Home.jsx'
+import { ip, addBtn2, removeBtn } from '../home/Home.jsx'
 
 let ready = true;
 let arranque = false;
 
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito }) {
 
     if (visible) { arranque = true; }
 
@@ -24,6 +24,9 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
     const [pcategory, setPcategory] = useState('')
     // declaro el estado primeraVez en true
     const [primeraVez, setPrimeraVez] = useState(true)
+
+    // declaro constantes para estados para hacer mis input type number en formularios controlados
+
 
     if (primeraVez) {
         textPrimeraVez = productoToEdit.categoryNames;
@@ -53,10 +56,13 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         textPrimeraVez = ''
         setPrimeraVez(true);
         setEdit(productoToEdit.id, productos)
-        var { pname, pstock, pprice } = document.forms[2];
+        var { pname  } = document.forms[2];
         pname.value = '';
-        pstock.value = '';
-        pprice.value = '';
+        setStock( parseInt("") );
+        setPrecio( parseInt("") );
+        // hago lo mismo con setPrecioCompra y setStockDeposito
+        setPrecioCompra( parseInt("") );
+        setStockDeposito( parseInt("") );
         setPcategory('')
         setImage(imagenNotFound)
     }
@@ -86,6 +92,12 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             .catch(err => console.log('hubo un error: ', err.response.data))
 
     }
+
+    // declaro un useEffect para que cuando productoToEdit cambie se actualicen los valores de mis estados stock y stockDeposito
+    useEffect(() => {
+        setStock(productoToEdit.stock)
+        setStockDeposito(productoToEdit.stockDeposito)
+    }, [productoToEdit])
 
     const handleSubmit = async (e) => {
         //Prevent page reload
@@ -195,6 +207,11 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     pstockDeposito.value = '';
                     pprice.value = '';
                     ppriceBuy.value = '';
+                    setStock( parseInt("") );
+                    setPrecio( parseInt("") );
+                    // hago lo mismo con setPrecioCompra y setStockDeposito
+                    setPrecioCompra( parseInt("") );
+                    setStockDeposito( parseInt("") );
                     setPcategory('')
                     setImage(imagenNotFound)
                     setPrimeraVez(true)
@@ -247,6 +264,17 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         }
     }
 
+    // declaro sumBtn
+    function sumBtn(id, signo) {
+        setGatilloSumar(true)
+        if (id === 'stockDepositoBtn') setNumeroASumar({ name: 'stockDeposito', value: stockDeposito, signo: signo })
+        // agregar un else if para las otras id's posibles que son stockBtn, priceBtn y priceBuyBtn
+        // y en cada uno de ellos setear el numero a sumar con el valor que corresponda
+        else if (id === 'stockBtn') setNumeroASumar({ name: 'stock', value: stock, signo: signo })
+        else if (id === 'priceBtn') setNumeroASumar({ name: 'price', value: precio, signo: signo })
+        else if (id === 'priceBuyBtn') setNumeroASumar({ name: 'priceBuy', value: precioCompra, signo: signo })
+    }
+
     return (
         <div className={
             "z-10 right-[0%] fixed bg-white w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
@@ -264,37 +292,39 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Deposito</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <input type="number" step="1" name="pstockDeposito" placeholder={productoToEdit.stockDeposito} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
-                            <button className='w-[20%] ml-3' type='button'>
-                                <img src={addBtn} alt='addItems' />
+                            <button className='w-[20%] mr-3' type='button' onClick={() => sumBtn('stockDepositoBtn', "+")}>
+                                <img src={removeBtn} alt='removeBtn' />
+                            </button>
+                            <input type="number" step="1" name="pstockDeposito" value={stockDeposito} onChange={(e) => { setStockDeposito(e.target.value) }} placeholder={productoToEdit.stockDeposito} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
+                            <button id='stockDepositoBtn' className='w-[20%] ml-3' type='button' onClick={() => sumBtn("stockDepositoBtn", "+")}>
+                                <img src={addBtn2} alt='addItems' />
                             </button>
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Tienda</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <input type="number" step="1" name="pstock" placeholder={productoToEdit.stock} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
-                            <button className='w-[20%] ml-3' type='button'>
-                                <img src={addBtn} alt='addItems' />
+                            <button className='w-[20%] mr-3' type='button' onClick={() => sumBtn('stockBtn', "-")}>
+                                <img src={removeBtn} alt='removeBtn' />
+                            </button>
+                            <input type="number" step="1" name="pstock" value={stock} onChange={(e) => { setStock(e.target.value) }} placeholder={productoToEdit.stock} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                            <button className='w-[20%] ml-3' type='button' onClick={() => sumBtn('stockBtn', "+")}>
+                                <img src={addBtn2} alt='addItems' />
                             </button>
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Precio de venta</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <input type="number" step="0.01" name="pprice" placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
-                            <button className='w-[20%] ml-3' type='button'>
-                                <img src={addBtn} alt='addItems' />
-                            </button>
+                            <input type="number" step="0.01" name="pprice" value={precio} onChange={(e) => { setPrecio(e.target.value) }} placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                     
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Precio de compra</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <input type="number" step="0.01" name="ppriceBuy" placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
-                            <button className='w-[20%] ml-3' type='button'>
-                                <img src={addBtn} alt='addItems' />
-                            </button>
+                            <input type="number" step="0.01" name="ppriceBuy" value={precioCompra} onChange={(e) => { setPrecioCompra(e.target.value) }} placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                       
                         </div>
                     </div>
                     <div className="font-serif input-container text-center w-[100%] mb-6">

@@ -9,7 +9,9 @@ import EliminarProducto from '../eliminarProducto/eliminarProducto.jsx'
 // importo axios
 import Axios from 'axios';
 import './Home.css'
-import addBtn from '../../images/addBtn.png'
+import addBtn2 from '../../images/addBtn2.png'
+// importo la imagen removeBtn
+import removeBtn from '../../images/removeBtn.png'
 // importar editBtn
 import editBtn from '../../images/editBtn.png'
 // importar transferBtn
@@ -22,6 +24,8 @@ import rightArrow from '../../images/rightArrow.png'
 import leftArrow from '../../images/leftArrow.png'
 // importo paginado.jsx
 import Paginado from '../paginado/paginado.jsx'
+// importo el componente botonSumar
+import BotonSumar from '../botonSumar/botonSumar.jsx'
 
 
 
@@ -32,12 +36,18 @@ const ipPagina = "https://inventorymanager.onrender.com"
 const cantidadPagina = 25
 
 // exporto las constantes ip e ipPagina
-export { ip, ipPagina, addBtn }
+export { ip, ipPagina, addBtn2, removeBtn }
 
 let gatilloNombre = true;
 let gatilloStock = true;
 
 function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, activo, categorias, setEdit, input1, ordenarDeposito, ordenarTotal, ordenarPrecioCompra, cambiarStock, productoToEdit, filtrarProductos, ordenarCodigo, gatilloEliminar, cambiarGatilloEliminar, pagina, cambiarPagina }) {
+
+    // declaro estados para mi componente cambiarProducto
+    const [precio, setPrecio] = useState(productoToEdit.price)
+    const [precioCompra, setPrecioCompra] = useState(productoToEdit.priceBuy)
+    const [stock, setStock] = useState(productoToEdit.stock)
+    const [stockDeposito, setStockDeposito] = useState(productoToEdit.stockDeposito)
 
     // declaro con useState numeroDeposito y numeroStock
     const [numeroDeposito, setNumeroDeposito] = useState(0);
@@ -48,6 +58,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     const [gatilloCambiar, setGatilloCambiar] = useState(false);
     // declaro el estado sumarORestar en true
     const [sumarORestar, setSumarORestar] = useState(true);
+
+    // declaro el estado gatilloSumar para activar la interfaz de sumar productos
+    const [gatilloSumar, setGatilloSumar] = useState(false);
+    // ahora creo el estado numeroASumar para establecer el numero que editare desde dicha interfaz
+    const [numeroASumar, setNumeroASumar] = useState({});
 
     const flechaImagen = 'https://cdn-icons-png.flaticon.com/512/37/37808.png'
 
@@ -184,6 +199,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         <div className=''>
             {/*un div que sirve para header e interfaz de busqueda*/}
             <div className={
+                (gatilloSumar) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 ' : 'hidden'
+            }>
+                <BotonSumar numeroASumar={numeroASumar} setNumeroASumar={setNumeroASumar} setGatilloSumar={setGatilloSumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
+            </div>
+            <div className={
                 (gatilloCambiar) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 blur-sm' : 'hidden'
             }>
             </div>
@@ -226,12 +246,12 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                 <button onClick={setForm} className='z-10 hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-0 xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
                     <h1 className='mr-3 inline text-black font-bold text-1xl'>Agregar Producto</h1>
-                    <img className='inline rounded text-base xl:text-xl w-8' src={addBtn} alt='addBtn' />
+                    <img className='inline rounded text-base xl:text-xl w-8' src={addBtn2} alt='addBtn2' />
                 </button>
             </nav>
 
             <CrearProducto visible={mostrarForm} />
-            <CambiarProducto visible={mostrarEdit} />
+            <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
                 <Paginado />
             <div className='w-screen overflow-x-auto'>
                 {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-20 text-white font-bold py-2 xl:py-4 my-2 xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
