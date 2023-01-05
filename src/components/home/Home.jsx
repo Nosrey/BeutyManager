@@ -245,7 +245,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 <BuscarProducto />
 
                 <button onClick={setForm} className='z-10 hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-0 xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
-                    <h1 className='mr-3 inline text-black font-bold text-1xl'>Agregar Producto</h1>
+                    <h1 className='mr-3 inline text-black font-bold text-1xl'>Nuevo Producto</h1>
                     <img className='inline rounded text-base xl:text-xl w-8' src={addBtn2} alt='addBtn2' />
                 </button>
             </nav>
