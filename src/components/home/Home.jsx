@@ -49,6 +49,9 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     const navigate = useNavigate()
 
+
+    // para que se minimize en android
+
     useEffect(() => {
         const unlisten = navigate((location, action) => {
           // Para minimizar la aplicación en Android, puedes usar la función
@@ -104,8 +107,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             if (productos[i].id === productoToEdit.id) productData = productos[i]
         }
 
-        productData.categoryNames = [];
-
         if (bool) {
             if (Number(num2) - Number(pnumeroBase.value) > 0) {
                 // aplicar la resta y suma
@@ -120,6 +121,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             //asignar a productData los valores de num2 y num3 a stock y stockDeposito
             productData.stockDeposito = Number(num2);
             productData.stock = Number(num3);
+
+            console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then(() => alert('fue editado correctamente'))
@@ -157,6 +160,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             //asignar a productData los valores de num2 y num3 a stock y stockDeposito
             productData.stockDeposito = Number(num2);
             productData.stock = Number(num3);
+
+            console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then(() => alert('fue editado correctamente'))
@@ -359,7 +364,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stock}</h3>
 
                                 </div>
-                                <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{el.stock + el.stockDeposito}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{Number(el.stock) + Number(el.stockDeposito)}</h3>
                                 <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{'$' + el.price}</h3>
                                 <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{'$' + el.priceBuy}</h3>
 

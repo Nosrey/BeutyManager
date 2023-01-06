@@ -60,7 +60,7 @@ function BotonSumar({ numeroASumar, setNumeroASumar, setGatilloSumar, precio, se
     }, [numeroASumar.signo])
 
     return (
-        <div className={(gatilloSumar) ? "flex flex-col  items-center justify-center text-2xl w-[50%] left-[25%] xl:w-[20%] fixed top-[30%] xl:top-[25%] left-[10%] xl:left-[40%] z-30 bg-white border shadow text-center rounded-2xl p-1 xl:p-3 opacity-100 " : 'hidden'}>
+        <div className={(gatilloSumar) ? "flex flex-col items-center justify-center text-2xl w-[50%] left-[25%] xl:w-[20%] fixed top-[30%] xl:top-[25%] xl:left-[40%] z-30 bg-white border shadow text-center rounded-2xl p-1 xl:p-3 opacity-100 " : 'hidden'}>
             <div className='flex flex-col items-center justify-center '>
                 <img className='w-[20%] mt-2 ' src={(signo === "+") ? addBtn2 : removeBtn} alt='signo'/>
 
