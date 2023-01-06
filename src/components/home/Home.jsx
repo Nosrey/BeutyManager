@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+// importo history de react router dom
+import { useNavigate } from 'react-router-dom'
 import CrearProducto from '../crearProducto/crearProducto.jsx';
 import { setForm, setProductos, ordenarNombre, ordenarPrecio, ordenarStock, setEdit, ordenarDeposito, ordenarTotal, ordenarPrecioCompra, cambiarStock, filtrarProductos, ordenarCodigo, cambiarGatilloEliminar, cambiarPagina } from '../../actions/index'
 import { connect } from "react-redux";
@@ -45,19 +47,20 @@ let gatilloStock = true;
 
 function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, activo, categorias, setEdit, input1, ordenarDeposito, ordenarTotal, ordenarPrecioCompra, cambiarStock, productoToEdit, filtrarProductos, ordenarCodigo, gatilloEliminar, cambiarGatilloEliminar, pagina, cambiarPagina }) {
 
-    // quiero evitar que al salir de la pagina se ejecute el comportamiendo por default, asi que creo una funcion que lo haga
-    const handleBeforeUnload = (event) => {
-        event.preventDefault();
-      };
+    const navigate = useNavigate()
 
-    // agrego un useEffect que lo ejecute
     useEffect(() => {
-        window.addEventListener('beforeunload', handleBeforeUnload);
-    
+        const unlisten = navigate((location, action) => {
+          // Para minimizar la aplicación en Android, puedes usar la función
+          // `minimize` del objeto `window.android`
+          if (window.android) {
+            window.android.minimize()
+          }
+        })
         return () => {
-          window.removeEventListener('beforeunload', handleBeforeUnload);
-        };
-      }, []);
+          unlisten()
+        }
+      }, [navigate])
 
     // declaro estados para mi componente cambiarProducto
     const [precio, setPrecio] = useState(productoToEdit.price)
@@ -203,7 +206,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             }
             if (pagina <= 0) cambiarPagina(1)
         }
- 
+
     }, [productosFiltrados, productos, pagina]) //eslint-disable-line
 
     return (
@@ -226,7 +229,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             }>
             </div>
             <EliminarProducto visible={gatilloEliminar} />
-            
+
 
             <div className={
                 (gatilloCambiar) ? 'text-4xl rounded-xl w-[80%] xl:w-[30%] fixed top-[30%] xl:top-[20%] md:top-[10%] left-[10%] xl:left-[35%] z-30' : 'hidden'
@@ -261,14 +264,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                     <h1 className='mr-3 inline text-black font-bold text-1xl'>Nuevo Producto</h1>
                     <img className='inline rounded text-base xl:text-xl w-8' src={addBtn2} alt='addBtn2' />
                 </button>
-            <button className='mx:m-0 mt-2 mb-0 w-auto inline w-[8%] xl:w-[3.5%] '>
-                    <img src={boton3bars} alt='3 bars btn' className='w-[100%]'/>
+                <button className='mx:m-0 mt-2 mb-0 w-auto inline w-[8%] xl:w-[3.5%] '>
+                    <img src={boton3bars} alt='3 bars btn' className='w-[100%]' />
                 </button>
             </nav>
 
             <CrearProducto visible={mostrarForm} />
             <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
-                <Paginado />
+            <Paginado />
             <div className='w-screen overflow-x-auto'>
                 {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-20 text-white font-bold py-2 xl:py-4 my-2 xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
 
@@ -331,15 +334,15 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         </div>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'> </h2>
                     </li>
-              
-                    {(!(productosFiltrados.length? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).length > 0) ?
+
+                    {(!(productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).length > 0) ?
                         <li className='w-full flex flex-col items-center justify-center xl:mt-6 italic'>
                             <h1 className='font-serif text-2xl xl:text-4xl mx-auto font-bold font-serif block mt-0'>No hay productos disponibles</h1>
                             <img className="w-3/4 xl:w-1/2 bottom-1" src="https://chryslergroup.navigation.com/static/WFS/Shop-Site/-/Shop/en_US/Product%20Not%20Found.png" alt="notFound" />
                         </li>
 
 
-                        : (productosFiltrados.length? productosFiltrados : productos).slice((pagina * cantidadPagina) -cantidadPagina, (pagina * cantidadPagina)).map(el => {
+                        : (productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
                             return <li className='font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 w-full relative font-bold text-3xl'>
                                 <div className='flex-grow min-w-0 basis-[6.25%] my-auto'>
@@ -370,7 +373,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         })}
                 </ul>
             </div>
-                <Paginado />
+            <Paginado />
 
         </div>
     )
