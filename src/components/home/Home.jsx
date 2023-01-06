@@ -17,7 +17,7 @@ import editBtn from '../../images/editBtn.png'
 // importar transferBtn
 import transferBtn from '../../images/transferBtn.png'
 // importar imagen bannerMorado
-import bannerMorado from '../../images/bannerMorado.png'
+import bannerMorado from '../../images/bannerHalfBlue.jpg'
 // importar rightArrow.png
 import rightArrow from '../../images/rightArrow.png'
 // importar leftArrow.png
@@ -26,6 +26,8 @@ import leftArrow from '../../images/leftArrow.png'
 import Paginado from '../paginado/paginado.jsx'
 // importo el componente botonSumar
 import BotonSumar from '../botonSumar/botonSumar.jsx'
+// importo boton3bars.png
+import boton3bars from '../../images/boton3bars.png'
 
 
 
@@ -42,6 +44,20 @@ let gatilloNombre = true;
 let gatilloStock = true;
 
 function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, activo, categorias, setEdit, input1, ordenarDeposito, ordenarTotal, ordenarPrecioCompra, cambiarStock, productoToEdit, filtrarProductos, ordenarCodigo, gatilloEliminar, cambiarGatilloEliminar, pagina, cambiarPagina }) {
+
+    // quiero evitar que al salir de la pagina se ejecute el comportamiendo por default, asi que creo una funcion que lo haga
+    const handleBeforeUnload = (event) => {
+        event.preventDefault();
+      };
+
+    // agrego un useEffect que lo ejecute
+    useEffect(() => {
+        window.addEventListener('beforeunload', handleBeforeUnload);
+    
+        return () => {
+          window.removeEventListener('beforeunload', handleBeforeUnload);
+        };
+      }, []);
 
     // declaro estados para mi componente cambiarProducto
     const [precio, setPrecio] = useState(productoToEdit.price)
@@ -78,7 +94,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     function sumarRestar(num2, num3, bool) {
         let { pnumeroBase } = document.forms[0];
-        console.log('soy tu numero: ', pnumeroBase.value)
 
         let productData = {}
 
@@ -103,8 +118,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             productData.stockDeposito = Number(num2);
             productData.stock = Number(num3);
 
-            console.log('soy el producto: ', productData)
-
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then(() => alert('fue editado correctamente'))
                 .then(() => setProductos()) // para pedir los productos actualizados
@@ -120,7 +133,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 // pongo sumarORestar en true de nuevo
                 .then(() => setSumarORestar(true))
                 .catch((err) => {
-                    console.log(err.response.data);
+                    console.log('sucedio un error: ', err.response.data);
                 })
 
 
@@ -142,8 +155,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             productData.stockDeposito = Number(num2);
             productData.stock = Number(num3);
 
-            console.log('soy el producto: ', productData)
-
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then(() => alert('fue editado correctamente'))
                 .then(() => setProductos()) // para pedir los productos actualizados
@@ -159,7 +170,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 // pongo sumarORestar en true de nuevo
                 .then(() => setSumarORestar(true))
                 .catch((err) => {
-                    console.log(err.response.data);
+                    console.log('sucedio un error: ', err.response.data);
                 })
 
 
@@ -201,8 +212,10 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <div className={
                 (gatilloSumar) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 ' : 'hidden'
             }>
-                <BotonSumar numeroASumar={numeroASumar} setNumeroASumar={setNumeroASumar} setGatilloSumar={setGatilloSumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
             </div>
+
+            <BotonSumar gatilloSumar={gatilloSumar} numeroASumar={numeroASumar} setNumeroASumar={setNumeroASumar} setGatilloSumar={setGatilloSumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
+
             <div className={
                 (gatilloCambiar) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 blur-sm' : 'hidden'
             }>
@@ -216,7 +229,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             
 
             <div className={
-                (gatilloCambiar) ? 'text-4xl rounded-xl w-[80%] xl:w-[30%] fixed top-[30%] xl:top-[20%] left-[10%] xl:left-[35%] z-30' : 'hidden'
+                (gatilloCambiar) ? 'text-4xl rounded-xl w-[80%] xl:w-[30%] fixed top-[30%] xl:top-[20%] md:top-[10%] left-[10%] xl:left-[35%] z-30' : 'hidden'
             }>
                 <div className=' bg-white border shadow text-center rounded-2xl p-1 xl:p-3'>
                     <form className=' flex flex-col' onSubmit={(e) => { e.preventDefault(); sumarRestar(productoToEdit.stockDeposito, productoToEdit.stock, sumarORestar) }}>
@@ -233,20 +246,23 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             }} />
                             <h4 className=' w-[25%] inline'>{numeroStock}</h4>
                         </div>
-                        <div className='flex flex-row mx-auto mt-5 mb-1'>
-                            <button className='mx-4 m-0 text-lg bg-indigo-500 text-white px-3 font-semibold py-0.5 rounded-md  text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-bounce italic p-10' type='button' onClick={() => { setGatilloCambiar(false); setSumarORestar(true) }}>Cerrar</button>
-                            <button className='mx-4 m-0 text-lg bg-indigo-500 text-white px-3 font-semibold py-0.5 rounded-md text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-bounce  italic p-1' type='submit'>Enviar</button>
+                        <div className='flex flex-row mx-auto mt-5 mb-1 '>
+                            <button className='mx-4 m-0 text-lg bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md  text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-bounce italic p-10 md:text-3xl mb-2' type='button' onClick={() => { setGatilloCambiar(false); setSumarORestar(true) }}>Cerrar</button>
+                            <button className='mx-4 m-0 text-lg bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-bounce  italic p-1 md:text-3xl mb-2' type='submit'>Enviar</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <nav className={"flex flex-col bg-violet-900 py-3 pt-3 pt-0 bg-[url(" + bannerMorado + ")]"}>
+            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between bg-violet-900 py-3 pt-3 bg-[url(" + bannerMorado + ")] bg-cover xl:px-8"}>
                 <BuscarProducto />
 
-                <button onClick={setForm} className='z-10 hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-0 xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
+                <button onClick={setForm} className='z-10 hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-[-1%] xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
                     <h1 className='mr-3 inline text-black font-bold text-1xl'>Nuevo Producto</h1>
                     <img className='inline rounded text-base xl:text-xl w-8' src={addBtn2} alt='addBtn2' />
+                </button>
+            <button className='mx:m-0 mt-2 mb-0 w-auto inline w-[8%] xl:w-[3.5%] '>
+                    <img src={boton3bars} alt='3 bars btn' className='w-[100%]'/>
                 </button>
             </nav>
 
@@ -256,65 +272,64 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <div className='w-screen overflow-x-auto'>
                 {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-20 text-white font-bold py-2 xl:py-4 my-2 xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
 
-                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[315%] xl:w-screen'>
-                    <li className='font-serif flex flex-row xl:text-2xl my-3 font-bold px-2 pl-1 pr-3 flex w-full shadow pb-3'>
-                        <h2 className='font-serif flex-grow min-w-0 basis-0'>Imagen</h2>
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center '>
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[315%] xl:w-screen text-2xl px-6 xl:pr-9  '>
+                    <li className='font-serif flex flex-row my-3 font-bold flex w-full shadow pb-3'>
+                        <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'>Img</h2>
+                        <div className='font-serif flex-grow min-w-0 basis-[6.25%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarCodigo(productos, productosFiltrados, activo)} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
-                                <h2>Codigo</h2>
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <h2>#</h2>
                             </button>
                         </div>
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center'>
+                        <div className='font-serif flex-grow min-w-0 basis-[18.75%] flex flew-row items-center'>
                             {/* boton con una imagen dada */}
                             <button onClick={ordenNombre} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Nombre</h2>
                             </button>
                         </div>
 
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center '>
+                        <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarDeposito(productos, productosFiltrados, activo)} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Deposito</h2>
                             </button>
                         </div>
 
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center '>
+                        <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={ordenStock} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Tienda</h2>
                             </button>
                         </div>
 
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center '>
+                        <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarTotal(productos, productosFiltrados, activo)} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Total</h2>
                             </button>
                         </div>
 
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center'>
+                        <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center'>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarPrecio(productos, productosFiltrados, activo)} className='flex flex-row items-center justify-center hover:xl:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Venta</h2>
                             </button>
                         </div>
 
-                        <div className='font-serif flex-grow min-w-0 basis-0 flex flew-row items-center  '>
+                        <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center  '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarPrecioCompra(productos, productosFiltrados, activo)} className='flex flex-row items-center justify-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 mr-1' src={flechaImagen} alt='flecha' />
+                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2 className=''>Compra</h2>
                             </button>
                         </div>
-                        {/* <h2 className='font-serif flex-grow min-w-0 basis-0'>Categorias</h2> */}
-                        <h2 className='font-serif flex-grow min-w-0 basis-0'> </h2>
+                        <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'> </h2>
                     </li>
               
                     {(!(productosFiltrados.length? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).length > 0) ?
@@ -326,27 +341,29 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (productosFiltrados.length? productosFiltrados : productos).slice((pagina * cantidadPagina) -cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='font-serif flex flex-row text-xl py-6 px-2 pl-1 pr-3 odd:bg-white even:bg-slate-100 w-full relative  text-3xl font-bold'>
-                                <div className='flex-grow min-w-0 basis-0 my-auto'>
-                                    <img className='w-24 m-auto' src={el.imagen} alt="Product" />
+                            return <li className='font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 w-full relative font-bold text-3xl'>
+                                <div className='flex-grow min-w-0 basis-[6.25%] my-auto'>
+                                    <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
                                 </div>
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto static'>{'#' + el.id}</h3>
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto break-normal static'>{el.name}</h3>
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.stockDeposito}</h3>
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto'>{el.stock}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[6.25%] my-auto static text-2xl italic '>{'#' + el.id}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[18.75%] my-auto break-normal static text-2xl'>{el.name}</h3>
+                                <div className='flex flex-row flex-grow basis-[25%] relative justify-center items-center '>
 
-                                <button className="absolute top-12 left-[41.9%] md:left-[43%] xl:left-[41.9%]  xl:hover:animate-pulse font-bold px-1 py-1 xl:py-3 xl:px-2 mx-1 mx-0 rounded block my-auto flex flex-row items-center justify-center " onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
-                                    <img src={transferBtn} alt='transferArrow' className=' w-9 h-auto ml-2 hover:w-8 hover:h-8' />
-                                </button>
+                                    <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stockDeposito}</h3>
+                                    <button className="absolute w-[10%] xl:w-[10%] md:w-[6%] left-[45%] xl:left-[45%] md:left-[47%] xl:hover:animate-pulse" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
+                                        <img src={transferBtn} alt='transferArrow' className='w-[100%] h-[100%]' />
+                                    </button>
+                                    <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stock}</h3>
 
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{el.stock + el.stockDeposito}</h3>
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{'$' + el.price}</h3>
-                                <h3 className='flex-grow min-w-0 basis-0 my-auto text-4xl font-bold'>{'$' + el.priceBuy}</h3>
+                                </div>
+                                <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{el.stock + el.stockDeposito}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{'$' + el.price}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{'$' + el.priceBuy}</h3>
 
-                                <div className='flex-grow min-w-0 basis-0 my-auto flex flex-col items-center justify-center'>
-                                    <button className="xl:hover:animate-pulse font-bold px-1 py-1 xl:py-3 xl:px-2 mx-1 mx-0 rounded block my-auto flex flex-row items-center justify-center text-xl hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-2xl" onClick={() => setEdit(el.id, productos)}>
+                                <div className='flex-grow min-w-0 basis-[6.25%] my-auto flex flex-col items-center justify-center'>
+                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center text-base hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-xl flex flex-col justify-center items-center" onClick={() => setEdit(el.id, productos)}>
                                         <h4>Editar</h4>
-                                        <img src={editBtn} alt='pencil' className='w-6 h-6 ml-2 hover:w-8 hover:h-8' />
+                                        <img src={editBtn} alt='pencil' className='w-8 h-8 hover:w-9 hover:h-9' />
                                     </button>
                                 </div>
                             </li>

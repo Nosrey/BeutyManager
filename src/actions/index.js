@@ -77,8 +77,10 @@ export function filtrarProductos(lista, filtro) {
             for (let i = 0; i < lista.length; i++) {
                 let aprobado = 0; // para confirmar que cumple los valores del buscador
                 for (let j = 0; j < palabrasJuntas.length; j++) {
-                    for (let k = 0; k < lista[i].Categories.length; k++) {
-                        if (lista[i].Categories[k].name.toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }
+                    // separo el string categoryNames del elemento de turno de lista en un array
+                    let arrayDeTurno = lista[i].categoryNames.split(',')
+                    for (let k = 0; k < arrayDeTurno.length; k++) {
+                        if (arrayDeTurno[k].toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }
                     }
 
                     if (lista[i].name.toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }

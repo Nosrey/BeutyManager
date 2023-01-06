@@ -227,8 +227,6 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
 
     }
 
-
-
     return (
         <div className={
             "z-10 left-[0%] fixed bg-white w-full xl:w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "

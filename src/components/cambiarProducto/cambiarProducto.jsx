@@ -97,7 +97,9 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
     useEffect(() => {
         setStock(productoToEdit.stock)
         setStockDeposito(productoToEdit.stockDeposito)
-    }, [productoToEdit])
+        // eslint-disable-next-line
+    }, [productoToEdit, visible])
+
 
     const handleSubmit = async (e) => {
         //Prevent page reload
@@ -195,11 +197,8 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
             if (image && image !== imagenNotFound) productData.imagen = image
 
-            console.log('el producto a enviar es: ', productData)
-
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then((el) => alert('fue editado correctamente: ', el))
-                .then(() => { setProductos(); console.log('soy los productos obtenidos', productos) })
                 .then(() => setEdit((productoToEdit.id || 0), productos))
                 .then(() => {
                     pname.value = '';
@@ -292,7 +291,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Deposito</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <button className='w-[20%] mr-3' type='button' onClick={() => sumBtn('stockDepositoBtn', "+")}>
+                            <button className='w-[20%] mr-3' type='button' onClick={() => sumBtn('stockDepositoBtn', "-")}>
                                 <img src={removeBtn} alt='removeBtn' />
                             </button>
                             <input type="number" step="1" name="pstockDeposito" value={stockDeposito} onChange={(e) => { setStockDeposito(e.target.value) }} placeholder={productoToEdit.stockDeposito} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
