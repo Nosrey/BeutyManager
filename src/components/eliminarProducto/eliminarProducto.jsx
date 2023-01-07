@@ -14,10 +14,10 @@ import paper from '../../images/paper.png';
 
 // implemento las actiones y los estados
 
-function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, setProductos }) {
+function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, setProductos, input1 }) {
     function eliminar() {
         Axios.delete(ip + '/products/' + productoToEdit.id, { id: productoToEdit.id })
-            .then(() => setProductos())
+            .then(() => setProductos(input1))
             .then(() => {
                 cambiarGatilloEliminar()
             })
@@ -48,13 +48,14 @@ function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, set
 const mapStateToProps = (state) => {
     return {
         productoToEdit: state.productoToEdit,
+        input1: state.input1,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
-        setProductos: () => dispatch(setProductos()),
+        setProductos: (input) => dispatch(setProductos(input)),
     };
 }
 

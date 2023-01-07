@@ -1,5 +1,57 @@
 import { SET_FORM, SET_PRODUCTOS, SET_EDIT, FILTRAR_PRODUCTOS, ORDENAR_NOMBRE, ORDENAR_PRECIO, ORDENAR_STOCK, SET_INPUT1, SET_INPUT2, ORDENAR_DEPOSITO, ORDENAR_TOTAL, ORDENAR_PRECIO_COMPRA, CAMBIAR_STOCK, ORDENAR_CODIGO, CAMBIAR_GATILLO_ELIMINAR, CAMBIAR_PAGINA, ACTIVAR_SUMAR } from '../actions/actions-types'
 
+function ordenarNombres(lista) {
+    let ordenProductosDefault = lista
+    // reviso la lista y si el nombre es un numero lo guardo en un array llamado nombresNumeros y si es un nombre lo guardo en nombresLetras, luego los ordeno de mayor a menor y los vuelvo a unir pero los numeros iran primero
+    let nombresNumeros = [];
+    let nombresLetras = [];
+    ordenProductosDefault.forEach(element => {
+        if (isNaN(element.name)) {
+            nombresLetras.push(element)
+        } else {
+            nombresNumeros.push(element)
+        }
+    });
+    nombresNumeros.sort(function (a, b) {
+        if (Number(a.name) < Number(b.name)) { return -1; }
+        if (Number(a.name) > Number(b.name)) { return 1; }
+        return 0;
+    })
+    nombresLetras.sort(function (a, b) {
+        if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
+        if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
+        return 0;
+    })
+
+    return ordenProductosDefault = nombresNumeros.concat(nombresLetras)
+}
+
+function ordenarNombresInversa(lista) {
+    let ordenProductosDefault = lista
+    // reviso la lista y si el nombre es un numero lo guardo en un array llamado nombresNumeros y si es un nombre lo guardo en nombresLetras, luego los ordeno de mayor a menor y los vuelvo a unir pero los numeros iran primero
+    let nombresNumeros = [];
+    let nombresLetras = [];
+    ordenProductosDefault.forEach(element => {
+        if (isNaN(element.name)) {
+            nombresLetras.push(element)
+        } else {
+            nombresNumeros.push(element)
+        }
+    });
+    nombresNumeros.sort(function (a, b) {
+        if (Number(a.name) > Number(b.name)) { return -1; }
+        if (Number(a.name) < Number(b.name)) { return 1; }
+        return 0;
+    })
+    nombresLetras.sort(function (a, b) {
+        if (a.name.toLowerCase() > b.name.toLowerCase()) { return -1; }
+        if (a.name.toLowerCase() < b.name.toLowerCase()) { return 1; }
+        return 0;
+    })
+
+    return ordenProductosDefault = nombresLetras.concat(nombresNumeros)
+}
+
 const initialState = {
     dataUser: [
         {
@@ -36,7 +88,7 @@ function rootReducer(state = initialState, action) {
         case SET_PRODUCTOS:
             return {
                 ...state,
-                productos: action.payload
+                productos:  ordenarNombres(action.payload)
             }
         case FILTRAR_PRODUCTOS:
             return {
@@ -47,29 +99,19 @@ function rootReducer(state = initialState, action) {
             let nombreProductos = state.productos;
             let nombreFiltros = state.productosFiltrados;
 
+            console.log('soy productos de state: ', nombreProductos)
+            console.log('soy filtros de state: ', nombreFiltros)
+
             if (action.payload) {
-                nombreProductos.sort(function (a, b) {
-                    if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
-                    if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
-                    return 0;
-                })
-                nombreFiltros.sort(function (a, b) {
-                    if (a.name.toLowerCase() < b.name.toLowerCase()) { return -1; }
-                    if (a.name.toLowerCase() > b.name.toLowerCase()) { return 1; }
-                    return 0;
-                })
+               // las ordeno con mi funcion
+                nombreProductos = ordenarNombres(nombreProductos)
+                nombreFiltros = ordenarNombres(nombreFiltros)
             } else {
-                nombreProductos.sort(function (a, b) {
-                    if (a.name.toLowerCase() > b.name.toLowerCase()) { return -1; }
-                    if (a.name.toLowerCase() < b.name.toLowerCase()) { return 1; }
-                    return 0;
-                })
-                nombreFiltros.sort(function (a, b) {
-                    if (a.name.toLowerCase() > b.name.toLowerCase()) { return -1; }
-                    if (a.name.toLowerCase() < b.name.toLowerCase()) { return 1; }
-                    return 0;
-                })
+                nombreProductos = ordenarNombresInversa(nombreProductos)
+                nombreFiltros = ordenarNombresInversa(nombreFiltros)
             }
+            console.log('soy Productos', nombreProductos)
+            console.log('soy Filtros', nombreFiltros)
             return {
                 ...state,
                 productosFiltrados: nombreFiltros,

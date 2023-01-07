@@ -11,7 +11,7 @@ import { ip } from '../home/Home.jsx'
 let ready = true;
 let arranque = false;
 
-function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando }) {
+function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando, input1 }) {
 
     if (visible) { arranque = true; }
 
@@ -176,7 +176,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 console.log('Soy el producto que enviaras: ', productData)
                 Axios.post(ip + '/products', productData)
                     .then(() => setForm()) // para mostrar el formulario
-                    .then(() => setProductos()) // para pedir los productos actualizados
+                    .then(() => setProductos(input1)) // para pedir los productos actualizados
                     .then(() => console.log('soy la lista de productos: ', productos))
                     .then(() => {  // vaciamos el formulario
                         pname.value = '';
@@ -314,13 +314,14 @@ const mapStateToProps = (state) => {
         categorias: state.categorias,
         // implementar productoToEdit
         productoToEdit: state.productoToEdit,
+        input1: state.input1,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         setForm: () => dispatch(setForm()),
-        setProductos: () => dispatch(setProductos()),
+        setProductos: (input) => dispatch(setProductos(input)),
         filtrarProductos: (lista, filtro) => dispatch(filtrarProductos(lista, filtro)),
         // implementar setEdit
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),

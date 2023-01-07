@@ -10,7 +10,7 @@ let ready = true;
 let arranque = false;
 
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito, cargando, setCargando }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito, cargando, setCargando, input1 }) {
 
     if (visible) { arranque = true; }
 
@@ -205,6 +205,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then(() => setEdit((productoToEdit.id || 0), productos))
                 .then(() => {
+                    setProductos(input1)
                     pname.value = '';
                     pstock.value = '';
                     pstockDeposito.value = '';
@@ -387,13 +388,14 @@ const mapStateToProps = (state) => {
         categorias: state.categorias,
         // implemento el estado sumar
         sumar: state.sumar,
+        input1: state.input1,
     }
 }
 
 function mapDispatchToProps(dispatch) {
     return {
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
-        setProductos: () => dispatch(setProductos()),
+        setProductos: (input) => dispatch(setProductos(input)),
         // implemento cambiarGatilloEliminar
         cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
         // implemento activarSumar

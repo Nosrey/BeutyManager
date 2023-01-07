@@ -14,7 +14,7 @@ function BuscarProducto({ productos, filtrarProductos, productosFiltrados, setIn
 
         filtrarProductos(productos, input1)
 
-    }, [input1]); //eslint-disable-line
+    }, [input1, productos]); //eslint-disable-line
 
     return (
         <div className="text-xl mx-10 xl:mx-0 my-2 ">

@@ -138,16 +138,13 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => setProductos()) // para pedir los productos actualizados
+                .then(() => setProductos(input1)) // para pedir los productos actualizados
                 .then(() => {  // vaciamos el formulario
                     // pongo en cero numeroBase
                     setNumeroBase(0);
                     // desactivo gatilloCambiar
                 })
                 .then(() => setGatilloCambiar(false))
-                .then(() => {
-                    filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
-                })
                 // pongo sumarORestar en true de nuevo
                 .then(() => {
                     setSumarORestar(true)
@@ -180,7 +177,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => setProductos()) // para pedir los productos actualizados
+                .then(() => setProductos(input1)) // para pedir los productos actualizados
                 .then(() => {  // vaciamos el formulario
                     // pongo en cero numeroBase
                     setNumeroBase(0);
@@ -191,9 +188,13 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                     filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
                 })
                 // pongo sumarORestar en true de nuevo
-                .then(() => setSumarORestar(true))
+                .then(() => {
+                    setSumarORestar(true)
+                    setCargando(false)
+                })
                 .catch((err) => {
                     console.log('sucedio un error: ', err.response.data);
+                    setCargando(false)
                 })
 
 
@@ -203,7 +204,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     useEffect(() => {
         // Your code here
-        setProductos();
+        setProductos(input1);
     }, []); //eslint-disable-line
 
     // implemento un useEffect que actualiza los estados de numeroDeposito y numeroStock solo cuando la variable productoToEdit reciba algun cambio
@@ -425,7 +426,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return {
         setForm: () => dispatch(setForm()),
-        setProductos: () => dispatch(setProductos()),
+        setProductos: (input) => dispatch(setProductos(input)),
         ordenarNombre: (gatillo) => dispatch(ordenarNombre(gatillo)),
         ordenarPrecio: (lista, lista2, gatillo) => dispatch(ordenarPrecio(lista, lista2, gatillo)),
         ordenarStock: (gatillo) => dispatch(ordenarStock(gatillo)),

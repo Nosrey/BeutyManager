@@ -26,12 +26,13 @@ export function setEdit(id, productoLista) {
     }
 }
 
-export function setProductos() {
+export function setProductos(input) {
     return function (dispatch) {
         return (
             fetch(ip + '/products')
                 .then((res) => res.json())
                 .then((json) => {
+                    filtrarProductos(json, input)
                     dispatch({ type: SET_PRODUCTOS, payload: json })
                 })
         )
@@ -82,6 +83,8 @@ export function filtrarProductos(lista, filtro) {
                     }
 
                     if (lista[i].name.toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }
+
+                    if (lista[i].id.toString().toLowerCase().includes(palabrasJuntas[j].toLowerCase()) && palabrasJuntas[j].length) { aprobado = aprobado + 1; }
                 }
                 // pushear el elemento de la lista si la variable aprobado es mayor o igual a la longitud de palabrasJuntas
                 if (aprobado >= palabrasJuntas.length) resultados.push(lista[i])
