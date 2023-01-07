@@ -299,7 +299,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <div className='w-screen overflow-x-auto'>
                 {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-20 text-white font-bold py-2 xl:py-4 my-2 xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
 
-                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[315%] xl:w-screen text-2xl px-6 xl:pr-9  '>
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[260%] xl:w-[100%] xl:w-screen text-xl xl:text-2xl px-6 xl:pr-9  '>
                     <li className='font-serif flex flex-row my-3 font-bold flex w-full shadow pb-3'>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'>Img</h2>
                         <div className='font-serif flex-grow min-w-0 basis-[6.25%] flex flew-row items-center '>
@@ -368,8 +368,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 w-full relative font-bold text-3xl'>
-                                <div className='flex-grow min-w-0 basis-[6.25%] my-auto'>
+                            return <li className='border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-3xl'>
+                                <div className='ml-2 flex-grow min-w-0 basis-[6.25%] my-auto'>
                                     <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
                                 </div>
                                 <h3 className='flex-grow min-w-0 basis-[6.25%] my-auto static text-2xl italic '>{'#' + el.id}</h3>
@@ -388,7 +388,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{'$' + el.priceBuy}</h3>
 
                                 <div className='flex-grow min-w-0 basis-[6.25%] my-auto flex flex-col items-center justify-center'>
-                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center text-base hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-xl flex flex-col justify-center items-center" onClick={() => setEdit(el.id, productos)}>
+                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center text-base hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-xl flex flex-col justify-center items-center mr-2" onClick={() => setEdit(el.id, productos)}>
                                         <h4>Editar</h4>
                                         <img src={editBtn} alt='pencil' className='w-8 h-8 hover:w-9 hover:h-9' />
                                     </button>
