@@ -10,7 +10,7 @@ let ready = true;
 let arranque = false;
 
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito, cargando, setCargando }) {
 
     if (visible) { arranque = true; }
 
@@ -74,6 +74,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
     }
 
     function handleFileChange(e) {
+        setCargando(true)
         let file = e.target.files[0]
 
         const data = new FormData();
@@ -88,8 +89,12 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             .then(resp => resp.json())
             .then(data => {
                 setImage(data.secure_url)
+                setCargando(false)
             })
-            .catch(err => console.log('hubo un error: ', err.response.data))
+            .catch(err => {
+                console.log('hubo un error: ', err.response.data)
+                setCargando(false)
+            })
 
     }
 
@@ -104,7 +109,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
     const handleSubmit = async (e) => {
         //Prevent page reload
         e.preventDefault();
-
+        setCargando(true)
         if (ready) {
             ready = false;
 
@@ -198,7 +203,6 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             if (image && image !== imagenNotFound) productData.imagen = image
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then((el) => alert('fue editado correctamente: ', el))
                 .then(() => setEdit((productoToEdit.id || 0), productos))
                 .then(() => {
                     pname.value = '';
@@ -215,11 +219,15 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     setImage(imagenNotFound)
                     setPrimeraVez(true)
                 })
-                .then(() => ready = true)
+                .then(() => {
+                    ready = true
+                    setCargando(false)
+                })
 
                 .catch((err) => {
                     console.log('error en cambiar producto: ', err.response.data);
                     ready = true;
+                    setCargando(false)
                 })
         };
 
@@ -276,7 +284,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
     return (
         <div className={
-            "z-10 right-[0%] fixed bg-white w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto  p-4 pt-1 top-0 "
+            "z-10 right-[0%] fixed bg-white w-full xl:w-96 h-screen border-2 rounded-md border-l-0 hover:border-sky-200 overflow-auto p-4 pt-1 top-0 "
             // max-h-screen
             + (arranque ? (visible ? "potb" : "pot2b") : 'fuera')
         }

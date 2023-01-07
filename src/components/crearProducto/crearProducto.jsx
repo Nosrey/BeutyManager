@@ -11,7 +11,7 @@ import { ip } from '../home/Home.jsx'
 let ready = true;
 let arranque = false;
 
-function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos, productos, filtrarProductos, categorias }) {
+function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando }) {
 
     if (visible) { arranque = true; }
 
@@ -69,6 +69,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
     }
 
     const handleSubmit = (e) => {
+        setCargando(true)
         e.preventDefault();
         //Prevent page reload
 
@@ -174,7 +175,6 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: pcategory.value }
                 console.log('Soy el producto que enviaras: ', productData)
                 Axios.post(ip + '/products', productData)
-                    .then((el) => alert('fue publicado correctamente: ', el))
                     .then(() => setForm()) // para mostrar el formulario
                     .then(() => setProductos()) // para pedir los productos actualizados
                     .then(() => console.log('soy la lista de productos: ', productos))
@@ -190,10 +190,15 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                     .then(() => {
                         filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
                     })
-                    .then(() => ready = true)
+                    .then(() =>{ 
+                        ready = true;
+                        setCargando(false)
+                    })
 
                     .catch((err) => {
+                        console.log('ocurrio un error: ', err)
                         ready = true;
+                        setCargando(false)
                     })
             } else {
                 // Username not found
@@ -208,6 +213,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
 
 
     function handleFileChange(e) {
+        setCargando(true)
         let file = e.target.files[0]
 
         const data = new FormData();
@@ -222,8 +228,12 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
             .then(resp => resp.json())
             .then(data => {
                 setImage(data.secure_url)
+                setCargando(false);
             })
-            .catch(err => console.log('hubo un error: ', err))
+            .catch(err => {
+                console.log('hubo un error: ', err);
+                setCargando(false)
+            })
 
     }
 

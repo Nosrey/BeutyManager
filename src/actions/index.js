@@ -70,8 +70,6 @@ export function filtrarProductos(lista, filtro) {
         // declaramos resultados para guardar las coincidencias
         let resultados = []
 
-        console.log('soy las palabrasJuntas: ', palabrasJuntas)
-
         // un filtro que recibe un input y las separa por espacios en un array, luego revisa si cada una de esas palabras coincide con el nombre del producto o si tiene coincidencia con las categorias del producto, las coincidencias se guardan en un array y se retorna ese array
         if (palabrasJuntas.length && lista.length) {
             for (let i = 0; i < lista.length; i++) {

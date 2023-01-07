@@ -57,7 +57,7 @@ function BotonSumar({ numeroASumar, setNumeroASumar, setGatilloSumar, precio, se
         setSigno(numeroASumar.signo)
         setPlaceholder(numeroASumar.value)
         // eslint-disable-next-line
-    }, [numeroASumar.signo])
+    }, [numeroASumar])
 
     return (
         <div className={(gatilloSumar) ? "flex flex-col items-center justify-center text-2xl w-[50%] left-[25%] xl:w-[20%] fixed top-[30%] xl:top-[25%] xl:left-[40%] z-30 bg-white border shadow text-center rounded-2xl p-1 xl:p-3 opacity-100 " : 'hidden'}>

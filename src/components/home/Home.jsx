@@ -30,6 +30,8 @@ import Paginado from '../paginado/paginado.jsx'
 import BotonSumar from '../botonSumar/botonSumar.jsx'
 // importo boton3bars.png
 import boton3bars from '../../images/boton3bars.png'
+// importo loadingIcon
+import loadingIcon from '../../images/loadingIcon.png'
 
 
 
@@ -49,21 +51,29 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     const navigate = useNavigate()
 
-
-    // para que se minimize en android
-
     useEffect(() => {
         const unlisten = navigate((location, action) => {
-          // Para minimizar la aplicación en Android, puedes usar la función
-          // `minimize` del objeto `window.android`
-          if (window.android) {
-            window.android.minimize()
-          }
-        })
+            // Verificamos que el cambio en la ruta se ha producido al presionar el botón de retroceso
+            if (action === 'POP') {
+                if (window.android) {
+                    // Detecta cuando se presiona el botón de retroceder en el navegador
+                    if (mostrarEdit || mostrarForm) {
+                        // Desactiva la variable
+                        if (mostrarForm) setForm()
+                        if (mostrarEdit) setEdit(productoToEdit.id, productos)
+                    } else {
+                        window.android.minimize();
+                    }
+                }
+            }
+        });
+
         return () => {
-          unlisten()
-        }
-      }, [navigate])
+          // Revisamos si unlisten es una función primero
+          if (typeof unlisten === 'function') unlisten();
+        };
+        // eslint-disable-next-line
+      }, [mostrarEdit, mostrarForm, navigate]);
 
     // declaro estados para mi componente cambiarProducto
     const [precio, setPrecio] = useState(productoToEdit.price)
@@ -85,6 +95,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     const [gatilloSumar, setGatilloSumar] = useState(false);
     // ahora creo el estado numeroASumar para establecer el numero que editare desde dicha interfaz
     const [numeroASumar, setNumeroASumar] = useState({});
+    // creo el estado cargando que contendra un booleando para controlar si se activa la pantalla de carga o se apaga
+    const [cargando, setCargando] = useState(false);
 
     const flechaImagen = 'https://cdn-icons-png.flaticon.com/512/37/37808.png'
 
@@ -99,6 +111,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     }
 
     function sumarRestar(num2, num3, bool) {
+        setCargando(true)
         let { pnumeroBase } = document.forms[0];
 
         let productData = {}
@@ -125,7 +138,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => alert('fue editado correctamente'))
                 .then(() => setProductos()) // para pedir los productos actualizados
                 .then(() => {  // vaciamos el formulario
                     // pongo en cero numeroBase
@@ -137,9 +149,13 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                     filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
                 })
                 // pongo sumarORestar en true de nuevo
-                .then(() => setSumarORestar(true))
+                .then(() => {
+                    setSumarORestar(true)
+                    setCargando(false)
+                })
                 .catch((err) => {
                     console.log('sucedio un error: ', err.response.data);
+                    setCargando(false);
                 })
 
 
@@ -164,7 +180,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => alert('fue editado correctamente'))
                 .then(() => setProductos()) // para pedir los productos actualizados
                 .then(() => {  // vaciamos el formulario
                     // pongo en cero numeroBase
@@ -216,7 +231,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     return (
         <div className=''>
-            {/*un div que sirve para header e interfaz de busqueda*/}
+            <div className={cargando ? 'flex flex-col justify-center items-center w-screen h-screen fixed bg-slate-50 z-40 opacity-70' : 'hidden'}>
+                <img className='animate-spin mx-auto my-auto w-auto h-[50%] fixed top-[25%]' src={loadingIcon} alt='loading' />
+            </div>
+
+            { }
             <div className={
                 (gatilloSumar) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 ' : 'hidden'
             }>
@@ -262,7 +281,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 </div>
             </div>
 
-            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between bg-violet-900 py-3 pt-3 bg-[url(" + bannerMorado + ")] bg-cover xl:px-8"}>
+            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between bg-blue-900 py-3 pt-3 bg-[url(" + bannerMorado + ")] bg-cover xl:px-8"}>
                 <BuscarProducto />
 
                 <button onClick={setForm} className='z-10 hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-[-1%] xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
@@ -274,8 +293,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 </button>
             </nav>
 
-            <CrearProducto visible={mostrarForm} />
-            <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
+            <CrearProducto visible={mostrarForm} cargando={cargando} setCargando={setCargando} />
+            <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} cargando={cargando} setCargando={setCargando} />
             <Paginado />
             <div className='w-screen overflow-x-auto'>
                 {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-20 text-white font-bold py-2 xl:py-4 my-2 xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
