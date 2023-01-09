@@ -1,3 +1,5 @@
+// importo el css
+import './botonSumar.css';
 //importo useState para un formulario controlado
 import React, { useState, useEffect } from 'react';
 // importo removeBtn de Home.jsx
@@ -52,6 +54,38 @@ function BotonSumar({ numeroASumar, setNumeroASumar, setGatilloSumar, precio, se
         cerrar()
     }
 
+    // creo una funcion para sumar en 1 el valor correspondiente o restar
+    const sumar = () => {
+        if (numeroASumar.signo === '+') {
+            if (numeroASumar.name === 'precio') {
+                setPrecio(Number(precio) + 1)
+            } else if (numeroASumar.name === 'precioCompra') {
+                setPrecioCompra(Number(precioCompra) + 1)
+            } else if (numeroASumar.name === 'stock') {
+                setStock(Number(stock) + 1)
+            } else if (numeroASumar.name === 'stockDeposito') {
+                setStockDeposito(Number(stockDeposito) + 1)
+            }
+            setNumeroASumar({ ...numeroASumar, value: Number(numeroASumar.value) + 1 })
+        }
+        else if (numeroASumar.signo === "-") {
+            // hago lo mismo que arriba pero en resta
+            if (numeroASumar.name === 'precio') {
+                setPrecio((Number(precio) - 1 < 0) ? 0 : Number(precio) - 1)
+            } else if (numeroASumar.name === 'precioCompra') {
+                setPrecioCompra((Number(precioCompra) - 1 < 0) ? 0 : Number(precioCompra) - 1)
+            }
+            else if (numeroASumar.name === 'stock') {
+                setStock((Number(stock) - 1 < 0) ? 0 : Number(stock) - 1)
+            }
+            else if (numeroASumar.name === 'stockDeposito') {
+                setStockDeposito((Number(stockDeposito) - 1 < 0) ? 0 : Number(stockDeposito) - 1)
+            }
+            setNumeroASumar({ ...numeroASumar, value: (Number(numeroASumar.value) - 1 < 0) ? 0 : Number(numeroASumar.value) - 1 })
+        }
+    }
+
+
     // creo un useEffect que actualiza el estado signo cuando el valor de numeroASumar.signo cambia
     useEffect(() => {
         setSigno(numeroASumar.signo)
@@ -62,7 +96,10 @@ function BotonSumar({ numeroASumar, setNumeroASumar, setGatilloSumar, precio, se
     return (
         <div className={(gatilloSumar) ? "flex flex-col items-center justify-center text-2xl w-[50%] left-[25%] xl:w-[20%] fixed top-[30%] xl:top-[25%] xl:left-[40%] z-30 bg-white border shadow text-center rounded-2xl p-1 xl:p-3 opacity-100 " : 'hidden'}>
             <div className='flex flex-col items-center justify-center '>
-                <img className='w-[20%] mt-2 ' src={(signo === "+") ? addBtn2 : removeBtn} alt='signo'/>
+                <button className={'w-[20%] mt-2 '} onClick={sumar}>
+
+                <img className='w-[100%] mt-2 ' src={(signo === "+") ? addBtn2 : removeBtn} alt='signo'/>
+                </button>
 
                 <input className='my-5 w-[30%] xl:w-[20%] py-1 border border-black border-2 rounded text-center font-bold text-4xl text-center text-blue-700' placeholder={placeholder} value={numero} onChange={(e) => setNumero(e.target.value)} />
             </div>

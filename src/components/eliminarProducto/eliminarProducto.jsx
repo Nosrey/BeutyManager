@@ -1,3 +1,5 @@
+// importo el css
+import './eliminarProducto.css';
 import React from 'react';
 import { connect } from 'react-redux';
 // importo productoToEdit

@@ -1,3 +1,5 @@
+// importo el css
+import './buscarProducto.css';
 import React, { useEffect } from 'react';
 import { connect } from "react-redux";
 import { filtrarProductos, filtrarCategorias, setInput1 } from '../../actions';

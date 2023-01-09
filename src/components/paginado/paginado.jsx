@@ -1,3 +1,5 @@
+// importo el css
+import './paginado.css';
 import React from 'react';
 import { connect } from 'react-redux';
 // importo cambiarPagina de actions

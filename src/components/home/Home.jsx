@@ -321,7 +321,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                     </li>
                 </ul>
             </div>
-            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pb-[80vh] xl:pt-0 xl:bg-[url(" + bannerMorado + ")] bg-[url(" + bannerMorado3 + ")] bg-sky-600 bg-[length:auto_100vh] md:bg-[length:auto_100vh] xl:bg-[length:100vw_auto] bg-[position:center_-40vh] md:bg-[position:center_0vh] xl:bg-center xl:bg-contain md:bg-top bg-fixed xl:px-8 shadow-md md:rounded-xl md:rounded-t-none "}>
+            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pb-[80vh] xl:pt-0  bg-sky-600 bg-[length:auto_100vh] md:bg-[length:auto_100vh] xl:bg-[length:100vw_auto] bg-[position:center_-40vh] md:bg-[position:center_0vh] xl:bg-center xl:bg-contain md:bg-top bg-fixed xl:px-8 shadow-md md:rounded-xl md:rounded-t-none xl:bg-[url(" + bannerMorado + ")] bg-[url(" + bannerMorado3 + ")]"}>
                 <div className={`flex flex-col justify-center items-center ` + (gatilloOpciones? "" : "")}>
                     <OpcionesMobile gatilloOpciones={gatilloOpciones} setGatilloOpciones={setGatilloOpciones} />
                     <button className='xl:hidden py-4 w-auto inline w-[8%] xl:w-[3.5%] ' onClick={() => setGatilloOpciones(!gatilloOpciones)}>
@@ -423,7 +423,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 <div className='flex flex-row flex-grow basis-[25%] relative justify-center items-center '>
 
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stockDeposito}</h3>
-                                    <button className="absolute w-[10%] xl:w-[10%] md:w-[6%] left-[45%] xl:left-[45%] md:left-[47%] xl:hover:animate-pulse" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
+                                    <button className="border-2 border-black p-1 rounded-xl shadow-xl absolute w-[10%] xl:w-[10%] md:w-[6%] left-[45%] xl:left-[45%] md:left-[47%] xl:hover:animate-pulse" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
                                         <img src={transferBtn} alt='transferArrow' className='w-[100%] h-[100%]' />
                                     </button>
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stock}</h3>
