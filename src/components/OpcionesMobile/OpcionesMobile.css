@@ -1,0 +1,55 @@
+.mobileOptions1 {
+    transform-origin: top center;
+    top: 0%;
+
+    display: block;
+    animation: linear 1;
+    animation-fill-mode: forwards;  
+    animation-name: runMobile1;
+    animation-duration: 0.3s;
+}
+
+@keyframes runMobile1 {
+    0% {
+  
+        transform: translateY(-100%);
+    }
+
+    /* 80% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform-origin: center;
+        transform: translateY(0%);
+    }
+}
+
+.mobileOptions2 {
+    transform-origin: top center;
+    top: 0%;
+    position: fixed;
+    display: block;
+    animation: linear 1;
+    animation-fill-mode: forwards;  
+    animation-name: runMobile2;
+    animation-duration: 0.3s;
+}
+
+@keyframes runMobile2 {
+    0% {
+  
+        transform: translateY(0%);
+    }
+
+    /* 80% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform-origin: center;
+        transform: translateY(-100%);
+    }
+}

@@ -292,7 +292,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         >
             <button className='font-serif bg-red-600 text-white absolute top-2 right-3 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
             <div className="font-serif ">
-                <form onSubmit={handleSubmit} autoComplete="off" className='font-serif flex flex-col items-center justify-center w-[80%] mx-auto'>
+                <form onSubmit={handleSubmit} autoComplete="off" className='text-centerfont-serif flex flex-col items-center justify-center w-[80%] mx-auto'>
                     <div className="font-serif input-container mt-4 w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Nombre del producto</label>
                         <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
