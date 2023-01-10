@@ -321,7 +321,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return {
         setForm: () => dispatch(setForm()),
-        setProductos: (input) => dispatch(setProductos(input)),
+        setProductos: (input, orden) => dispatch(setProductos(input, orden)),
         filtrarProductos: (lista, filtro) => dispatch(filtrarProductos(lista, filtro)),
         // implementar setEdit
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),

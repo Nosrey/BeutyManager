@@ -57,7 +57,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return {
         cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
-        setProductos: (input) => dispatch(setProductos(input)),
+        setProductos: (input, orden) => dispatch(setProductos(input, orden)),
     };
 }
 

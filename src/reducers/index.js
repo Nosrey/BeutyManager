@@ -86,9 +86,11 @@ function rootReducer(state = initialState, action) {
                 productoToEdit: action.payload
             }
         case SET_PRODUCTOS:
+            let array = action.payload.array
+            if (action.payload.cambiar) array = ordenarNombres(action.payload.array)
             return {
                 ...state,
-                productos:  ordenarNombres(action.payload)
+                productos: array,
             }
         case FILTRAR_PRODUCTOS:
             return {

@@ -53,6 +53,8 @@ let gatilloStock = true;
 
 function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, activo, categorias, setEdit, input1, ordenarDeposito, ordenarTotal, ordenarPrecioCompra, cambiarStock, productoToEdit, filtrarProductos, ordenarCodigo, gatilloEliminar, cambiarGatilloEliminar, pagina, cambiarPagina }) {
 
+    document.addEventListener("backbutton", function () { }, false);
+
     const navigate = useNavigate()
 
     useEffect(() => {
@@ -73,11 +75,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         });
 
         return () => {
-          // Revisamos si unlisten es una función primero
-          if (typeof unlisten === 'function') unlisten();
+            // Revisamos si unlisten es una función primero
+            if (typeof unlisten === 'function') unlisten();
         };
         // eslint-disable-next-line
-      }, [mostrarEdit, mostrarForm, navigate]);
+    }, [mostrarEdit, mostrarForm, navigate]);
 
     // declaro estados para mi componente cambiarProducto
     const [precio, setPrecio] = useState(productoToEdit.price)
@@ -85,8 +87,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     const [stock, setStock] = useState(productoToEdit.stock)
     const [stockDeposito, setStockDeposito] = useState(productoToEdit.stockDeposito)
     // creo un estado para mostrar la imagen en grande que llevara un booleano para activarla
-    const [gatilloImagen, setGatilloImagen] = useState({gatillo: false, imagen: ''});
-      // creo el estado para mostrar o ocultar el menu de opciones
+    const [gatilloImagen, setGatilloImagen] = useState({ gatillo: false, imagen: '' });
+    // creo el estado para mostrar o ocultar el menu de opciones
     const [gatilloOpciones, setGatilloOpciones] = useState(false);
     // declaro con useState numeroDeposito y numeroStock
     const [numeroDeposito, setNumeroDeposito] = useState(0);
@@ -120,6 +122,9 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     function sumarRestar(num2, num3, bool) {
         setCargando(true)
         let { pnumeroBase } = document.forms[0];
+        if (pnumeroBase.value < 0 || pnumeroBase.value === '' || pnumeroBase.value === ' ') {
+            pnumeroBase.value = 0
+        }
 
         let productData = {}
 
@@ -145,7 +150,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => setProductos(input1)) // para pedir los productos actualizados
+                .then(() => setProductos(input1, productos)) // para pedir los productos actualizados
                 .then(() => {  // vaciamos el formulario
                     // pongo en cero numeroBase
                     setNumeroBase(0);
@@ -184,7 +189,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             console.log('soy el producto a enviar: ', productData)
 
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => setProductos(input1)) // para pedir los productos actualizados
+                .then(() => setProductos(input1, productos)) // para pedir los productos actualizados
                 .then(() => {  // vaciamos el formulario
                     // pongo en cero numeroBase
                     setNumeroBase(0);
@@ -255,11 +260,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             </div>
             <div className={(gatilloImagen.gatillo) ? 'flex justify-center items-center' : 'hidden'}>
                 <div className='border-2 z-30 rounded shadow bg-white/30 w-auto h-auto fixed top-[25%] md:top-[15%] '>
-                    <button className='font-serif bg-red-600 text-white absolute top-1 right-1 px-1.5 font-black hover:bg-red-300 text-xl' onClick={() => setGatilloImagen({...gatilloImagen, gatillo: false})}>X</button>
+                    <button className='font-serif bg-red-600 text-white absolute top-1 right-1 px-1.5 font-black hover:bg-red-300 text-xl' onClick={() => setGatilloImagen({ ...gatilloImagen, gatillo: false })}>X</button>
                     <img className={'p-1 w-auto md:h-[70vh] h-[45vh] max-h-[45vh] md:max-h-[70vh] max-w-[100vw] xl:max-w-screen'} src={gatilloImagen.imagen} alt='product' />
                 </div>
             </div>
- 
+
             <BotonSumar gatilloSumar={gatilloSumar} numeroASumar={numeroASumar} setNumeroASumar={setNumeroASumar} setGatilloSumar={setGatilloSumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} />
 
             <div className={
@@ -293,14 +298,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             <h4 className='font-bold text-indigo-700 w-[25%] inline'>{numeroStock}</h4>
                         </div>
                         <div className='flex flex-row mx-auto mt-5 mb-1 '>
-                            <button className='mx-4 m-0 text-lg bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md  text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-bounce italic p-10 md:text-3xl mb-2' type='button' onClick={() => { setGatilloCambiar(false); setSumarORestar(true) }}>Cerrar</button>
-                            <button className='mx-4 m-0 text-lg bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-bounce  italic p-1 md:text-3xl mb-2' type='submit'>Enviar</button>
+                            <button className='mx-4 m-0 text-lg bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md  text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-pulse italic p-10 md:text-3xl mb-2' type='button' onClick={() => { setGatilloCambiar(false); setSumarORestar(true) }}>Cerrar</button>
+                            <button className='mx-4 m-0 text-lg bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-pulse  italic p-1 md:text-3xl mb-2' type='submit'>Enviar</button>
                         </div>
                     </form>
                 </div>
             </div>
 
-            <div className={"hidden xl:flex flex-row bg-cyan-800 items-center justify-between p-1 fixed block w-full top-0 mx-auto ml-0 px-8 z-10 bg-[url(" + bannerMorado2 + ")]  bg-left-top md:bg-top bg-fixed pb-2 rounded-xl shadow rounded-t-none py-3 bg-sky-600 bg-cover bg-center xl:bg-contain md:bg-top bg-fixed"}>
+            <div className={"hidden xl:flex flex-row bg-cyan-800 items-center justify-between p-1 fixed block w-full top-0 mx-auto ml-0 px-8 z-10 bg-[url(" + bannerMorado2 + ")]  bg-left-top md:bg-top bg-fixed pb-4 shadow-xl rounded-xl shadow rounded-t-none py-3 bg-sky-600 bg-cover bg-center xl:bg-contain md:bg-top bg-fixed"}>
                 <BuscarProducto />
                 <button onClick={setForm} className='z-10 hover:bg-slate-50 text-xl flex flex-row mb-1 mx-10 xl:ml-10 xl:fixed items-center xl:bottom-[-1%] xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
                     <h1 className='mr-3 inline text-black font-bold text-1xl'>Nuevo Producto</h1>
@@ -322,13 +327,13 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 </ul>
             </div>
             <nav className={"flex flex-col xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pb-[80vh] xl:pt-0  bg-sky-600 bg-[length:auto_100vh] md:bg-[length:auto_100vh] xl:bg-[length:100vw_auto] bg-[position:center_-40vh] md:bg-[position:center_0vh] xl:bg-center xl:bg-contain md:bg-top bg-fixed xl:px-8 shadow-md md:rounded-xl md:rounded-t-none xl:bg-[url(" + bannerMorado + ")] bg-[url(" + bannerMorado3 + ")]"}>
-                <div className={`flex flex-col justify-center items-center ` + (gatilloOpciones? "" : "")}>
+                <div className={`flex flex-col justify-center items-center ` + (gatilloOpciones ? "" : "")}>
                     <OpcionesMobile gatilloOpciones={gatilloOpciones} setGatilloOpciones={setGatilloOpciones} />
                     <button className='xl:hidden py-4 w-auto inline w-[8%] xl:w-[3.5%] ' onClick={() => setGatilloOpciones(!gatilloOpciones)}>
                         <img src={boton3bars} alt='3 bars btn' className='w-[100%]' />
                     </button>
                 </div>
-                <button onClick={setForm} className='xl:hidden xl:z-10 hover:bg-slate-50 text-xl flex flex-row  mx-10 xl:ml-10 xl:fixed items-center xl:bottom-[-1%] xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center my-2'>
+                <button onClick={setForm} className='xl:hidden xl:z-10 hover:bg-slate-50 text-xl flex flex-row  mx-10 xl:ml-10 xl:fixed items-center xl:bottom-[-1%] xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse items-center justify-center'>
                     <h1 className='mr-3 inline text-black font-bold text-1xl'>Nuevo Producto</h1>
                     <img className='inline rounded text-base xl:text-xl w-8' src={addBtn2} alt='addBtn2' />
                 </button>
@@ -340,10 +345,10 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <CrearProducto visible={mostrarForm} cargando={cargando} setCargando={setCargando} />
             <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} cargando={cargando} setCargando={setCargando} />
             <Paginado />
-                {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
+            {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
             <div className='w-screen overflow-x-auto'>
 
-                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[260%] xl:w-[100%] xl:w-screen text-xl xl:text-2xl px-6 xl:pr-9  '>
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[260%] md:w-[150%] xl:w-[100%] xl:w-screen text-xl xl:text-2xl px-6 xl:pr-9  '>
                     <li className='font-serif flex flex-row my-3 font-bold flex w-full shadow pb-3'>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'>Img</h2>
                         <div className='font-serif flex-grow min-w-0 basis-[6.25%] flex flew-row items-center '>
@@ -414,7 +419,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
                             return <li className='border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-3xl'>
                                 <div className='ml-2 flex-grow min-w-0 basis-[6.25%] my-auto'>
-                                    <button onClick={() => {setGatilloImagen({gatillo: true, imagen: el.imagen})}}>
+                                    <button onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
                                         <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
                                     </button>
                                 </div>
@@ -423,8 +428,9 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 <div className='flex flex-row flex-grow basis-[25%] relative justify-center items-center '>
 
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stockDeposito}</h3>
-                                    <button className="border-2 border-black p-1 rounded-xl shadow-xl absolute w-[10%] xl:w-[10%] md:w-[6%] left-[45%] xl:left-[45%] md:left-[47%] xl:hover:animate-pulse" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
-                                        <img src={transferBtn} alt='transferArrow' className='w-[100%] h-[100%]' />
+                                    <button className="flex flex-col items-center justify-center absolute w-[12%] xl:w-[10%] md:w-[10%] left-[44%] xl:left-[45%] md:left-[45%] xl:hover:animate-pulse hover:w-[15%] md:hover:w-[12%]" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
+                                        <img src={transferBtn} alt='transferArrow' className=' w-[100%] h-[100%]' />
+                                        <img src={editBtn} alt='pencil' className='mt-1 w-4 h-4' />
                                     </button>
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stock}</h3>
 
@@ -471,7 +477,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return {
         setForm: () => dispatch(setForm()),
-        setProductos: (input) => dispatch(setProductos(input)),
+        setProductos: (input, orden) => dispatch(setProductos(input, orden)),
         ordenarNombre: (gatillo) => dispatch(ordenarNombre(gatillo)),
         ordenarPrecio: (lista, lista2, gatillo) => dispatch(ordenarPrecio(lista, lista2, gatillo)),
         ordenarStock: (gatillo) => dispatch(ordenarStock(gatillo)),

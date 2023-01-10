@@ -205,7 +205,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             Axios.put(ip + '/products/' + productoToEdit.id, productData)
                 .then(() => setEdit((productoToEdit.id || 0), productos))
                 .then(() => {
-                    setProductos(input1)
+                    setProductos(input1, productos)
                     pname.value = '';
                     pstock.value = '';
                     pstockDeposito.value = '';
@@ -395,7 +395,7 @@ const mapStateToProps = (state) => {
 function mapDispatchToProps(dispatch) {
     return {
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
-        setProductos: (input) => dispatch(setProductos(input)),
+        setProductos: (input, orden) => dispatch(setProductos(input, orden)),
         // implemento cambiarGatilloEliminar
         cambiarGatilloEliminar: () => dispatch(cambiarGatilloEliminar()),
         // implemento activarSumar

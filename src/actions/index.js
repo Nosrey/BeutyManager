@@ -26,14 +26,28 @@ export function setEdit(id, productoLista) {
     }
 }
 
-export function setProductos(input) {
+export function setProductos(input, orden = []) {
     return function (dispatch) {
+        // una funcion que revisa un array de productos y luego ordena un segudo array de productos que fue actualizado para que el nuevo tenga el mismo orden que el viejo
+        function ordenarProductos(arrayViejo, arrayNuevo) {
+            let arrayOrdenado = []
+            for (let i = 0; i < arrayViejo.length; i++) {
+                for (let j = 0; j < arrayNuevo.length; j++) {
+                    if (arrayViejo[i].id === arrayNuevo[j].id) arrayOrdenado.push(arrayNuevo[j])
+                }
+            }
+            return arrayOrdenado
+        }
         return (
             fetch(ip + '/products')
                 .then((res) => res.json())
                 .then((json) => {
                     filtrarProductos(json, input)
-                    dispatch({ type: SET_PRODUCTOS, payload: json })
+                    if (orden.length > 0) {
+                        let arrayOrdenado = ordenarProductos(orden, json)
+                        dispatch({ type: SET_PRODUCTOS, payload: { array: arrayOrdenado, cambiar: false } })
+                    }
+                    else dispatch({ type: SET_PRODUCTOS, payload: { array: json, cambiar: true } })
                 })
         )
     }

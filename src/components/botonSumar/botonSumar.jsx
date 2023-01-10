@@ -98,10 +98,10 @@ function BotonSumar({ numeroASumar, setNumeroASumar, setGatilloSumar, precio, se
             <div className='flex flex-col items-center justify-center '>
                 <button className={'w-[20%] mt-2 '} onClick={sumar}>
 
-                <img className='w-[100%] mt-2 ' src={(signo === "+") ? addBtn2 : removeBtn} alt='signo'/>
+                    <img className='w-[100%] mt-2 ' src={(signo === "+") ? addBtn2 : removeBtn} alt='signo' />
                 </button>
 
-                <input className='my-5 w-[30%] xl:w-[20%] py-1 border border-black border-2 rounded text-center font-bold text-4xl text-center text-blue-700' placeholder={placeholder} value={numero} onChange={(e) => setNumero(e.target.value)} />
+                <input type='number' className='my-5 w-[50%] xl:w-[40%] py-1 border border-black border-2 rounded text-center font-bold text-4xl text-center text-blue-700' placeholder={placeholder} value={numero} onChange={(e) => setNumero(e.target.value)} />
             </div>
             <button onClick={handleSumSubmit} className="bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md shadow-sm xl:hover:animate-bounce italic p-1 mb-2">
                 <h2 className=''>
