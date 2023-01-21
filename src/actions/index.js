@@ -26,7 +26,7 @@ export function setEdit(id, productoLista) {
     }
 }
 
-export function setProductos(input, orden = []) {
+export function setProductos(input='', orden = []) {
     return function (dispatch) {
         // una funcion que revisa un array de productos y luego ordena un segudo array de productos que fue actualizado para que el nuevo tenga el mismo orden que el viejo
         function ordenarProductos(arrayViejo, arrayNuevo) {
