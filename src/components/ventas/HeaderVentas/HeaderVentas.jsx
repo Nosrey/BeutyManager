@@ -3,7 +3,14 @@
 export default function HeaderVentas() {
     return (
         <div className="border-2 border-black">
-            <h1>HeaderVentas</h1>
+            {/* creo un boton que me redirecciona a la ruta de la pagina que termina en /inventario */}
+            <button className="border-2 border-black rounded"
+            onClick={
+                () => {
+                    window.location.href = '/inventario'
+                }
+            }
+            >Inventario</button>
         </div>
     )
 }

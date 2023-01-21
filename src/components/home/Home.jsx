@@ -147,27 +147,6 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             productData.stockDeposito = Number(num2);
             productData.stock = Number(num3);
 
-            console.log('soy el producto a enviar: ', productData)
-
-            Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => setProductos(input1, productos)) // para pedir los productos actualizados
-                .then(() => {  // vaciamos el formulario
-                    // pongo en cero numeroBase
-                    setNumeroBase(0);
-                    // desactivo gatilloCambiar
-                })
-                .then(() => setGatilloCambiar(false))
-                // pongo sumarORestar en true de nuevo
-                .then(() => {
-                    setSumarORestar(true)
-                    setCargando(false)
-                })
-                .catch((err) => {
-                    console.log('sucedio un error: ', err.response.data);
-                    setCargando(false);
-                })
-
-
 
         } else {
             // hago lo mismo que arriba pero invirtiendo num1 y num2
@@ -185,33 +164,26 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             //asignar a productData los valores de num2 y num3 a stock y stockDeposito
             productData.stockDeposito = Number(num2);
             productData.stock = Number(num3);
-
-            console.log('soy el producto a enviar: ', productData)
-
-            Axios.put(ip + '/products/' + productoToEdit.id, productData)
-                .then(() => setProductos(input1, productos)) // para pedir los productos actualizados
-                .then(() => {  // vaciamos el formulario
-                    // pongo en cero numeroBase
-                    setNumeroBase(0);
-                    // desactivo gatilloCambiar
-                })
-                .then(() => setGatilloCambiar(false))
-                .then(() => {
-                    filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
-                })
-                // pongo sumarORestar en true de nuevo
-                .then(() => {
-                    setSumarORestar(true)
-                    setCargando(false)
-                })
-                .catch((err) => {
-                    console.log('sucedio un error: ', err.response.data);
-                    setCargando(false)
-                })
-
-
-
         }
+
+        Axios.put(ip + '/products/' + productoToEdit.id, productData)
+            .then(() => setProductos(input1, productos)) // para pedir los productos actualizados
+            .then(() => {  // vaciamos el formulario
+                // pongo en cero numeroBase
+                setNumeroBase(0);
+                // desactivo gatilloCambiar
+            })
+            .then(() => setGatilloCambiar(false))
+            // pongo sumarORestar en true de nuevo
+            .then(() => {
+                setSumarORestar(true)
+                setCargando(false)
+            })
+            .catch((err) => {
+                console.log('sucedio un error: ', err.response.data);
+                setCargando(false);
+            })
+
     }
 
     useEffect(() => {
@@ -313,7 +285,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 </button>
                 <ul className='text-white w-[60%] text-2xl italic flex flex-row justify-end items-center'>
                     <li className='border-l-2 px-2  mr-4 pl-3 pr-2'>
-                        <h1>Ventas</h1>
+                        <button onClick={
+                            () => {
+                                window.location.href = '/ventas'
+                            }
+                        }>Ventas</button>
                     </li>
                     <li className='border-l-2 px-3 pr-2 pb-1 rounded-xl rounded-l-none shadow-xl font-bold text-2xl mr-4 not-italic'>
                         <h1>Inventario</h1>

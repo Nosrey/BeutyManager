@@ -26,7 +26,8 @@ export function setEdit(id, productoLista) {
     }
 }
 
-export function setProductos(input='', orden = []) {
+export function setProductos(input, orden = []) {
+    if (!input) input = ''
     return function (dispatch) {
         // una funcion que revisa un array de productos y luego ordena un segudo array de productos que fue actualizado para que el nuevo tenga el mismo orden que el viejo
         function ordenarProductos(arrayViejo, arrayNuevo) {
@@ -60,8 +61,6 @@ export function filtrarProductos(lista, filtro) {
             let palabraSinAcentos = palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
             return palabraSinAcentos
         }
-
-
 
         // una funcion que separe palabras por espacio entre ellas y las guarde en un array
         function separarPalabras(texto) {
@@ -102,13 +101,6 @@ export function filtrarProductos(lista, filtro) {
                 }
                 // pushear el elemento de la lista si la variable aprobado es mayor o igual a la longitud de palabrasJuntas
                 if (aprobado >= palabrasJuntas.length) resultados.push(lista[i])
-            }
-        }
-
-        // revisar coincidencias en palabrasJuntas con respecto al nombre de los productos
-        if (palabrasJuntas.length && lista.length) {
-            for (let i = 0; i < lista.length; i++) {
-
             }
         }
 
