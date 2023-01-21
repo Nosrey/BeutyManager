@@ -70,6 +70,9 @@ const initialState = {
     gatilloEliminar : false,
     pagina: 1,
     sumar: false,
+    ventas: {
+
+    }
 };
 
 function rootReducer(state = initialState, action) {
