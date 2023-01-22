@@ -9,8 +9,11 @@ import HeaderVentas from '../HeaderVentas/HeaderVentas';
 import ProductosElegidosVentas from '../ProductosElegidosVentas/ProductosElegidosVentas';
 // importo la action setProductos
 import { setProductos } from '../../../actions/index'
+import TotalPrecioVentas from '../TotalPrecioVentas/TotalPrecioVentas';
+// importo ip de Home.jsx
+import { ip } from '../../home/Home'
 
-function VentasHome({ productos, setProductos }) {
+function VentasHome({ setProductos }) {
     // creo el estado productosVentas
     const [productosVentas, setProductosVentas] = useState([]);
     // creo un estado para guardar los productos elegidos para vender
@@ -28,17 +31,17 @@ function VentasHome({ productos, setProductos }) {
         <div className="">
             <HeaderVentas />
             <h1>Home</h1>
-            <BuscadorVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas}  setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos}/>
+            <BuscadorVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} />
             <hr />
             <ProductosElegidosVentas setProductosElegidos={setProductosElegidos} productosElegidos={productosElegidos} cantidades={cantidades} setCantidades={setCantidades} />
+            <TotalPrecioVentas lista={productosElegidos} setLista={setProductosElegidos} cantidades={cantidades} setCantidades={setCantidades} ip={ip} />
         </div>
     )
 }
 
 const mapStateToProps = (state) => {
     return {
-        // aplico el estado productos
-        productos: state.productos
+
     }
 }
 
