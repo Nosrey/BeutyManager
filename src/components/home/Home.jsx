@@ -42,11 +42,12 @@ import OpcionesMobile from '../OpcionesMobile/OpcionesMobile.jsx'
 const ip = "https://vercel-api-hazel-five.vercel.app"
 // const ip = "http://localhost:3001"
 const ipPagina = "https://inventorymanager.onrender.com"
+const ipRuta = "/beautyManager/#"
 
 const cantidadPagina = 25
 
 // exporto las constantes ip e ipPagina
-export { ip, ipPagina, addBtn2, removeBtn }
+export { ip, ipPagina, addBtn2, removeBtn, ipRuta }
 
 let gatilloNombre = true;
 let gatilloStock = true;
@@ -287,7 +288,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                     <li className='border-l-2 px-2  mr-4 pl-3 pr-2'>
                         <button onClick={
                             () => {
-                                window.location.href = '/ventas'
+                                window.location.href = ipRuta +'/ventas'
                             }
                         }>Ventas</button>
                     </li>
