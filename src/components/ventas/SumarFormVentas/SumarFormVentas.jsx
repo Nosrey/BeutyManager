@@ -19,11 +19,11 @@ function SumarFormVentas({ numero, setNumero, gatillo, id, productos }) {
             <form className="flex flex-col">
                 <label htmlFor="cantidad">Cantidad</label>
                 <div className="flex flex-row items-center justify-center">
-                    <button onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] + 1 }) }}>+</button>
+                    <button onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] - 1 }) }}>-</button>
                     <input type={"number"} value={numero[id]} placeholder='Cantidad' onChange={(e) => {
                         setNumero({ ...numero, [id]: e.target.value })
                     }} />
-                    <button onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] - 1 }) }}>-</button>
+                    <button onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] + 1 }) }}>+</button>
                 </div>
             </form>
         </div>

@@ -5,16 +5,19 @@ import Home from './components/home/Home.jsx'
 import VentasHome from './components/ventas/VentasHome/VentasHome.jsx'
 import React from 'react';
 
-
+// const ipRuta = "/beautyManager/#"
+let ipRuta = "#"
+export { ipRuta }
 
 function App() {
+
   return (
     <div className={'w-full'} id='base'>
-        <Routes>
-          <Route exact path="/inventario" element={<Home />} />
-          <Route exact path="/ventas" element={<VentasHome />} />
-          {/* <Route exact path='/' element={<Navigate to='/inventario' />} /> */}
-        </Routes>
+      <Routes>
+        <Route path="/inventario" element={<Home />} />
+        <Route path="/ventas" element={<VentasHome />} />
+        <Route path='*' element={<Navigate to={`/inventario`} />} />
+      </Routes>
     </div>
   );
 }

@@ -36,18 +36,18 @@ import boton3bars from '../../images/boton3bars.png'
 import loadingIcon from '../../images/loadingIcon.png'
 // importo OpcionesMobile.jsx
 import OpcionesMobile from '../OpcionesMobile/OpcionesMobile.jsx'
+import { ipRuta } from '../../App';
 
 
 
 const ip = "https://vercel-api-hazel-five.vercel.app"
 // const ip = "http://localhost:3001"
 const ipPagina = "https://inventorymanager.onrender.com"
-const ipRuta = "/beautyManager/#"
 
 const cantidadPagina = 25
 
 // exporto las constantes ip e ipPagina
-export { ip, ipPagina, addBtn2, removeBtn, ipRuta }
+export { ip, ipPagina, addBtn2, removeBtn }
 
 let gatilloNombre = true;
 let gatilloStock = true;
