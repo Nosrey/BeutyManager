@@ -12,7 +12,7 @@ export default function ProductosElegidosVentas({ productosElegidos, setCantidad
             <SumarFormVentas productos={productosElegidos} gatillo={gatilloSumar} numero={cantidades} setNumero={setCantidades} id={editable} />
             <CortinaBlancaVentas gatillo={gatilloSumar} setGatillo={setGatilloSumar} />
             <ul className="text-center">
-                <li key={'-1'} className={'text-xs border-b-2 mb-1 py-1 p-1  last:border-b-0 border-black last:mb-0 text-center flex flex-row items-center justify-center '}>
+                <li key={'-1'} className={'text-base border-b-2 mb-1 py-1 p-1  last:border-b-0 border-black last:mb-0 text-center flex flex-row items-center justify-center '}>
                     <div className="w-[10%]"></div>
                     <div className="flex flex-row justify-between items-center font-bold bg-slate-50 w-[80%]">
                         <h1 className='w-[20%]'>Nombre</h1>

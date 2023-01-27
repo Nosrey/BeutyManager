@@ -28,11 +28,10 @@ function VentasHome({ setProductos }) {
     }, []); //eslint-disable-line
 
     return (
-        <div className="">
+        <div className="pb-4">
             <HeaderVentas />
-            <h1>Home</h1>
             <BuscadorVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} />
-            <hr />
+
             <ProductosElegidosVentas setProductosElegidos={setProductosElegidos} productosElegidos={productosElegidos} cantidades={cantidades} setCantidades={setCantidades} />
             <TotalPrecioVentas lista={productosElegidos} setLista={setProductosElegidos} cantidades={cantidades} setCantidades={setCantidades} ip={ip} />
         </div>
