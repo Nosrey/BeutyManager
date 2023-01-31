@@ -4,7 +4,7 @@ import { connect } from "react-redux";
 
 function CajaVentas({ productosVentas, setProductosElegidos, setCantidades, cantidades, productosElegidos, setInput, setProductosVentas }) {
     return (
-        <div className={productosVentas.length ? "w-full opacity-90 border border-black border-t-0 absolute top-0 bg-slate-50 rounded-b-xl" : 'hidden'}>
+        <div className={productosVentas.length ? "w-full opacity-90 border border-black border-t-0 absolute top-0 bg-slate-50 rounded-b-xl z-10" : 'hidden'}>
             {/* creo una lista en ul de li elements donde cada li element es un producto de productosVentas */}
             <ul className=''>
                 <li key={'-1'} className={productosVentas ? 'border-b border-t mb-1 py-2 p-1 last:border-b-0 border-black last:mb-4 text-center' : 'hidden'}>
@@ -39,7 +39,7 @@ function CajaVentas({ productosVentas, setProductosElegidos, setCantidades, cant
                                     <p className='w-[30%]'>{producto.name}</p>
                                     <p className='w-[20%]'>{producto.stock}</p>
                                     <p className='w-[20%]'>${producto.price}</p>
-                                    <img src={producto.imagen} alt="producto" className='mx-auto px-2 h-[5vh] max-w-[20%]' />
+                                    <img src={producto.imagen} alt="producto" className='mx-auto px-2 max-h-[5vh] max-w-[20%]' />
                                 </div>
                             </button>
 

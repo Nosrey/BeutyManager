@@ -2,6 +2,9 @@ import React from "react";
 import { useState } from "react";
 import CortinaBlancaVentas from "../CortinaBlancaVentas/CortinaBlancaVentas";
 import SumarFormVentas from "../SumarFormVentas/SumarFormVentas";
+// importo la imagen paper.png
+import paper from '../../../images/paper.png'
+import addBtn2 from '../../../images/addBtn2.png'
 
 export default function ProductosElegidosVentas({ productosElegidos, setCantidades, cantidades, setProductosElegidos }) {
     const [gatilloSumar, setGatilloSumar] = useState(false)
@@ -9,12 +12,13 @@ export default function ProductosElegidosVentas({ productosElegidos, setCantidad
 
     return (
         <div>
-            <SumarFormVentas productos={productosElegidos} gatillo={gatilloSumar} numero={cantidades} setNumero={setCantidades} id={editable} />
+            <SumarFormVentas productos={productosElegidos} gatillo={gatilloSumar} numero={cantidades} setNumero={setCantidades} id={editable} setGatillo={setGatilloSumar}/>
             <CortinaBlancaVentas gatillo={gatilloSumar} setGatillo={setGatilloSumar} />
-            <ul className="text-center">
-                <li key={'-1'} className={'text-base border-b-2 mb-1 py-1 p-1  last:border-b-0 border-black last:mb-0 text-center flex flex-row items-center justify-center '}>
+            <ul className="text-center mb-4">
+                <li key={'-1'} className={'font-serif flex flex-row my-3 mb-1 font-bold flex w-full py-1'}>
+                {/* <li key={'-1'} className={'text-base border-b-2 mb-1 py-1 p-1  last:border-b-0 border-black last:mb-0 text-center flex flex-row items-center justify-center '}> */}
                     <div className="w-[10%]"></div>
-                    <div className="flex flex-row justify-between items-center font-bold bg-slate-50 w-[80%]">
+                    <div className="flex flex-row justify-between items-center font-bold w-[80%]">
                         <h1 className='w-[20%]'>Nombre</h1>
                         <h1 className='w-[20%]'>Stock</h1>
                         <h1 className='w-[20%]'>Precio</h1>
@@ -28,7 +32,10 @@ export default function ProductosElegidosVentas({ productosElegidos, setCantidad
                 {productosElegidos?.map((producto) => {
                     return (
 
-                        <li key={producto.id} className='border-b-2 mb-1 py-1 p-1 last:border-b-0 border-black last:mb-0 flex flex-row items-center justify-center text-sm'>
+                        <li key={producto.id} className='border-4 shadow-md last:shadow-sm first:shadow-sm rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-lg'>
+                        {/* <li key={producto.id} className='border-b-2 mb-1 py-1 p-1 last:border-b-0 border-black last:mb-0 flex flex-row items-center justify-center text-sm'> */}
+
+
                             <button className="w-[10%]" onClick={
                                 () => {
                                     // al hacer click en la X elimino el producto del array productosElegidos
@@ -36,12 +43,14 @@ export default function ProductosElegidosVentas({ productosElegidos, setCantidad
                                     // elimino de cantidades el id y el valor de producto que eliminare
                                     delete cantidades[producto.id]
                                 }
-                            }>X</button>
+                            }>
+                                <img src={paper} alt='paper' className="w-[60%] mx-auto mr-3 "/>
+                            </button>
                             <div className="flex flex-row justify-between items-center w-[80%]">
-                                <p className='w-[20%]'>{producto.name}</p>
+                                <p className='w-[20%] break-words text-sm'>{producto.name}</p>
                                 <p className='w-[20%]'>{producto.stock}</p>
                                 <p className='w-[20%]'>${producto.price}</p>
-                                <img src={producto.imagen} alt="producto" className='mx-auto px-2 h-[5vh] max-w-[20%]' />
+                                <img src={producto.imagen} alt="producto" className='mx-auto px-2 max-h-[5vh] max-w-[20%]' />
                                 <p className='w-[20%]'>{
                                     // accedo al objeto cantidades con el id del producto de turno y muestro la cantidad aca
                                     cantidades[producto.id]
@@ -50,13 +59,14 @@ export default function ProductosElegidosVentas({ productosElegidos, setCantidad
                             <button onClick={() => {
                                 setGatilloSumar(true)
                                 setEditable(producto.id)
-                            }} className="w-[10%]">+</button>
+                            }} className="w-[10%]">
+                                <img src={addBtn2} alt='addBtn' className="w-[60%] mx-auto mr-2 "/>
+                            </button>
                         </li>
                     )
                 }
                 )}
             </ul>
-            <hr/>
         </div>
     )
 }

@@ -36,10 +36,10 @@ function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, set
                 <h2 className='mt-2 mb-6 text-2xl xl:text-3xl italic text-stone-800'>¿Estas seguro que quieres eliminar este producto?</h2>
                 <div className='flex flex-row justify-center items-center'>
                     <button className='mx-4 m-0 text-lg bg-green-500 text-white font-semibold p-1 rounded-md  text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-pulse italic w-[25%]' onClick={eliminar}>
-                        <img src={allow} alt='confirmBtn' className='w-[100%]'/>
+                        <img src={allow} alt='confirmBtn' className='w-[100%]' />
                     </button>
                     <button className='mx-4 m-0 text-lg bg-red-500 text-white font-semibold p-2 rounded-md  text-md text-2xl xl:text-3xl shadow-sm xl:hover:animate-pulse italic w-[25%]' onClick={cambiarGatilloEliminar}>
-                    <img src={X} alt='cancelBtn' className='w-[100%]'/>
+                        <img src={X} alt='cancelBtn' className='w-[100%]' />
                     </button>
                 </div>
             </div>

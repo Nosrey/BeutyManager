@@ -43,19 +43,16 @@ function totalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
     }
     return (
         <div className="flex flex-col">
-            <div className="flex flex-row items-center justify-around">
-                <h1>Total</h1>
-                <h1>{'$' + calcularTotal(lista, cantidades)}</h1>
-            </div>
-            <div className="w-auto text-center  mx-auto cursor-pointer p-2 shadow rounded-md" onClick={vender}>
-                <p className="inline">VENDER</p>
+            <div className="flex flex-col items-end justify-around mr-4">
+                <h1 className="text-xl font-bold">Total</h1>
+                <h1 className="italic">{'$' + calcularTotal(lista, cantidades)}</h1>
             </div>
 
-            <button onClick={vender} className='xl:hidden xl:z-10 hover:bg-slate-50 text-xl   mx-10 xl:ml-10 xl:fixed flex flex-col items-center justify-center xl:bottom-[-1%] xl:right-0 xl:mr-0 bg-white border p-3 pr-4 py-2 xl:py-3 shadow rounded-lg hover:animate-pulse'>
-                <img src={shoppingCar} alt="shoppingCar" className="w-12 mx-auto " />
+            <button onClick={vender} className='xl:hidden xl:z-10 hover:bg-slate-50 text-lg xl:fixed flex flex-col items-center justify-center xl:bottom-[-1%] xl:right-0 bg-white border-2 shadow-sm rounded-xl hover:animate-pulse w-[35%] py-2 mx-auto my-4'>
+                <img src={shoppingCar} alt="shoppingCar" className="w-12 mb-2 mx-auto" />
                 <div className="flex flex-row items-center justify-center">
-                    <h1 className='mr-3 inline text-black font-bold text-1xl'>Vender</h1>
-                    <img className='inline rounded text-base xl:text-xl w-8' src={addBtn2} alt='addBtn2' />
+                    <h1 className='mr-2 inline text-black font-bold text-1xl'>VENDER</h1>
+                    <img className='inline rounded text-base xl:text-xl w-5' src={addBtn2} alt='addBtn2' />
                 </div>
             </button>
         </div>

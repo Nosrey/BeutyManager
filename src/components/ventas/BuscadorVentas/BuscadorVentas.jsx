@@ -80,7 +80,7 @@ function BuscadorVentas({ productos, setProductosVentas, productosVentas, setCan
     }
 
     return (
-        <div className='focus:bg-red-500 flex flex-col items-center justify-center w-[90%] mx-auto my-4'>
+        <div className='focus:bg-red-500 flex flex-col items-center justify-center w-[90%] mx-auto my-4 mb-8'>
             <input type="search" value={input} onChange={handleInputChange} placeholder='Buscar...' className={productosVentas.length ? clasesBuscadorEdited : clasesBuscador} />
             <div className='relative w-[100%]'>
                 <CajaVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} setInput={setInput} />
