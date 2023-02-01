@@ -63,9 +63,17 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
     }
 
     // funcion para eliminar acentos de una palabra dada
-    function eliminarAcentos(palabra) {
-        let palabraSinAcentos = palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-        return palabraSinAcentos
+    function eliminarAcentos(texto) {
+        let textoSinAcentos = ''
+        for (let i = 0; i < texto.length; i++) {
+            if (texto[i] === 'á') textoSinAcentos = textoSinAcentos + 'a'
+            else if (texto[i] === 'é') textoSinAcentos = textoSinAcentos + 'e'
+            else if (texto[i] === 'í') textoSinAcentos = textoSinAcentos + 'i'
+            else if (texto[i] === 'ó') textoSinAcentos = textoSinAcentos + 'o'
+            else if (texto[i] === 'ú') textoSinAcentos = textoSinAcentos + 'u'
+            else textoSinAcentos = textoSinAcentos + texto[i]
+        }
+        return textoSinAcentos
     }
 
     const handleSubmit = (e) => {

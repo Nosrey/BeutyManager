@@ -9,9 +9,9 @@ function BuscadorVentas({ productos, setProductosVentas, productosVentas, setCan
     // creo un estado para el input
     const [input, setInput] = useState('');
 
-    let clasesBuscador = "font-medium w-[100%] xl:w-96 px-3 py-2 xl:py-1 xl:py-0.5 bg-white rounded-lg text-lg shadow-sm text-black placeholder-slate-400 focus:outline-none focus:border-sky-600  focus:ring-sky-600 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500  py-1 xl:py-0.5 text-xl xl:text-2xl italic bg-white-800 placeholder:text-black placeholder:font-bold border border-stone-300 shadow-md"
+    let clasesBuscador = "font-medium w-[100%] px-3 py-2 xl:py-1 xl:py-0.5 bg-white rounded-lg text-lg shadow-sm text-black placeholder-slate-400 focus:outline-none focus:border-sky-600  focus:ring-sky-600 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500  py-1 xl:py-0.5 text-xl xl:text-2xl italic bg-white-800 placeholder:text-black placeholder:font-bold border border-stone-300 shadow-md xl:px-8"
 
-    let clasesBuscadorEdited = "font-medium w-[100%] xl:w-96 px-3 py-2 xl:py-1 xl:py-0.5 bg-white rounded-lg text-lg shadow-sm text-black placeholder-slate-400 focus:outline-none focus:border-sky-600  focus:ring-sky-600 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500  py-1 xl:py-0.5 text-xl xl:text-2xl italic bg-white-800 placeholder:text-black placeholder:font-bold text-center border-slate-600 border border rounded-b-none border-b-0"
+    let clasesBuscadorEdited = "font-medium w-[100%] px-3 py-2 xl:py-1 xl:py-0.5 bg-white rounded-lg text-lg shadow-sm text-black placeholder-slate-400 focus:outline-none focus:border-slate-200  focus:ring-sky-600 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500  py-1 xl:py-0.5 text-xl xl:text-2xl italic bg-white-800 placeholder:text-black placeholder:font-bold border-slate-200 border border rounded-b-none border-b-0 xl:px-8"
 
     // creo una funcion para manejar el input
     const handleInputChange = (e) => {
@@ -80,7 +80,7 @@ function BuscadorVentas({ productos, setProductosVentas, productosVentas, setCan
     }
 
     return (
-        <div className='focus:bg-red-500 flex flex-col items-center justify-center w-[90%] mx-auto my-4 mb-8'>
+        <div className='focus:bg-red-500 flex flex-col items-center justify-center w-[90%] xl:w-[80%] mx-auto my-4 mb-8 xl:mt-6'>
             <input type="search" value={input} onChange={handleInputChange} placeholder='Buscar...' className={productosVentas.length ? clasesBuscadorEdited : clasesBuscador} />
             <div className='relative w-[100%]'>
                 <CajaVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} setInput={setInput} />

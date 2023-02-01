@@ -3,11 +3,18 @@ import Axios from "axios";
 import { connect } from "react-redux";
 // importo setProductos de las acciones
 import { setProductos } from '../../../actions/index'
-// importo shoppingCar.png
-import shoppingCar from '../../../images/shoppingCar.png'
-import addBtn2 from '../../../images/addBtn2.png'
+import confirm from '../../../images/confirm.png'
+// importo cortinaBlancaVentas
+import CortinaBlancaVentas from '../CortinaBlancaVentas/CortinaBlancaVentas'
+import ConfirmarFormVentas from '../ConfirmarFormVentas/ConfirmarFormVentas'
+// import useState
+import { useState } from 'react'
 
-function totalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, setProductos }) {
+function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, setProductos }) {
+    // creo los estados gatilloConfirmar
+    const [gatilloConfirmar, setGatilloConfirmar] = useState(false)
+    const [cargando, setCargando] = useState(false);
+
     // creo una funcion para calcular el total tomando en cuenta cuantos elementos se venderan en base a sus cantidades en cantidades
     const calcularTotal = (lista, cantidades) => {
         let total = 0;
@@ -15,6 +22,13 @@ function totalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
             total += element.price * cantidades[element.id]
         });
         return total
+    }
+
+    // creo la funcion confirmarVentas donde si la variable lista esta vacia no sucede nada, pero si tiene almenos un elemento se activa a true la variable gatilloConfirmar
+    const confirmarVentas = () => {
+        if (lista.length > 0) {
+            setGatilloConfirmar(true)
+        }
     }
 
     const vender = () => {
@@ -35,6 +49,10 @@ function totalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
             .then(() => {
                 setLista([]);
                 setCantidades({});
+                setGatilloConfirmar(false)
+            })
+            .then(() => {
+                setCargando(false);
             })
 
             .catch((err) => {
@@ -42,17 +60,18 @@ function totalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
             })
     }
     return (
-        <div className="flex flex-col">
-            <div className="flex flex-col items-end justify-around mr-4">
-                <h1 className="text-xl font-bold">Total</h1>
-                <h1 className="italic">{'$' + calcularTotal(lista, cantidades)}</h1>
+        <div className="flex flex-col xl:flex-row-reverse xl:justify-between">
+            <CortinaBlancaVentas gatillo={gatilloConfirmar} setGatillo={setGatilloConfirmar} />
+            <ConfirmarFormVentas gatillo={gatilloConfirmar} setGatillo={setGatilloConfirmar} vender={vender} calcularTotal={calcularTotal} lista={lista} cantidades={cantidades} cargando={cargando} setCargando={setCargando} />
+            <div className="flex flex-col xl:flex-row items-center justify-around xl:justify-end mt-4 mb-4 xl:mb-0">
+                <h1 className="text-xl font-bold xl:text-3xl">Total</h1>
+                <h1 className="italic text-lg xl:text-2xl xl:ml-5 xl:mr-14 ">{'$' + calcularTotal(lista, cantidades)}</h1>
             </div>
 
-            <button onClick={vender} className='xl:hidden xl:z-10 hover:bg-slate-50 text-lg xl:fixed flex flex-col items-center justify-center xl:bottom-[-1%] xl:right-0 bg-white border-2 shadow-sm rounded-xl hover:animate-pulse w-[35%] py-2 mx-auto my-4'>
-                <img src={shoppingCar} alt="shoppingCar" className="w-12 mb-2 mx-auto" />
+            <button onClick={confirmarVentas} className=' hover:bg-slate-50 text-lg flex flex-col items-center justify-center  bg-white border-2 shadow-sm rounded-xl hover:animate-pulse w-[35%] py-2 mx-auto xl:mx-0 my-4 xl:w-[20%] xl:text-3xl xl:ml-14 xl:mb-0'>
                 <div className="flex flex-row items-center justify-center">
-                    <h1 className='mr-2 inline text-black font-bold text-1xl'>VENDER</h1>
-                    <img className='inline rounded text-base xl:text-xl w-5' src={addBtn2} alt='addBtn2' />
+                    <h1 className='mr-2 inline text-black font-bold text-1xl'>Confirmar</h1>
+                    <img className='inline rounded text-base xl:text-xl w-5 xl:w-7 xl:ml-2' src={confirm} alt='addBtn2' />
                 </div>
             </button>
         </div>
@@ -70,4 +89,4 @@ function mapDispatchToProps(dispatch) {
     };
 }
 
-export default connect(mapStateToProps, mapDispatchToProps)(totalPrecioVentas);
+export default connect(mapStateToProps, mapDispatchToProps)(TotalPrecioVentas);

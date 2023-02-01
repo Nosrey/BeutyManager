@@ -26,20 +26,20 @@ function SumarFormVentas({ numero, setNumero, gatillo, id, productos, setGatillo
     }
 
     return (
-        <div className={(gatillo) ? 'text-4xl rounded-xl w-[50%] xl:w-[30%] fixed top-[30%] xl:top-[20%] left-[25%] xl:left-[35%] z-30' : 'hidden'}>
+        <div className={(gatillo) ? 'text-4xl rounded-xl w-[50%] md:w-[30%] md:left-[35%]  xl:w-[20%] xl:left-[40%] xl:top-[25%] fixed top-[30%]  left-[25%] z-30' : 'hidden'}>
             <form className="flex flex-col bg-white border shadow text-center rounded-2xl p-4 xl:p-6 xl:pt-3 pt-2 justify-center items-center ">
-                <button type="button" onClick={() => setGatillo(false)} className='w-[10%] absolute right-2 top-0'>
+                <button type="button" onClick={() => setGatillo(false)} className='w-[10%] absolute right-2 md:right-3 top-0 xl:right-2'>
                     <img src={cancel} alt='cancel-btn' className='shadow-sm xl:hover:animate-pulse inline w-[100%]' />
                 </button>
                 <label htmlFor="cantidad" className="mt-2 mb-6 text-2xl xl:text-3xl italic text-stone-800">Cantidad</label>
                 <div className="flex flex-row justify-center items-center">
-                    <button className="w-[12%] mr-2" onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] - 1 }) }}>
+                    <button className="w-[15%] mr-4 md:mr-6" onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] - 1 }) }}>
                         <img src={removeBtn} alt='removeBtn' className="w-[100%]"/>
                     </button>
                     <input  value={numero[id]} placeholder={sacarPlaceholder} onChange={(e) => {
                         setNumero({ ...numero, [id]: e.target.value })
-                    }} className='w-[60%] text-md text-center border rounded-xl ' />
-                    <button className="w-[12%] ml-2" onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] + 1 }) }}>
+                    }} className='w-[40%] text-md text-center border rounded-xl ' />
+                    <button className="w-[15%] ml-4 md:ml-6" onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] + 1 }) }}>
                         <img src={addBtn2} alt='addBtn2' className="w-[100%]"/>
                     </button>
                 </div>

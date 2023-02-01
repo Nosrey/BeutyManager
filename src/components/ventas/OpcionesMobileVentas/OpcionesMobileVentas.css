@@ -2,7 +2,7 @@
 @tailwind components;
 @tailwind utilities;
 
-.mobileOptionsVentas1 {
+.mobileOptionsVentas2 {
     transform-origin: top center;
     top: 0%;
 
@@ -30,7 +30,7 @@
     }
 }
 
-.mobileOptionsVentas2 {
+.mobileOptionsVentas1 {
     transform-origin: top center;
     top: 0%;
     position: fixed;

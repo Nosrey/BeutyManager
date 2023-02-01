@@ -18,7 +18,7 @@ export function setEdit(id, productoLista) {
     }
 
     console.log('soy el productoToEdit: ', producto)
-    
+
     return function (dispatch) {
         return (
             dispatch({ type: SET_EDIT, payload: producto })
@@ -56,11 +56,20 @@ export function setProductos(input, orden = []) {
 
 export function filtrarProductos(lista, filtro) {
     return function (dispatch) {
-        // funcion para eliminar acentos de una palabra dada
-        function eliminarAcentos(palabra) {
-            let palabraSinAcentos = palabra.normalize("NFD").replace(/[\u0300-\u036f]/g, "");
-            return palabraSinAcentos
+        // funcion que revisa cada letra de la palabra y si encuentra un acento lo elimina, pero si encuentra la letra ñ entonces la mantiene, por ejemplo si ingresa "cabañaá" se retornara "cabañaa"
+        function eliminarAcentos(texto) {
+            let textoSinAcentos = ''
+            for (let i = 0; i < texto.length; i++) {
+                if (texto[i] === 'á') textoSinAcentos = textoSinAcentos + 'a'
+                else if (texto[i] === 'é') textoSinAcentos = textoSinAcentos + 'e'
+                else if (texto[i] === 'í') textoSinAcentos = textoSinAcentos + 'i'
+                else if (texto[i] === 'ó') textoSinAcentos = textoSinAcentos + 'o'
+                else if (texto[i] === 'ú') textoSinAcentos = textoSinAcentos + 'u'
+                else textoSinAcentos = textoSinAcentos + texto[i]
+            }
+            return textoSinAcentos
         }
+
 
         // una funcion que separe palabras por espacio entre ellas y las guarde en un array
         function separarPalabras(texto) {
