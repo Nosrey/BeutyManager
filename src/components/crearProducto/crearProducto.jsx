@@ -1,6 +1,6 @@
 import React, { useState } from 'react';
 import Axios from 'axios';
-import { setForm, setProductos, filtrarProductos, setEdit } from '../../actions/index'
+import { setForm, setProductos, filtrarProductos, setEdit, setInput1 } from '../../actions/index'
 import { connect } from "react-redux";
 import './crearProducto.css'
 
@@ -11,7 +11,7 @@ import { ip } from '../home/Home.jsx'
 let ready = true;
 let arranque = false;
 
-function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando, input1 }) {
+function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando, input1 }) {
 
     if (visible) { arranque = true; }
 
@@ -84,7 +84,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
         if (ready) {
             ready = false;
 
-            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[1];
+            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory, pimage } = document.forms[1];
 
             if (pprice.value.length) {
                 if (!isNaN(pprice.value)) {
@@ -100,6 +100,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                     pprice.value = Number(letra.join(''))
                 } else {
                     pprice.value = '';
+                    setCargando(false)
                     alert('El precio de venta ingresado debe ser un numero, tu valor sera ignorado')
                 }
             }
@@ -118,6 +119,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                     ppriceBuy.value = Number(letra.join(''))
                 } else {
                     ppriceBuy.value = '';
+                    setCargando(false)
                     alert('El precio de compra ingresado debe ser un numero, tu valor sera ignorado')
                 }
             }
@@ -132,6 +134,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 }
                 if (!pstock.value.length) {
                     pstock.value = '';
+                    setCargando(false)
                     alert('Debes introducir un numero entero en la cantidad de stock en deposito del producto, tu valor sera ignorado')
                 }
             }
@@ -149,6 +152,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 }
                 if (!pstockDeposito.value.length) {
                     pstockDeposito.value = '';
+                    setCargando(false)
                     alert('Debes introducir un numero entero en la cantidad de stock en tienda del producto, tu valor sera ignorado')
                 }
             }
@@ -163,6 +167,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 if (existencia.length) {
                     alert('El producto ingresado ya existe, por favor ingresa uno diferente')
                     pname.value = '';
+                    setCargando(false)
                 }
             }
 
@@ -185,8 +190,10 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 Axios.post(ip + '/products', productData)
                     .then(() => setForm()) // para mostrar el formulario
                     .then(() => setProductos(input1)) // para pedir los productos actualizados
+                    .then(() => setInput1('')) // para vaciar el input de busqueda
                     .then(() => console.log('soy la lista de productos: ', productos))
                     .then(() => {  // vaciamos el formulario
+                        pimage.value = '';
                         pname.value = '';
                         pstock.value = '';
                         pstockDeposito.value = '';
@@ -257,26 +264,26 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                 <form onSubmit={handleSubmit} autoComplete="off" className='text-center font-serif flex flex-col items-center justify-center w-[80%] mx-auto'>
                     <div className="font-serif input-container mt-4 w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center">Nombre del Producto</label>
-                        <input type="text" name="pname" placeholder='Nombre...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input type="text" name="pname" placeholder='Nombre...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl  mt-2" required />
 
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center">Cantidad en Deposito</label>
-                        <input type="number" step="1" name="pstock" placeholder='Cantidad en deposito...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input type="number" step="1" name="pstock" placeholder='Cantidad en deposito...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl  mt-2" required />
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center">Cantidad en Tienda</label>
-                        <input type="number" step="1" name="pstockDeposito" placeholder='Cantidad en tienda...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input type="number" step="1" name="pstockDeposito" placeholder='Cantidad en tienda...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center">Precio de Venta</label>
-                        <input id="price" type="number" step="0.01" name="pprice" placeholder="Precio de venta..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input id="price" type="number" step="0.01" name="pprice" placeholder="Precio de venta..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
 
                     </div>
 
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center">Precio de Compra</label>
-                        <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" required />
+                        <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
 
                     </div>
                     <div className="font-serif input-container flex flex-col items-center w-[100%] mb-3">
@@ -285,7 +292,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
                             <label className="font-serif text-xl font-semibold text-center mb-0">Categorias</label>
                             <p className='my-0 text-sm text-gray-500 italic'>(Separadas por comas)</p>
                         </div>
-                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0" />
+                        <input value={pcategory} onChange={handlePcategory} type="text" name="pcategory" placeholder="Categorias..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0 mt-2" />
 
                         <ul className='font-serif flex flex-wrap justify-center mb-6'>
                             {
@@ -305,7 +312,7 @@ function CrearProducto({ productoToEdit, setEdit, setForm, visible, setProductos
 
                     <label className="block">
                         <span class="sr-only">Subir imagen</span>
-                        <input type="file" accept="image/x-png,image/gif,image/jpeg" onChange={handleFileChange} class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-200 ml-2" />
+                        <input type="file" name='pimage' accept="image/x-png,image/gif,image/jpeg" onChange={handleFileChange} class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-200 ml-2" />
                     </label>
 
                     <img src={image ? image : imagenNotFound} alt='product' className='font-serif w-28 inline py-4 mb-4' />
@@ -333,6 +340,7 @@ function mapDispatchToProps(dispatch) {
         filtrarProductos: (lista, filtro) => dispatch(filtrarProductos(lista, filtro)),
         // implementar setEdit
         setEdit: (id, productoLista) => dispatch(setEdit(id, productoLista)),
+        setInput1: (text) => dispatch(setInput1(text)),
     };
 }
 

@@ -36,7 +36,7 @@ function SumarFormVentas({ numero, setNumero, gatillo, id, productos, setGatillo
                     <button className="w-[15%] mr-4 md:mr-6" onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] - 1 }) }}>
                         <img src={removeBtn} alt='removeBtn' className="w-[100%]"/>
                     </button>
-                    <input  value={numero[id]} placeholder={sacarPlaceholder} onChange={(e) => {
+                    <input value={numero[id]} placeholder={sacarPlaceholder} onChange={(e) => {
                         setNumero({ ...numero, [id]: e.target.value })
                     }} className='w-[40%] text-md text-center border rounded-xl ' />
                     <button className="w-[15%] ml-4 md:ml-6" onClick={(e) => { e.preventDefault(); setNumero({ ...numero, [id]: numero[id] + 1 }) }}>

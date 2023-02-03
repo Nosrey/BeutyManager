@@ -5,8 +5,8 @@ import Home from './components/home/Home.jsx'
 import VentasHome from './components/ventas/VentasHome/VentasHome.jsx'
 import React from 'react';
 
-// const ipRuta = "/beautyManager/#"
-let ipRuta = "#"
+// const ipRuta = "/beautyManager/#" // para la web
+let ipRuta = "#" // para local
 export { ipRuta }
 
 function App() {

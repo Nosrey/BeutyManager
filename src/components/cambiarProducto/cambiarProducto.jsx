@@ -56,8 +56,9 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         textPrimeraVez = ''
         setPrimeraVez(true);
         setEdit(productoToEdit.id, productos)
-        var { pname  } = document.forms[2];
+        var { pname, pimage  } = document.forms[2];
         pname.value = '';
+        pimage.value = '';
         setStock( parseInt("") );
         setPrecio( parseInt("") );
         // hago lo mismo con setPrecioCompra y setStockDeposito
@@ -121,7 +122,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         if (ready) {
             ready = false;
 
-            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory } = document.forms[2];
+            var { pname, pstock, pstockDeposito, pprice, ppriceBuy, pcategory, pimage } = document.forms[2];
 
 
             if (pprice.value.length) {
@@ -138,6 +139,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     pprice.value = Number(letra.join(''))
                 } else {
                     pprice.value = '';
+                    setCargando(false)
                     alert('El precio ingresado debe ser un numero, tu valor sera ignorado')
                 }
             }
@@ -156,6 +158,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     ppriceBuy.value = Number(letra.join(''))
                 } else {
                     ppriceBuy.value = '';
+                    setCargando(false)
                     alert('El precio ingresado debe ser un numero, tu valor sera ignorado')
                 }
             }
@@ -172,6 +175,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     }
                 } else {
                     pstock.value = '';
+                    setCargando(false)
                     alert('La cantidad ingresada debe ser un numero, tu valor sera ignorado')
                 }
             }
@@ -184,11 +188,25 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     }
                     if (!pstockDeposito.value.length) {
                         pstockDeposito.value = '';
+                        setCargando(false)
                         alert('Debes introducir un numero entero en la cantidad de stock en tienda, tu valor sera ignorado')
                     }
                 } else {
                     pstockDeposito.value = '';
+                    setCargando(false)
                     alert('La cantidad ingresada debe ser un numero, tu valor sera ignorado')
+                }
+            }
+
+            // revisar si pname.value existe en productos, si ese producto ya existe entonces pname.value se vacia
+            if (pname.value) {
+                let nombre = eliminarAcentos(pname.value);
+                for (let i = 0; i < productos.length; i++) {
+                    if (productos[i].name.toLowerCase() === nombre.toLowerCase() && productos[i].id !== productoToEdit.id) {
+                        pname.value = '';
+                        setCargando(false)
+                        alert('Ya existe un producto con ese nombre, por favor escoge otro')
+                    }
                 }
             }
 
@@ -219,6 +237,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     pstockDeposito.value = '';
                     pprice.value = '';
                     ppriceBuy.value = '';
+                    pimage.value = ''
                     setStock( parseInt("") );
                     setPrecio( parseInt("") );
                     // hago lo mismo con setPrecioCompra y setStockDeposito
@@ -301,30 +320,30 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             <button className='font-serif bg-red-600 text-white absolute top-2 right-3 px-1.5 font-black hover:bg-red-300 text-xl' onClick={cerrar}>X</button>
             <div className="font-serif ">
                 <form onSubmit={handleSubmit} autoComplete="off" className='text-centerfont-serif flex flex-col items-center justify-center w-[80%] mx-auto'>
-                    <div className="font-serif input-container mt-4 w-[100%] mb-6">
+                    <div className="font-serif input-container mt-4 w-[100%] mb-6 ">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Nombre del producto</label>
-                        <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
+                        <input type="text" name="pname" placeholder={productoToEdit.name} className="font-serif mt-2  block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Deposito</label>
-                        <div className='flex flex-row w-auto items-center justify-center'>
-                            <button className='w-[20%] mr-3' type='button' onClick={() => sumBtn('stockDepositoBtn', "-")}>
+                        <div className='flex flex-row w-auto items-center justify-center pt-2 xl:pt-1 md:pt-4'>
+                            <button className='w-[20%] xl:w-[20%] xl:mr-3 md:w-[8%] mr-3 md:mr-5' type='button' onClick={() => sumBtn('stockDepositoBtn', "-")}>
                                 <img src={removeBtn} alt='removeBtn' />
                             </button>
                             <input type="number" step="1" name="pstockDeposito" value={stockDeposito} onChange={(e) => { setStockDeposito(e.target.value) }} placeholder={productoToEdit.stockDeposito} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl " />
-                            <button id='stockDepositoBtn' className='w-[20%] ml-3' type='button' onClick={() => sumBtn("stockDepositoBtn", "+")}>
+                            <button id='stockDepositoBtn' className='w-[20%] md:w-[8%] ml-3 md:ml-5 xl:w-[20%] xl:ml-3' type='button' onClick={() => sumBtn("stockDepositoBtn", "+")}>
                                 <img src={addBtn2} alt='addItems' />
                             </button>
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Cantidad en Tienda</label>
-                        <div className='flex flex-row w-auto items-center justify-center'>
-                            <button className='w-[20%] mr-3' type='button' onClick={() => sumBtn('stockBtn', "-")}>
+                        <div className='flex flex-row w-auto items-center justify-center pt-2 xl:pt-1 md:pt-4'>
+                            <button className='w-[20%] md:w-[8%] mr-3 md:mr-5 xl:w-[20%] xl:mr-3' type='button' onClick={() => sumBtn('stockBtn', "-")}>
                                 <img src={removeBtn} alt='removeBtn' />
                             </button>
                             <input type="number" step="1" name="pstock" value={stock} onChange={(e) => { setStock(e.target.value) }} placeholder={productoToEdit.stock} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
-                            <button className='w-[20%] ml-3' type='button' onClick={() => sumBtn('stockBtn', "+")}>
+                            <button className='w-[20%] md:w-[8%] ml-3 md:ml-5 xl:w-[20%] xl:ml-3' type='button' onClick={() => sumBtn('stockBtn', "+")}>
                                 <img src={addBtn2} alt='addItems' />
                             </button>
                         </div>
@@ -332,20 +351,20 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Precio de venta</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <input type="number" step="0.01" name="pprice" value={precio} onChange={(e) => { setPrecio(e.target.value) }} placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                            <input type="number" step="0.01" name="pprice" value={precio} onChange={(e) => { setPrecio(e.target.value) }} placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" />
                      
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Precio de compra</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
-                            <input type="number" step="0.01" name="ppriceBuy" value={precioCompra} onChange={(e) => { setPrecioCompra(e.target.value) }} placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl" />
+                            <input type="number" step="0.01" name="ppriceBuy" value={precioCompra} onChange={(e) => { setPrecioCompra(e.target.value) }} placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" />
                        
                         </div>
                     </div>
                     <div className="font-serif input-container text-center w-[100%] mb-6">
                         <h2 className="font-serif text-xl font-semibold text-center mb-1">Categorias del producto</h2>
-                        <input type="text" value={primeraVez ? productoToEdit.categoryNames : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.categoryNames} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0" />
+                        <input type="text" value={primeraVez ? productoToEdit.categoryNames : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.categoryNames} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0 mt-2" />
 
                         <ul className='font-serif flex flex-wrap justify-center my-3 mb-3  '>
                             {
@@ -375,7 +394,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
 
                     <label class="block">
                         <span class="sr-only">Subir imagen</span>
-                        <input type="file" accept="image/x-png,image/gif,image/jpeg" onChange={handleFileChange} class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-200 ml-2" />
+                        <input type="file" name='pimage' accept="image/x-png,image/gif,image/jpeg" onChange={handleFileChange} class="block w-full text-sm text-slate-500 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-indigo-50 file:text-indigo-700 hover:file:bg-indigo-200 ml-2" />
                     </label>
 
                     <img src={(image !== imagenNotFound) ? image : (productoToEdit.imagen) ? productoToEdit.imagen : image} alt='product' className='font-serif w-28 inline py-4 mb-4' />

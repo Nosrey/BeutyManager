@@ -82,6 +82,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         // eslint-disable-next-line
     }, [mostrarEdit, mostrarForm, navigate]);
 
+
     // declaro estados para mi componente cambiarProducto
     const [precio, setPrecio] = useState(productoToEdit.price)
     const [precioCompra, setPrecioCompra] = useState(productoToEdit.priceBuy)
@@ -119,6 +120,25 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         ordenarStock(gatilloStock)
         gatilloStock = !gatilloStock
     }
+
+    // creo un useEffect para cuando numeroBase cambie, si el valor escrito no es un numero entonces este cambia a 0
+    useEffect(() => {
+        // reviso numero a numero el valor de la constante numeroBase, si alguno de esos valores no es un numero lo elimino, por ejemplo si esta escrito 051 y luego cambia a "051a" la ultima "a" unicamente es la eliminada
+        let numeroBaseEditable = numeroBase
+        for (let i = 0; i < numeroBase.length; i++) {
+            if (isNaN(numeroBase[i])) {
+                numeroBaseEditable = numeroBaseEditable.replace(numeroBase[i], '')
+            }
+        }
+        // ahora si numeroBaseEditable es un numero entonces lo asigno a numeroBase
+        if (!isNaN(numeroBaseEditable)) {
+            setNumeroBase(numeroBaseEditable)
+        } else {
+            setNumeroBase(0)
+        }
+
+    }, [numeroBase])
+
 
     function sumarRestar(num2, num3, bool) {
         setCargando(true)
@@ -253,7 +273,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
 
             <div className={
-                (gatilloCambiar) ? 'text-4xl rounded-xl w-[80%] xl:w-[30%] fixed top-[30%] xl:top-[20%] md:top-[10%] left-[10%] xl:left-[35%] z-30' : 'hidden'
+                (gatilloCambiar) ? 'text-4xl rounded-xl w-[60%] xl:w-[30%] md:w-[40%] md:left-[30%] fixed top-[30%] xl:top-[20%] md:top-[10%] left-[20%] xl:left-[35%] z-30' : 'hidden'
             }>
                 <div className=' bg-white border shadow text-center rounded-2xl p-1 xl:p-3'>
                     <form className=' flex flex-col' onSubmit={(e) => { e.preventDefault(); sumarRestar(productoToEdit.stockDeposito, productoToEdit.stock, sumarORestar) }}>
@@ -264,7 +284,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         </button>
                         <div className='flex flex-row mx-auto inline items-center justify-center '>
                             <h4 className='font-bold text-blue-700 w-[25%] inline'>{numeroDeposito}</h4>
-                            <input className='border-2 rounded w-1/4 text-center' type='number' placeholder='0' name='pnumeroBase' value={numeroBase} onChange={(e) => {
+                            <input className='border-2 rounded w-1/4 text-center' placeholder='0' name='pnumeroBase' value={numeroBase} onChange={(e) => {
                                 // estableco el formulario controlado para este input
                                 setNumeroBase(e.target.value)
                             }} />
@@ -405,7 +425,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 <div className='flex flex-row flex-grow basis-[25%] relative justify-center items-center '>
 
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stockDeposito}</h3>
-                                    <button className="flex flex-col items-center justify-center absolute w-[12%] xl:w-[10%] md:w-[10%] left-[44%] xl:left-[45%] md:left-[45%] xl:hover:animate-pulse hover:w-[15%] md:hover:w-[12%]" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true) }}>
+                                    <button className="flex flex-col items-center justify-center absolute w-[12%] xl:w-[10%] md:w-[10%] left-[44%] xl:left-[45%] md:left-[45%] xl:hover:animate-pulse hover:w-[15%] md:hover:w-[12%]" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true); setNumeroBase(Number('')) }}>
                                         <img src={transferBtn} alt='transferArrow' className=' w-[100%] h-[100%]' />
                                         <img src={editBtn} alt='pencil' className='mt-1 w-4 h-4' />
                                     </button>

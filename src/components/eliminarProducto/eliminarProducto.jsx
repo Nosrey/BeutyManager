@@ -30,7 +30,7 @@ function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, set
 
 
     return (
-        <div className={(visible) ? 'text-4xl rounded-xl w-[80%] xl:w-[30%] fixed top-[30%] xl:top-[20%] left-[10%] xl:left-[35%] z-30' : 'hidden'}>
+        <div className={(visible) ? 'text-4xl rounded-xl w-[80%] md:w-[40%] md:left-[30%] md:top-[15%] xl:w-[30%] fixed top-[30%] xl:top-[20%] left-[10%] xl:left-[35%] z-30' : 'hidden'}>
             <div className='flex flex-col bg-white border shadow text-center rounded-2xl p-4 xl:p-6 xl:pt-3 pt-2 justify-center items-center '>
                 <img src={paper} alt='x example' className='mt-2 w-[25%]' />
                 <h2 className='mt-2 mb-6 text-2xl xl:text-3xl italic text-stone-800'>¿Estas seguro que quieres eliminar este producto?</h2>
