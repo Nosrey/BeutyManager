@@ -316,7 +316,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         <h1>Inventario</h1>
                     </li>
                     <li className='border-l-2 px-2  mr-4 pl-3 pr-2'>
-                        <h1>Inicio</h1>
+                        <button onClick={
+                            () => {
+                                window.location.href = ipRuta +'/historial'
+                            }
+                        }>Historial</button>
                     </li>
                     <li className='border-l-2 px-2  mr-4 pl-3 pr-2'>
                         <h1>Autor</h1>

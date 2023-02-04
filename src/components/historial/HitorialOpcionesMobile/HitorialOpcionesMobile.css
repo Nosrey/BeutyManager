@@ -1,0 +1,59 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+.mobileOptionsVentas2 {
+    transform-origin: top center;
+    top: 0%;
+
+    display: block;
+    animation: linear 1;
+    animation-fill-mode: forwards;  
+    animation-name: runMobileVentas1;
+    animation-duration: 0.3s;
+}
+
+@keyframes runMobileVentas1 {
+    0% {
+  
+        transform: translateY(-100%);
+    }
+
+    /* 80% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform-origin: center;
+        transform: translateY(0%);
+    }
+}
+
+.mobileOptionsVentas1 {
+    transform-origin: top center;
+    top: 0%;
+    position: fixed;
+    display: block;
+    animation: linear 1;
+    animation-fill-mode: forwards;  
+    animation-name: runMobileVentas2;
+    animation-duration: 0.3s;
+}
+
+@keyframes runMobileVentas2 {
+    0% {
+  
+        transform: translateY(0%);
+    }
+
+    /* 80% {
+        left: 29%;
+        transform: translateX(-90%);
+    } */
+
+    100% {
+        transform-origin: center;
+        transform: translateY(-100%);
+    }
+}

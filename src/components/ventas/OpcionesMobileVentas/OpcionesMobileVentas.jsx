@@ -17,8 +17,12 @@ function OpcionesMobileVentas({ gatilloOpcionesVentas, setGatilloOpcionesVentas 
                         }
                     }>Inventario</button>
                 </li>
-                <li className='border-l-2 px-2  pl-3 pr-2  py-1 shadow-md shadow-t-none '>
-                    <h1>Inicio</h1>
+                <li className='border-l-2 px-2  pl-3 pr-2 py-1 '>
+                    <button onClick={
+                        () => {
+                            window.location.href = ipRuta + '/historial'
+                        }
+                    }>Historial</button>
                 </li>
                 <li className='border-l-2 px-2  pl-3 pr-2 py-1 shadow-md shadow-t-none '>
                     <h1>Autor</h1>

@@ -51,6 +51,20 @@ function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
                 setCantidades({});
                 setGatilloConfirmar(false)
             })
+            // luego hago un nuevo post a /histories con un array con de objetos de cada producto que se vendio, cada objeto tendra su "id", "name", "numberOfProducts" y "price" tambien tendra un "date" que sera la fecha actual en formato ISO-8601 y un valor de status que sera "complete" por default
+            .then(() => {
+                let historyData = [];
+                lista.forEach(element => {
+                    historyData.push({ id: element.id, name: element.name, numberOfProducts: cantidades[element.id], price: element.price, imagen: element.imagen })
+                });
+                let newHistory = {
+                    products: historyData,
+                    date: new Date().toISOString(),
+                    status: 'complete'
+                }
+                console.log('soy lo que enviare a /histories: ', newHistory)
+                return Axios.post(ip + '/histories', newHistory)
+            })
             .then(() => {
                 setCargando(false);
             })
