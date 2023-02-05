@@ -1,14 +1,17 @@
 {
   "files": {
-    "main.css": "/beautyManager/static/css/main.902aba0b.css",
-    "main.js": "/beautyManager/static/js/main.8ee6f9cc.js",
+    "main.css": "/beautyManager/static/css/main.8ea4df87.css",
+    "main.js": "/beautyManager/static/js/main.40a141d2.js",
     "static/js/787.bfc4d8a3.chunk.js": "/beautyManager/static/js/787.bfc4d8a3.chunk.js",
     "static/media/bg2.jpg": "/beautyManager/static/media/bg2.7ceea1bc1013cb8d6728.jpg",
     "static/media/bg3.jpg": "/beautyManager/static/media/bg3.d5b73d976cf6ea86b990.jpg",
     "static/media/bg3b.jpg": "/beautyManager/static/media/bg3b.e2b39c5b812d40f67051.jpg",
     "static/media/bg-ventas.jpg": "/beautyManager/static/media/bg-ventas.ab2a21d9a9fd346e915b.jpg",
+    "static/media/bg-historial.jpg": "/beautyManager/static/media/bg-historial.d220c38b65e0787ae2e6.jpg",
     "static/media/bg-ventas3.jpg": "/beautyManager/static/media/bg-ventas3.c22562e3d9549bbd738c.jpg",
+    "static/media/bg-historial3.jpg": "/beautyManager/static/media/bg-historial3.85645e38bc94e56276dc.jpg",
     "static/media/bg-ventas2.jpg": "/beautyManager/static/media/bg-ventas2.4e1e8423f3ebe810353b.jpg",
+    "static/media/bg-historial2.jpg": "/beautyManager/static/media/bg-historial2.c46f9895ff48d9536075.jpg",
     "static/media/X.png": "/beautyManager/static/media/X.eacb1f2f5dea8737739b.png",
     "static/media/rightArrow.png": "/beautyManager/static/media/rightArrow.2c71d600391345c02506.png",
     "static/media/leftArrow.png": "/beautyManager/static/media/leftArrow.2f433d6e9ac32003e284.png",
@@ -20,12 +23,12 @@
     "static/media/boton3bars.png": "/beautyManager/static/media/boton3bars.11566e85371fc38a4578.png",
     "static/media/cancel.png": "/beautyManager/static/media/cancel.d47f0e1ad5abb6bff151.png",
     "index.html": "/beautyManager/index.html",
-    "main.902aba0b.css.map": "/beautyManager/static/css/main.902aba0b.css.map",
-    "main.8ee6f9cc.js.map": "/beautyManager/static/js/main.8ee6f9cc.js.map",
+    "main.8ea4df87.css.map": "/beautyManager/static/css/main.8ea4df87.css.map",
+    "main.40a141d2.js.map": "/beautyManager/static/js/main.40a141d2.js.map",
     "787.bfc4d8a3.chunk.js.map": "/beautyManager/static/js/787.bfc4d8a3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.902aba0b.css",
-    "static/js/main.8ee6f9cc.js"
+    "static/css/main.8ea4df87.css",
+    "static/js/main.40a141d2.js"
   ]
 }
