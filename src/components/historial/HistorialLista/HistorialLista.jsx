@@ -27,40 +27,40 @@ export default function HistorialLista() {
         // hago que dependiendo de mes se cambie a su equivalente en palabra, por ejemplo 12 = diciembre
         switch (mes) {
             case 1:
-                mes = "ene";
+                mes = "Ene";
                 break;
             case 2:
-                mes = "feb";
+                mes = "Feb";
                 break;
             case 3:
-                mes = "mar";
+                mes = "Mar";
                 break;
             case 4:
-                mes = "abr";
+                mes = "Abr";
                 break;
             case 5:
-                mes = "may";
+                mes = "May";
                 break;
             case 6:
-                mes = "jun";
+                mes = "Jun";
                 break;
             case 7:
-                mes = "jul";
+                mes = "Jul";
                 break;
             case 8:
-                mes = "ago";
+                mes = "Ago";
                 break;
             case 9:
-                mes = "sep";
+                mes = "Sep";
                 break;
             case 10:
-                mes = "oct";
+                mes = "Oct";
                 break;
             case 11:
-                mes = "nov";
+                mes = "Nov";
                 break;
             case 12:
-                mes = "dic";
+                mes = "Dic";
                 break;
             default:
                 mes = "??";
@@ -90,7 +90,7 @@ export default function HistorialLista() {
             <HistorialElementoARevisar elementos={historialARevisar} gatillo={gatilloHistorial}  setGatillo={setGatilloHistorial} fecha={formatDate(fecha)} />
             <HistorialCortinaBlanca gatillo={gatilloHistorial} setGatillo={setGatilloHistorial} />
             <ul className="w-[95%] mx-auto border flex flex-col justify-center items-center cursor-pointer">
-                {historial?.map((element, index) => {
+                {historial?.slice().reverse().map((element, index) => {
                     return (
                         <li key={index} className='text-center flex flex-row w-full' onClick={() => {
                             verHistorialElemento(element.products);

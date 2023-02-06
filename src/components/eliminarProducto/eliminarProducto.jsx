@@ -16,12 +16,14 @@ import paper from '../../images/paper.png';
 
 // implemento las actiones y los estados
 
-function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, setProductos, input1 }) {
+function eliminarProducto({ visible, productoToEdit, cambiarGatilloEliminar, setProductos, input1, setCargando }) {
     function eliminar() {
+        setCargando(true)
         Axios.delete(ip + '/products/' + productoToEdit.id, { id: productoToEdit.id })
             .then(() => setProductos(input1))
             .then(() => {
                 cambiarGatilloEliminar()
+                setCargando(false)
             })
             .catch((err) => {
                 console.log('error en eliminar producto: ', err.response.data);

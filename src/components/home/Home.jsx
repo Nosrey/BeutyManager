@@ -269,7 +269,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 (gatilloEliminar) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 blur-sm' : 'hidden'
             }>
             </div>
-            <EliminarProducto visible={gatilloEliminar} />
+            <EliminarProducto visible={gatilloEliminar} setCargando={setCargando} />
 
 
             <div className={
