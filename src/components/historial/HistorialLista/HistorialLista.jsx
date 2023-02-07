@@ -4,11 +4,11 @@ import { ip } from '../../home/Home.jsx'
 import HistorialCortinaBlanca from '../HistorialCortinaBlanca/HistorialCortinaBlanca.jsx'
 import HistorialElementoARevisar from "../HistorialElementoARevisar/HistorialElementoARevisar.jsx";
 
-export default function HistorialLista() {
+export default function HistorialLista({ cargando, setCargando }) {
     // creo un estado para la lista de elementos del historial
     const [historial, setHistorial] = useState([]);
     const [gatilloHistorial, setGatilloHistorial] = useState(false);
-    const [historialARevisar, setHistorialARevisar] = useState([]);
+    const [historialARevisar, setHistorialARevisar] = useState({productos: [], id: 0});
     const [fecha, setFecha] = useState('');
 
     // creo un useState que guarda unicamente al iniciar en historial lo que recibe de ip + '/histories'
@@ -74,7 +74,7 @@ export default function HistorialLista() {
     function sacarSuma(array) {
         let suma = 0;
         array.forEach(element => {
-            suma += element.price;
+            suma += Number(element.price) * Number(element.numberOfProducts);
         });
         return suma;
     }
@@ -84,20 +84,25 @@ export default function HistorialLista() {
         setHistorialARevisar(products);
     }
 
+    // creare una funcion que se llama invertidor donde invierte la id, por ejemplo si un elemento es el penultimo de 50 (es decir 48) lo convierte en el segundo de 50 (es decir 2)
+    function invertidor(id) {
+        return historial.length - id - 1;
+    }
+
 
     return (
         <div>
-            <HistorialElementoARevisar elementos={historialARevisar} gatillo={gatilloHistorial}  setGatillo={setGatilloHistorial} fecha={formatDate(fecha)} />
+            <HistorialElementoARevisar elementos={historialARevisar.productos} id={historialARevisar.id} gatillo={gatilloHistorial} setGatillo={setGatilloHistorial} fecha={formatDate(fecha)} cargando={cargando} setCargando={setCargando} setHistorial={setHistorial} index={invertidor(historialARevisar.index)}/>
             <HistorialCortinaBlanca gatillo={gatilloHistorial} setGatillo={setGatilloHistorial} />
             <ul className="w-[95%] mx-auto border flex flex-col justify-center items-center cursor-pointer">
                 {historial?.slice().reverse().map((element, index) => {
                     return (
-                        <li key={index} className='text-center flex flex-row w-full' onClick={() => {
-                            verHistorialElemento(element.products);
+                        <li key={index} className={'text-center flex flex-row w-full' + (element.status === 'complete' ? '' : ' bg-red-500')} onClick={() => {
+                            verHistorialElemento({productos: element.products, id: element.id, index: index});
                             setFecha(element.date);
                         }}>
                             <p className="w-[10%]">#: {index + 1}</p>
-                            <p className="w-[45%]">Fecha: { formatDate(element.date)}</p>
+                            <p className="w-[45%]">Fecha: {formatDate(element.date)}</p>
                             <p className="w-[45%]">Total: ${sacarSuma(element.products)}</p>
                         </li>
                     )

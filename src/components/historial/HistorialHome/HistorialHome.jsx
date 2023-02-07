@@ -3,12 +3,16 @@
 import React from "react";
 import HistorialHeader from '../HistorialHeader/HistorialHeader.jsx'
 import HistorialLista from '../HistorialLista/HistorialLista.jsx'
+import HistorialPantallaCarga from "../../ventas/PantallaCargaVentas/PantallaCargaVentas.jsx";
+import { useState } from 'react';
 
 export default function HistorialHome() {
+    const [cargando, setCargando] = useState(false);
     return (
         <div>
+            <HistorialPantallaCarga gatillo={cargando} />
             <HistorialHeader />
-            <HistorialLista />
+            <HistorialLista cargando={cargando} setCargando={setCargando} />
         </div>
     );
 }

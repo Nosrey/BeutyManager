@@ -1,7 +1,11 @@
 import React, { useState, useEffect } from "react";
 import cancel from '../../../images/cancel.png'
+import { connect } from "react-redux";
+import { setProductos } from "../../../actions/index";
+import { ip } from '../..//home/Home'
+import Axios from "axios";
 
-export default function HistorialElementoARevisar({ elementos, gatillo, setGatillo, fecha }) {
+function HistorialElementoARevisar({ elementos, gatillo, setGatillo, fecha, productos, setProductos, cargando, setCargando, id, setHistorial, index }) {
     // creo el estado para sumar todos los productos
     const [total, setTotal] = useState(0);
 
@@ -13,6 +17,60 @@ export default function HistorialElementoARevisar({ elementos, gatillo, setGatil
         });
         setTotal(total);
     }, [elementos]);
+
+    // ejecuto un useEffect para usar setProductos en caso de que en productos no haya nada
+    useEffect(() => {
+        if (productos.length === 0) {
+            setProductos();
+        }
+        // eslint-disable-next-line
+    }, []);
+
+    // creo una funcion que busca en productos los productos dentro de elementos y les agrega a su stock la cantidad de productos vendidos
+    const deshacerVenta = () => {
+        setCargando(true);
+        // creo un array para guardar los productos que voy a modificar
+        let productosModificados = [];
+        let listaIds = []
+        // recorro los elementos
+        elementos.forEach(elemento => {
+            // busco el producto en productos
+            let producto = productos.find(producto => producto.id === elemento.id);
+            // le sumo al stock la cantidad de productos vendidos
+            producto.stock = Number(producto.stock) + Number(elemento.numberOfProducts);
+            // agrego el producto modificado al array
+            productosModificados.push(producto);
+            listaIds.push(producto.id)
+        });
+        // envio un put a ip/products/array con los productos modificados
+        Axios.put(ip + '/products/array', { cambios: productosModificados, ids: listaIds })
+            // hago un .then y voy a ip/histories/id para cambiar el status
+            .then(() => {
+                Axios.put(`${ip}/histories/${id}`)
+                    .then(data => {
+                        // si la respuesta es correcta, ejecuto setProductos con los productos modificados
+                        setProductos();
+                        setCargando(false)
+                    })
+            })
+            .then(() => {
+                // uso setHistorial en base a que la posiscion del elemento de historial recibida sea igual a la variable index para cambiar el status a cancelled buscando en el array la coincidencia con dicha id
+                setHistorial(historial => {
+                    let historialModificado = historial;
+                    historialModificado[index].status = 'cancelled';
+                    console.log('soy el historial modificado', historialModificado)
+                    return historialModificado;
+                })                                        
+                setGatillo(false)
+            })
+
+            .catch(error => {
+                console.log(error);
+                setCargando(false)
+            });
+
+    }
+
 
     return (
         <div className={gatillo ? "flex flex-col w-[95%] left-[2.5%] h-auto bg-slate-50 border-4 rounded-lg  z-30 fixed text-center text-sm shadow-lg" : 'hidden'}>
@@ -44,9 +102,24 @@ export default function HistorialElementoARevisar({ elementos, gatillo, setGatil
                     );
                 })}
                 <li>
-                    <h1 className={"w-full text-center font-bold text-lg xl:text-2xl mt-6 mb-2"}>Total: ${total}</h1>
+                    <h1 className={"w-full text-center font-bold text-lg xl:text-2xl mt-4 mb-3"}>Total: ${total}</h1>
                 </li>
             </ul>
+            <button onClick={deshacerVenta} className="bg-red-500 text-white font-bold w-[25%] py-2 mx-auto rounded-md mb-4">Deshacer venta</button>
         </div>
     )
 }
+
+const mapDispatchToProps = (dispatch) => {
+    return {
+        setProductos: (input, orden) => dispatch(setProductos(input, orden)),
+    }
+}
+
+const mapStateToProps = (state) => {
+    return {
+        productos: state.productos
+    }
+}
+
+export default connect(mapStateToProps, mapDispatchToProps)(HistorialElementoARevisar);

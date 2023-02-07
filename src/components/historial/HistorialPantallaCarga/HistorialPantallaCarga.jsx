@@ -1,6 +1,6 @@
 import loadingIcon from '../../../images/loadingIcon.png'
 
-export default function HistorialPantallaCarga({ gatillo }) {
+export default function PantallaCargaVentas({ gatillo }) {
     return (
         <div className={
             (gatillo) ? 'items-center justify-center w-screen h-screen fixed bg-slate-50 z-40 opacity-70' : 'hidden'}>
