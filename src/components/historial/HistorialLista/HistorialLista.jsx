@@ -3,19 +3,24 @@ import React, { useEffect, useState } from "react";
 import { ip } from '../../home/Home.jsx'
 import HistorialCortinaBlanca from '../HistorialCortinaBlanca/HistorialCortinaBlanca.jsx'
 import HistorialElementoARevisar from "../HistorialElementoARevisar/HistorialElementoARevisar.jsx";
+import HistorialPaginado from "../HistorialPaginado/HistorialPaginado.jsx";
 
 export default function HistorialLista({ cargando, setCargando }) {
     // creo un estado para la lista de elementos del historial
     const [historial, setHistorial] = useState([]);
     const [gatilloHistorial, setGatilloHistorial] = useState(false);
-    const [historialARevisar, setHistorialARevisar] = useState({productos: [], id: 0});
+    const [historialARevisar, setHistorialARevisar] = useState({ productos: [], id: 0 });
     const [fecha, setFecha] = useState('');
+    const [pagina, setPagina] = useState(0);
+    const [pagInicio, setPagInicio] = useState(0);
+    const elementosPorPagina = 20
+    const [pagFin, setPagFin] = useState(elementosPorPagina);
 
     // creo un useState que guarda unicamente al iniciar en historial lo que recibe de ip + '/histories'
     useEffect(() => {
         fetch(ip + '/histories')
             .then(response => response.json())
-            .then(data => setHistorial(data))
+            .then(data => setHistorial(data.reverse()))
     }, []);
 
     // creo una funcion que recibe una date con formato ISO-8601 y la presenta de una manera simple, ejemplo "24-dic-2020"
@@ -89,25 +94,38 @@ export default function HistorialLista({ cargando, setCargando }) {
         return historial.length - id - 1;
     }
 
+    useEffect(() => {
+        // si pagina cambia entonces se cambia pagInicio y pagFin para que se muestren los elementos de la pagina correspondiente sin pasarse de la longitud de historial y sin retroceder mas de 0
+        setPagInicio(pagina * elementosPorPagina);
+        setPagFin((pagina + 1) * elementosPorPagina);
+        // eslint-disable-next-line
+    }, [pagina])
+
 
     return (
         <div>
-            <HistorialElementoARevisar elementos={historialARevisar.productos} id={historialARevisar.id} gatillo={gatilloHistorial} setGatillo={setGatilloHistorial} fecha={formatDate(fecha)} cargando={cargando} setCargando={setCargando} setHistorial={setHistorial} index={invertidor(historialARevisar.index)}/>
+            <HistorialElementoARevisar elementos={historialARevisar.productos} id={historialARevisar.id} gatillo={gatilloHistorial} setGatillo={setGatilloHistorial} fecha={formatDate(fecha)} cargando={cargando} setCargando={setCargando} setHistorial={setHistorial} index={invertidor(historialARevisar.index)} historial={historial} />
             <HistorialCortinaBlanca gatillo={gatilloHistorial} setGatillo={setGatilloHistorial} />
-            <ul className="w-[95%] mx-auto border flex flex-col justify-center items-center cursor-pointer">
-                {historial?.slice().reverse().map((element, index) => {
+            {historial.length ? (
+                <HistorialPaginado pagina={pagina} setPagina={setPagina} historial={historial} elementosPorPagina={elementosPorPagina} />
+            ) : null}
+            <ul className="w-[95%] xl:w-[90%] mx-auto border flex flex-col justify-center items-center cursor-pointer">
+                {historial?.slice(pagInicio, pagFin).map((element, index) => {
                     return (
-                        <li key={index} className={'text-center flex flex-row w-full' + (element.status === 'complete' ? '' : ' bg-red-500')} onClick={() => {
-                            verHistorialElemento({productos: element.products, id: element.id, index: index});
+                        <li key={index} className={'border-2 shadow-md last:shadow-sm first:shadow-sm rounded rounded-t-none font-serif flex flex-row items-center justify-center text-center py-3 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-lg xl:text-2xl md:text-2xl' + (element.status === 'complete' ? '' : ' odd:bg-red-400 even:bg-red-300')} onClick={() => {
+                            verHistorialElemento({ productos: element.products, id: element.id, index: index });
                             setFecha(element.date);
                         }}>
-                            <p className="w-[10%]">#: {index + 1}</p>
+                            <p className="w-[10%]">#{(index + 1) + (elementosPorPagina * pagina)}</p>
                             <p className="w-[45%]">Fecha: {formatDate(element.date)}</p>
                             <p className="w-[45%]">Total: ${sacarSuma(element.products)}</p>
                         </li>
                     )
                 })}
             </ul>
+            {historial.length ? (
+                <HistorialPaginado pagina={pagina} setPagina={setPagina} historial={historial} elementosPorPagina={elementosPorPagina} />
+            ) : null}
         </div >
     );
 }
