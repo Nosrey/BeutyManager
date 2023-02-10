@@ -327,7 +327,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                     </li>
                 </ul>
             </div>
-            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pb-[80vh] xl:pt-0  bg-sky-600 bg-[length:auto_100vh] md:bg-[length:auto_100vh] xl:bg-[length:100vw_auto] bg-[position:center_-40vh] md:bg-[position:center_0vh] xl:bg-center xl:bg-contain md:bg-top bg-fixed xl:px-8 shadow-md md:rounded-xl md:rounded-t-none xl:bg-[url(" + bannerMorado + ")] bg-[url(" + bannerMorado3 + ")]"}>
+            <nav className={"flex flex-col xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pb-[60vh] xl:pt-0  bg-sky-600 bg-[length:auto_100vh] md:bg-[length:auto_100vh] xl:bg-[length:100vw_auto] bg-[position:center_-40vh] md:bg-[position:center_0vh] xl:bg-center-top xl:bg-contain md:bg-top bg-fixed xl:px-8 shadow-md md:rounded-xl md:rounded-t-none xl:bg-[url(" + bannerMorado + ")] bg-[url(" + bannerMorado3 + ")]"}>
                 <div className={`flex flex-col justify-center items-center ` + (gatilloOpciones ? "" : "")}>
                     <OpcionesMobile gatilloOpciones={gatilloOpciones} setGatilloOpciones={setGatilloOpciones} />
                     <button className='xl:hidden py-4 w-auto inline w-[8%] xl:w-[3.5%] ' onClick={() => setGatilloOpciones(!gatilloOpciones)}>
@@ -349,20 +349,20 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
             <div className='w-screen overflow-x-auto'>
 
-                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[260%] md:w-[150%] xl:w-[100%] xl:w-screen text-xl xl:text-2xl px-6 xl:pr-9  '>
-                    <li className='font-serif flex flex-row my-3 font-bold flex w-full shadow pb-3'>
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[100%] md:w-[150%] xl:w-[95%] xl:w-screen mx-auto text-xs xl:text-xl md:px-6 xl:pr-9  '>
+                    <li className='hidden font-serif md:flex flex-row my-3 font-bold flex w-full shadow pb-3'>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'>Img</h2>
                         <div className='font-serif flex-grow min-w-0 basis-[6.25%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarCodigo(productos, productosFiltrados, activo)} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>#</h2>
                             </button>
                         </div>
                         <div className='font-serif flex-grow min-w-0 basis-[18.75%] flex flew-row items-center'>
                             {/* boton con una imagen dada */}
                             <button onClick={ordenNombre} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Nombre</h2>
                             </button>
                         </div>
@@ -370,7 +370,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarDeposito(productos, productosFiltrados, activo)} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Deposito</h2>
                             </button>
                         </div>
@@ -378,7 +378,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={ordenStock} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Tienda</h2>
                             </button>
                         </div>
@@ -386,7 +386,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarTotal(productos, productosFiltrados, activo)} className='flex flex-row items-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Total</h2>
                             </button>
                         </div>
@@ -394,7 +394,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center'>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarPrecio(productos, productosFiltrados, activo)} className='flex flex-row items-center justify-center hover:xl:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2>Venta</h2>
                             </button>
                         </div>
@@ -402,7 +402,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         <div className='font-serif flex-grow min-w-0 basis-[12.5%] flex flew-row items-center  '>
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarPrecioCompra(productos, productosFiltrados, activo)} className='flex flex-row items-center justify-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
-                                <img className='w-6 h-6 ' src={flechaImagen} alt='flecha' />
+                                <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
                                 <h2 className=''>Compra</h2>
                             </button>
                         </div>
@@ -418,14 +418,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-3xl'>
-                                <div className='ml-2 flex-grow min-w-0 basis-[6.25%] my-auto'>
+                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-sn xl:text-2xl'>
+                                <div className='md:ml-2 flex-grow min-w-0 basis-[6.25%] my-auto'>
                                     <button onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
                                         <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
                                     </button>
                                 </div>
-                                <h3 className='flex-grow min-w-0 basis-[6.25%] my-auto static text-2xl italic '>{'#' + el.id}</h3>
-                                <h3 className='flex-grow min-w-0 basis-[18.75%] my-auto break-normal static text-2xl'>{el.name}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[6.25%] my-auto static italic '>{'#' + el.id}</h3>
+                                <h3 className='flex-grow min-w-0 basis-[18.75%] my-auto break-normal static xl:text-xl'>{el.name}</h3>
                                 <div className='flex flex-row flex-grow basis-[25%] relative justify-center items-center '>
 
                                     <h3 className='flex-grow min-w-0 basis-[50%] my-auto'>{el.stockDeposito}</h3>
@@ -441,7 +441,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 <h3 className='flex-grow min-w-0 basis-[12.5%] my-auto  font-bold'>{'$' + el.priceBuy}</h3>
 
                                 <div className='flex-grow min-w-0 basis-[6.25%] my-auto flex flex-col items-center justify-center'>
-                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center text-base hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-xl flex flex-col justify-center items-center mr-2" onClick={() => setEdit(el.id, productos)}>
+                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center text-base hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => setEdit(el.id, productos)}>
                                         <h4>Editar</h4>
                                         <img src={editBtn} alt='pencil' className='w-8 h-8 hover:w-9 hover:h-9' />
                                     </button>
