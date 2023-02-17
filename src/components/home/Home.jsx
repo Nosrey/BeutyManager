@@ -254,7 +254,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <div className={(gatilloImagen.gatillo) ? 'flex justify-center items-center' : 'hidden'}>
                 <div className='border-2 z-30 rounded shadow bg-white/30 w-auto h-auto fixed top-[25%] md:top-[15%] '>
                     <button className='font-serif bg-red-600 text-white absolute top-1 right-1 px-1.5 font-black hover:bg-red-300 text-xl' onClick={() => setGatilloImagen({ ...gatilloImagen, gatillo: false })}>X</button>
-                    <img className={'p-1 w-auto md:h-[70vh] h-[45vh] max-h-[45vh] md:max-h-[70vh] max-w-[100vw] xl:max-w-screen'} src={gatilloImagen.imagen} alt='product' />
+                    <img className={'p-1 w-auto md:w-auto md:h-auto md:max-h-[70vh] md:max-w-[90vw] h-auto max-h-[45vh]  max-w-[100vw] xl:max-w-screen'} src={gatilloImagen.imagen} alt='product' />
                 </div>
             </div>
 
@@ -349,7 +349,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
             <div className='w-screen overflow-x-auto'>
 
-                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[100%] md:w-[150%] xl:w-[95%] xl:w-screen mx-auto text-xs xl:text-xl md:px-6 xl:pr-9  '>
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[100%] md:w-[100%] xl:w-[95%] xl:w-screen mx-auto text-xs md:text-sm xl:text-xl md:px-6 xl:pr-9  '>
                     <li className='hidden font-serif md:flex flex-row my-3 font-bold flex w-full shadow pb-3'>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'>Img</h2>
                         <div className='font-serif flex-grow min-w-0 basis-[6.25%] flex flew-row items-center '>
@@ -418,43 +418,43 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-xs xl:text-2xl'>
-                                <div className='md:ml-2 flex-grow min-w-0 md:basis-[6.25%] basis-[20%] my-auto'>
+                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.65rem] md:text-base xl:text-2xl'>
+                                <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] basis-[20%] my-auto'>
                                     <button onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
                                         <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
                                     </button>
                                 </div>
 
-                                <h3 className='flex-grow min-w-0 md:basis-[6.25%] basis-[5%] my-auto static italic '>{'#' + el.id}</h3>
+                                <h3 className='flex-grow min-w-0 md:basis-[6.25%] basis-[5%] my-auto static italic text-sm xl:text-2xl'>{'#' + el.id}</h3>
 
                                 <div className='md:min-w-0 md:basis-[81.25%] md:flex md:flex-row flex items-center justify-center flex-col basis-[60%]'>
-                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] my-auto break-normal static xl:text-xl xl:mb-0 mb-2'>{el.name}</h3>
+                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] my-auto break-normal static text-[0.70rem] xl:text-xl md:mb-0 mb-4 px-4 md:text-sm'>{el.name}</h3>
 
-                                    <div className='md:min-w-0 md:basis-[76.923%] w-[80%] md:flex md:flex-row md:items-center md:justify-center text-center'>
+                                    <div className='md:min-w-0 md:basis-[76.923%] w-[70%] md:flex md:flex-row md:items-center md:justify-center text-left md:text-center'>
                                         <div className='flex flex-row flex-grow md:basis-[40%] relative justify-between md:justify-center items-center '>
-                                            <div className='flex-grow min-w-0 basis-[50%] my-auto flex flex-row items-center md:justify-center justify-start'>
-                                                <h3 className='xl:hidden mr-1'>Deposito:</h3>
+                                            <div className='flex-grow min-w-0 basis-[50%] my-auto flex flex-row items-center md:justify-center justify-start mb-2 md:mb-2'>
+                                                <h3 className='md:hidden mr-1'>Deposito:</h3>
                                                 <h3>{el.stockDeposito}</h3>
                                             </div>
 
-                                            <button className="flex flex-col items-center justify-center absolute w-[12%] xl:w-[10%] md:w-[10%] left-[44%] xl:left-[45%] md:left-[45%] xl:hover:animate-pulse hover:w-[15%] md:hover:w-[12%]" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true); setNumeroBase(Number('')) }}>
-                                                <img src={transferBtn} alt='transferArrow' className=' w-[100%] h-[100%]' />
-                                                <img src={editBtn} alt='pencil' className='mt-1 w-4 h-4' />
+                                            <button className=" hidden xl:mx-0 md:flex flex-col items-center justify-center absolute w-[12%] xl:w-[10%] md:w-[12%] left-[44%] xl:left-[45%] md:left-[45%] xl:hover:animate-pulse hover:w-[15%] md:hover:w-[12%]" onClick={() => { cambiarStock(el.id, productos); setGatilloCambiar(true); setNumeroBase(Number('')) }}>
+                                                <img src={transferBtn} alt='transferArrow' className='hidden md:flex w-[100%] h-[100%]' />
+                                                <img src={editBtn} alt='pencil' className='hidden xl:flex xl:mt-1 w-4 h-4' />
                                             </button>
 
                                             <div className='flex-grow min-w-0 basis-[50%] my-auto flex flex-row items-center md:justify-center justify-end'>
-                                                <h3 className='xl:hidden mr-1'>Tienda:</h3>
+                                                <h3 className='md:hidden mr-1'>Tienda:</h3>
                                                 <h3>{el.stock}</h3>
                                             </div>
                                         </div>
-                                        <h3 className='hidden xl:flex flex-grow min-w-0 md:basis-[20%] my-auto font-bold'>{Number(el.stock) + Number(el.stockDeposito)}</h3>
+                                        <h3 className='md:text-center hidden md:flex md:items-center md:justify-center flex-grow min-w-0 md:basis-[20%] my-auto font-bold'>{Number(el.stock) + Number(el.stockDeposito)}</h3>
                                         <div className='md:min-w-0 md:basis-[40%] flex flex-row items-center justify-between md:justify-center'>
                                             <div className='flex-grow md:min-w-0 md:basis-[50%] my-auto font-bold flex flex-row items-center justify-start md:justify-center'>
-                                                <p className='md:hidden md:mr-0 mr-1'>Venta: </p>
+                                                <p className='md:hidden md:mr-0 mr-1'>Costo: </p>
                                                 <h3 className=''> {'$' + el.price}</h3>
                                             </div>
                                             <div className='flex-grow md:min-w-0 md:basis-[50%] my-auto font-bold flex flex-row items-center justify-end md:justify-center'>
-                                                <p className='md:hidden md:mr-0 mr-1'>Compra: </p>
+                                                <p className='md:hidden md:mr-0 mr-1'>Precio: </p>
                                                 <h3 className=''> {'$' + el.priceBuy}</h3>
                                             </div>
                                         </div>
@@ -463,9 +463,9 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 </div>
 
                                 <div className='flex-grow min-w-0 md:basis-[6.25%] basis-[15%] my-auto flex flex-col items-center justify-center'>
-                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center text-base hover:shadow hover:border hover:rounded-lg hover:p-2 hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => setEdit(el.id, productos)}>
+                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center hover:text-xs xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => setEdit(el.id, productos)}>
                                         <h4>Editar</h4>
-                                        <img src={editBtn} alt='pencil' className='w-8 h-8 hover:w-9 hover:h-9' />
+                                        <img src={editBtn} alt='pencil' className='w-6 h-6 xl:w-8 xl:h-8 hover:w-9 hover:h-9' />
                                     </button>
                                 </div>
                             </li>
