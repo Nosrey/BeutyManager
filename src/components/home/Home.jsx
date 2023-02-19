@@ -22,6 +22,7 @@ import transferBtn from '../../images/transferBtn.png'
 import bannerMorado from '../../images/bg2.jpg'
 import bannerMorado3 from '../../images/bg3b.jpg'
 import bannerMorado2 from '../../images/bg3.jpg'
+import groupImage from '../../images/groupImage.png'
 // importar rightArrow.png
 import rightArrow from '../../images/rightArrow.png'
 // importar leftArrow.png
@@ -52,6 +53,7 @@ export { ip, ipPagina, addBtn2, removeBtn }
 
 let gatilloNombre = true;
 let gatilloStock = true;
+
 
 function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, productosFiltrados, ordenarNombre, ordenarPrecio, ordenarStock, activo, categorias, setEdit, input1, ordenarDeposito, ordenarTotal, ordenarPrecioCompra, cambiarStock, productoToEdit, filtrarProductos, ordenarCodigo, gatilloEliminar, cambiarGatilloEliminar, pagina, cambiarPagina }) {
 
@@ -239,6 +241,60 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
     }, [productosFiltrados, productos, pagina]) //eslint-disable-line
 
+    const [gruposJuntos, setGruposJuntos] = useState([]);
+    const [activarGrupos, setActivarGrupos] = useState(false);
+    // creo una funcion que se llama mostrarGrupos la cual pone activarGrupos en su opuesto (true or false)
+    const mostrarGrupos = () => {
+        setActivarGrupos(!activarGrupos)
+        let totalPorGrupo = [];
+        // reviso mi array de productos y busco en sus propiedades "group" y tomo uno de cada uno, luego contabilizo cuantos productos tienen el mismo group y los ordeno en un objeto con esta estructura {group: "nombre del group", total: stock + stockDeposito}
+        for (let i = 0; i < productos.length; i++) {
+            if (!totalPorGrupo.includes(productos[i].group)) {
+                totalPorGrupo.push(productos[i].group)
+            }
+        }
+        let totalPorGrupoCantidades = [];
+        for (let i = 0; i < totalPorGrupo.length; i++) {
+            let total = 0;
+            let totalStock = 0;
+            let totalStockDeposito = 0;
+            let totalPrice = 0;
+            let totalPriceBuy = 0;
+            let cantidad = 0
+            for (let j = 0; j < productos.length; j++) {
+                if (productos[j].group === totalPorGrupo[i]) {
+                    cantidad = cantidad + 1;
+                    total = total + productos[j].stock + productos[j].stockDeposito;
+                    totalStock = totalStock + productos[j].stock;
+                    totalStockDeposito = totalStockDeposito + productos[j].stockDeposito;
+                    // en totalPrice guardo el promedio de la suma de todos los precios de los productos por ejemplo, el promedio de dos productos con precio de 2 es (2 + 2) / cantidad (es decir 2) dando en promedio 2
+                    totalPrice = totalPrice + productos[j].price
+                    totalPriceBuy = totalPriceBuy + productos[j].priceBuy
+                }
+            }
+            totalPorGrupoCantidades.push({ group: totalPorGrupo[i], total: total, totalStock: totalStock, totalStockDeposito: totalStockDeposito, totalPrice: (totalPrice / cantidad), totalPriceBuy: (totalPriceBuy / cantidad) })
+        }
+        // le asigno a gruposJuntos un array de objetos igual a la de productos para mostrarlos en la tabla
+        let objetoFinal = [];
+        for (let i = 0; i < totalPorGrupoCantidades.length; i++) {
+            let item = {
+                id: i,
+                name: totalPorGrupoCantidades[i].group,
+                imagen: groupImage,
+                stock: totalPorGrupoCantidades[i].totalStock,
+                stockDeposito: totalPorGrupoCantidades[i].totalStockDeposito,
+                stockTotal: totalPorGrupoCantidades[i].total,
+                price: totalPorGrupoCantidades[i].totalPrice,
+                priceBuy: totalPorGrupoCantidades[i].totalPriceBuy,
+                avaible: true,
+                categoryNames: '',
+                group: totalPorGrupoCantidades[i].group,
+            }
+            objetoFinal.push(item)
+        }
+        setGruposJuntos(objetoFinal)
+    }
+
     return (
         <div className=''>
             <div className={cargando ? 'flex flex-col justify-center items-center w-screen h-screen fixed bg-slate-50 z-40 opacity-70' : 'hidden'}>
@@ -280,7 +336,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             } onClick={() => {
                 setGrupoSeleccionado(grupoTemporal)
                 setGatilloGrupo(false);
-                }}>
+            }}>
             </div>
             <CrearGrupo gatilloGrupo={gatilloGrupo} setGatilloGrupo={setGatilloGrupo} grupoTemporal={grupoTemporal} setGrupoTemporal={setGrupoTemporal} grupoSeleccionado={grupoSeleccionado} setGrupoSeleccionado={setGrupoSeleccionado} />
 
@@ -357,13 +413,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
             <CrearProducto visible={mostrarForm} cargando={cargando} setCargando={setCargando} gatilloGrupo={gatilloGrupo} setGatilloGrupo={setGatilloGrupo} grupoTemporal={grupoTemporal} setGrupoTemporal={setGrupoTemporal} grupoSeleccionado={grupoSeleccionado} setGrupoSeleccionado={setGrupoSeleccionado} />
             <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} cargando={cargando} setCargando={setCargando} />
-            <div className='flex justify-center items-center'>
 
-            <button type='button' className='mx-auto border-2 py-1 px-2 rounded-lg my-2'>
-                Ordenar por grupo
-                <img src={transferBtn} alt='ordenarGrupo'/>
-                </button>
-            </div>
             <Paginado />
             {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
             <div className='w-screen overflow-x-auto'>
@@ -435,7 +485,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         </li>
 
 
-                        : (productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
+                        : (!activarGrupos ? (productosFiltrados.length ? productosFiltrados : productos) : gruposJuntos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
                             return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.68rem] md:text-base xl:text-2xl'>
                                 <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] basis-[25%] my-auto'>
@@ -491,6 +541,21 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                         })}
                 </ul>
             </div>
+
+            <div className='flex justify-center items-center my-6 mt-2 text-center'>
+                <button type='button'
+                    className='flex break-inside bg-black rounded-3xl px-6 py-4 mb-4 w-auto dark:bg-slate-700 font-bold dark:text-white' onClick={mostrarGrupos}>
+                    <div class='flex items-center justify-between flex-1'>
+                        <span class='text-lg font-medium text-white mr-4'>Ordenar por grupo</span>
+                        <svg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'>
+                            <path fillRule='evenodd' clipRule='evenodd'
+                                d='M0 8.71423C0 8.47852 0.094421 8.25246 0.262491 8.08578C0.430562 7.91911 0.658514 7.82547 0.896201 7.82547H13.9388L8.29808 2.23337C8.12979 2.06648 8.03525 1.84013 8.03525 1.60412C8.03525 1.36811 8.12979 1.14176 8.29808 0.974875C8.46636 0.807989 8.6946 0.714233 8.93259 0.714233C9.17057 0.714233 9.39882 0.807989 9.5671 0.974875L16.7367 8.08499C16.8202 8.16755 16.8864 8.26562 16.9316 8.3736C16.9767 8.48158 17 8.59733 17 8.71423C17 8.83114 16.9767 8.94689 16.9316 9.05487C16.8864 9.16284 16.8202 9.26092 16.7367 9.34348L9.5671 16.4536C9.39882 16.6205 9.17057 16.7142 8.93259 16.7142C8.6946 16.7142 8.46636 16.6205 8.29808 16.4536C8.12979 16.2867 8.03525 16.0604 8.03525 15.8243C8.03525 15.5883 8.12979 15.362 8.29808 15.1951L13.9388 9.603H0.896201C0.658514 9.603 0.430562 9.50936 0.262491 9.34268C0.094421 9.17601 0 8.94995 0 8.71423Z'
+                                fill='white' />
+                        </svg>
+                    </div>
+                </button>
+            </div>
+
             <Paginado />
 
         </div>
