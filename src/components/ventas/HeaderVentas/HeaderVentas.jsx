@@ -14,12 +14,12 @@ export default function HeaderVentas() {
     const [gatilloOpcionesVentas, setGatilloOpcionesVentas] = React.useState(false)
 
     return (
-        <div className={"min-h-[20vh] md:min-h-[40vh] xl:min-h-[25vh] xl:h-[60vh] bg-emerald-900 xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pt-0 bg-[length:100vw_auto] md:bg-[length:auto_100vh] bg-[length:auto_25vh] md:bg-[length:100%_auto] xl:bg-[length:100vw_auto] bg-[position:center_center] xl:bg-[position:center_0%] xl:bg-contain md:bg-top bg-fixed  shadow-md md:rounded-xl md:rounded-t-none bg-[url(" + bannerVentas3 + ")] xl:bg-[url(" + bannerVentas + ")]"}>
+        <div className={"min-h-[5vh] md:min-h-[5vh] xl:min-h-[25vh] xl:h-[60vh] bg-emerald-900 xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pt-0 bg-[length:150%_auto] md:bg-[length:auto_100vh] bg-[length:auto_25vh] md:bg-[length:100%_auto] xl:bg-[length:100vw_auto] bg-[position:0_0] xl:bg-[position:center_0%] xl:bg-contain md:bg-top bg-fixed  shadow-md md:rounded-xl md:rounded-t-none bg-[url(" + bannerVentas3 + ")] xl:bg-[url(" + bannerVentas + ")]"}>
 
             <div>
                 <div className='xl:hidden flex flex-col justify-center items-center'>
-                    <OpcionesMobileVentas gatilloOpcionesVentas={gatilloOpcionesVentas} setGatilloOpcionesVentas={setGatilloOpcionesVentas} />
-                    <button className='w-[8vw] md:w-[5vw] mt-[2vh] md:mt-0 md:py-10 pb-5' onClick={
+                    <OpcionesMobileVentas gatilloOpcionesVentas={!gatilloOpcionesVentas} setGatilloOpcionesVentas={setGatilloOpcionesVentas} />
+                    <button className='w-[8vw] md:w-[5vw] mt-0 md:mt-0 md:py-2 py-2' onClick={
                         () => {
                             setGatilloOpcionesVentas(!gatilloOpcionesVentas)
                         }

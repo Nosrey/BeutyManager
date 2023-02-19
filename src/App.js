@@ -6,8 +6,8 @@ import VentasHome from './components/ventas/VentasHome/VentasHome.jsx'
 import HistorialHome from './components/historial/HistorialHome/HistorialHome.jsx'
 import React from 'react';
 
-const ipRuta = "/beautyManager/#" // para la web
-// let ipRuta = "#" // para local
+// const ipRuta = "/beautyManager/#" // para la web
+let ipRuta = "#" // para local
 export { ipRuta }
 
 function App() {

@@ -36,6 +36,7 @@ import boton3bars from '../../images/boton3bars.png'
 import loadingIcon from '../../images/loadingIcon.png'
 // importo OpcionesMobile.jsx
 import OpcionesMobile from '../OpcionesMobile/OpcionesMobile.jsx'
+import CrearGrupo from '../CrearGrupo/CrearGrupo.jsx';
 import { ipRuta } from '../../App';
 
 
@@ -108,6 +109,9 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     const [numeroASumar, setNumeroASumar] = useState({});
     // creo el estado cargando que contendra un booleando para controlar si se activa la pantalla de carga o se apaga
     const [cargando, setCargando] = useState(false);
+    const [gatilloGrupo, setGatilloGrupo] = useState(false);
+    const [grupoTemporal, setGrupoTemporal] = useState('');
+    const [grupoSeleccionado, setGrupoSeleccionado] = useState('');
 
     const flechaImagen = 'https://cdn-icons-png.flaticon.com/512/37/37808.png'
 
@@ -271,6 +275,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             </div>
             <EliminarProducto visible={gatilloEliminar} setCargando={setCargando} />
 
+            <div className={
+                (gatilloGrupo) ? 'w-screen h-screen fixed bg-slate-50 z-20 opacity-70 blur-sm' : 'hidden'
+            } onClick={() => {
+                setGrupoSeleccionado(grupoTemporal)
+                setGatilloGrupo(false);
+                }}>
+            </div>
+            <CrearGrupo gatilloGrupo={gatilloGrupo} setGatilloGrupo={setGatilloGrupo} grupoTemporal={grupoTemporal} setGrupoTemporal={setGrupoTemporal} grupoSeleccionado={grupoSeleccionado} setGrupoSeleccionado={setGrupoSeleccionado} />
 
             <div className={
                 (gatilloCambiar) ? 'text-4xl rounded-xl w-[60%] xl:w-[30%] md:w-[40%] md:left-[30%] fixed top-[30%] xl:top-[20%] md:top-[10%] left-[20%] xl:left-[35%] z-30' : 'hidden'
@@ -330,7 +342,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             <nav className={"flex flex-col xl:flex-row items-center xl:justify-between  py-0 pt-0 xl:pb-[60vh] xl:pt-0  bg-sky-600 bg-[length:auto_100vh] md:bg-[length:auto_100vh] xl:bg-[length:100vw_auto] bg-[position:center_-40vh] md:bg-[position:center_0vh] xl:bg-center-top xl:bg-contain md:bg-top bg-fixed xl:px-8 shadow-md md:rounded-xl md:rounded-t-none xl:bg-[url(" + bannerMorado + ")] bg-[url(" + bannerMorado3 + ")]"}>
                 <div className={`flex flex-col justify-center items-center ` + (gatilloOpciones ? "" : "")}>
                     <OpcionesMobile gatilloOpciones={gatilloOpciones} setGatilloOpciones={setGatilloOpciones} />
-                    <button className='xl:hidden py-4 w-auto inline w-[8%] xl:w-[3.5%] ' onClick={() => setGatilloOpciones(!gatilloOpciones)}>
+                    <button className='xl:hidden py-4 inline w-[8%] xl:w-[3.5%] ' onClick={() => setGatilloOpciones(!gatilloOpciones)}>
                         <img src={boton3bars} alt='3 bars btn' className='w-[100%]' />
                     </button>
                 </div>
@@ -343,8 +355,15 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 </div>
             </nav>
 
-            <CrearProducto visible={mostrarForm} cargando={cargando} setCargando={setCargando} />
+            <CrearProducto visible={mostrarForm} cargando={cargando} setCargando={setCargando} gatilloGrupo={gatilloGrupo} setGatilloGrupo={setGatilloGrupo} grupoTemporal={grupoTemporal} setGrupoTemporal={setGrupoTemporal} grupoSeleccionado={grupoSeleccionado} setGrupoSeleccionado={setGrupoSeleccionado} />
             <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} cargando={cargando} setCargando={setCargando} />
+            <div className='flex justify-center items-center'>
+
+            <button type='button' className='mx-auto border-2 py-1 px-2 rounded-lg my-2'>
+                Ordenar por grupo
+                <img src={transferBtn} alt='ordenarGrupo'/>
+                </button>
+            </div>
             <Paginado />
             {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
             <div className='w-screen overflow-x-auto'>
@@ -418,21 +437,21 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (productosFiltrados.length ? productosFiltrados : productos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.65rem] md:text-base xl:text-2xl'>
-                                <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] basis-[20%] my-auto'>
+                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.68rem] md:text-base xl:text-2xl'>
+                                <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] basis-[25%] my-auto'>
                                     <button onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
                                         <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
                                     </button>
                                 </div>
 
-                                <h3 className='flex-grow min-w-0 md:basis-[6.25%] basis-[5%] my-auto static italic text-sm xl:text-2xl'>{'#' + el.id}</h3>
+                                <h3 className='hidden md:flex justify-center items-center flex-grow min-w-0 md:basis-[6.25%] basis-[0%]  static italic text-sm xl:text-2xl'>{'#' + el.id}</h3>
 
                                 <div className='md:min-w-0 md:basis-[81.25%] md:flex md:flex-row flex items-center justify-center flex-col basis-[60%]'>
-                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] my-auto break-normal static text-[0.70rem] xl:text-xl md:mb-0 mb-4 px-4 md:text-sm'>{el.name}</h3>
+                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] break-normal static text-[0.75rem] xl:text-xl md:mb-0 mb-3 px-4 md:text-sm text-center flex justify-center items-center'>{el.name}</h3>
 
-                                    <div className='md:min-w-0 md:basis-[76.923%] w-[70%] md:flex md:flex-row md:items-center md:justify-center text-left md:text-center'>
+                                    <div className='md:min-w-0 md:basis-[76.923%] w-[80%] md:flex md:flex-row md:items-center md:justify-center text-left md:text-center'>
                                         <div className='flex flex-row flex-grow md:basis-[40%] relative justify-between md:justify-center items-center '>
-                                            <div className='flex-grow min-w-0 basis-[50%] my-auto flex flex-row items-center md:justify-center justify-start mb-2 md:mb-2'>
+                                            <div className='flex-grow min-w-0 basis-[50%] flex flex-row items-center md:justify-center justify-start'>
                                                 <h3 className='md:hidden mr-1'>Deposito:</h3>
                                                 <h3>{el.stockDeposito}</h3>
                                             </div>
@@ -442,18 +461,18 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                                 <img src={editBtn} alt='pencil' className='hidden xl:flex xl:mt-1 w-4 h-4' />
                                             </button>
 
-                                            <div className='flex-grow min-w-0 basis-[50%] my-auto flex flex-row items-center md:justify-center justify-end'>
+                                            <div className='flex-grow min-w-0 basis-[50%]  flex flex-row items-center md:justify-center justify-end'>
                                                 <h3 className='md:hidden mr-1'>Tienda:</h3>
                                                 <h3>{el.stock}</h3>
                                             </div>
                                         </div>
-                                        <h3 className='md:text-center hidden md:flex md:items-center md:justify-center flex-grow min-w-0 md:basis-[20%] my-auto font-bold'>{Number(el.stock) + Number(el.stockDeposito)}</h3>
+                                        <h3 className='md:text-center hidden md:flex md:items-center md:justify-center flex-grow min-w-0 md:basis-[20%]  font-bold'>{Number(el.stock) + Number(el.stockDeposito)}</h3>
                                         <div className='md:min-w-0 md:basis-[40%] flex flex-row items-center justify-between md:justify-center'>
-                                            <div className='flex-grow md:min-w-0 md:basis-[50%] my-auto font-bold flex flex-row items-center justify-start md:justify-center'>
+                                            <div className='flex-grow md:min-w-0 md:basis-[50%]  font-bold flex flex-row items-center justify-start md:justify-center'>
                                                 <p className='md:hidden md:mr-0 mr-1'>Costo: </p>
                                                 <h3 className=''> {'$' + el.price}</h3>
                                             </div>
-                                            <div className='flex-grow md:min-w-0 md:basis-[50%] my-auto font-bold flex flex-row items-center justify-end md:justify-center'>
+                                            <div className='flex-grow md:min-w-0 md:basis-[50%]  font-bold flex flex-row items-center justify-end md:justify-center'>
                                                 <p className='md:hidden md:mr-0 mr-1'>Precio: </p>
                                                 <h3 className=''> {'$' + el.priceBuy}</h3>
                                             </div>
@@ -462,8 +481,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                     </div>
                                 </div>
 
-                                <div className='flex-grow min-w-0 md:basis-[6.25%] basis-[15%] my-auto flex flex-col items-center justify-center'>
-                                    <button className="xl:hover:animate-pulse font-bold rounded block my-auto flex flex-row items-center justify-center hover:text-xs xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => setEdit(el.id, productos)}>
+                                <div className='flex-grow min-w-0 md:basis-[6.25%] basis-[15%]  flex flex-col items-center justify-center'>
+                                    <button className="xl:hover:animate-pulse font-bold rounded block  flex flex-row items-center justify-center text-sm xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => setEdit(el.id, productos)}>
                                         <h4>Editar</h4>
                                         <img src={editBtn} alt='pencil' className='w-6 h-6 xl:w-8 xl:h-8 hover:w-9 hover:h-9' />
                                     </button>

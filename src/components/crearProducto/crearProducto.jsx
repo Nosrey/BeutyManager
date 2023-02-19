@@ -1,17 +1,36 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import Axios from 'axios';
 import { setForm, setProductos, filtrarProductos, setEdit, setInput1 } from '../../actions/index'
 import { connect } from "react-redux";
 import './crearProducto.css'
 
 // importo ip de Home.jsx
-import { ip } from '../home/Home.jsx'
+import { addBtn2, ip } from '../home/Home.jsx'
 
 
 let ready = true;
 let arranque = false;
 
-function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando, input1 }) {
+function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando, input1, gatilloGrupo, setGatilloGrupo, grupoTemporal, setGrupoTemporal, grupoSeleccionado, setGrupoSeleccionado }) {
+    
+    // creo un estado llamado gruposExistentes
+    const [gruposExistentes, setGruposExistentes] = useState([])
+    // creo un useEffect donde reviso todos los productos y obtengo su valor en producto.group y lo guardo en gruposExistentes hasta tener uno de cada uno a menos que sea un espacio vacio o un string vacio
+    useEffect(() => {
+        if (productos.length) {
+            console.log('entre')
+            let arrayTemp = []
+            for (let i = 0; i < productos.length; i++) {        
+                if (productos[i].group && !gruposExistentes.includes(productos[i].group)) {
+                    arrayTemp.push(productos[i].group)
+                }
+            }
+            setGruposExistentes(arrayTemp)
+            console.log('sali, ahora el valor de grupoExistentes es: ', gruposExistentes)
+            console.log('y el valor de arrayTemp es: ', arrayTemp)
+        }
+    // eslint-disable-next-line
+    }, [productos])
 
     if (visible) { arranque = true; }
 
@@ -170,6 +189,8 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                     setCargando(false)
                 }
             }
+            // si no hay nada en pgroup.value entonces lo vuelvo un string vacio
+            if (!grupoSeleccionado) setGrupoSeleccionado('')
 
             if (pname.value && pstock.value && pstockDeposito.value && pprice.value && ppriceBuy.value) {
                 let salir = 0; // para disparar la salida
@@ -178,14 +199,14 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                     if (el.name === pname.value) return salir = 1
                 })
                 if (salir > 0) return alert("Este producto ya existe, no puede ser agregado")
-                
+
                 if (pcategory.value) {
                     pcategory.value = comas(pcategory.value)
                 }
 
                 let nombre
                 if (pname.value) nombre = eliminarAcentos(pname.value)
-                const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: pcategory.value }
+                const productData = { name: nombre, imagen: image, stock: pstock.value, stockDeposito: pstockDeposito.value, price: pprice.value, priceBuy: ppriceBuy.value, avaible: true, categoryNames: pcategory.value, group: grupoSeleccionado }
                 console.log('Soy el producto que enviaras: ', productData)
                 Axios.post(ip + '/products', productData)
                     .then(() => setForm()) // para mostrar el formulario
@@ -199,13 +220,15 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                         pstockDeposito.value = '';
                         pprice.value = '';
                         ppriceBuy.value = '';
+                        setGrupoSeleccionado('Sin grupo');
+                        setGrupoTemporal('')
                         setPcategory('');
                         setImage(imagenNotFound);
                     })
                     .then(() => {
                         filtrarProductos(productos, '') // actualizamos el filtro al crear un nuevo producto
                     })
-                    .then(() =>{ 
+                    .then(() => {
                         ready = true;
                         setCargando(false)
                     })
@@ -286,6 +309,25 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                         <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
 
                     </div>
+
+                    <div className='flex flex-col justify-center items-center mb-6 mt-2'>
+                    <label className="font-serif text-xl font-semibold text-center mb-2">Grupo del producto</label>
+                    <div className='flex flex-row justify-center items-center'>
+
+                        <select id="frutas" value={grupoSeleccionado} onChange={(e) => setGrupoSeleccionado(e.target.value)} name="pgroup" className='px-6 bg-white border rounded-lg text-center mr-2 py-1 md:mr-4 text-lg w-[100%] break-words'>
+                            <option value="Sin grupo" className='px-2 text-lg'>Sin grupo</option>
+                            {gruposExistentes.map((grupo, index) => {
+                                return <option key={index} value={grupo} className='px-2 text-lg'>{grupo}</option>
+                        
+                            })
+                            }
+                            {grupoTemporal.length ? <option value={grupoTemporal}>{grupoTemporal}</option> : null}
+                        </select>
+                        <button type='button' className='w-6 md:w-8' onClick={() => setGatilloGrupo(true)}>
+                            <img className='w-full h-auto' src={addBtn2} alt='addBtn'/>
+                        </button>
+                    </div>
+                    </div>
                     <div className="font-serif input-container flex flex-col items-center w-[100%] mb-3">
                         <div className='text-center'>
 
@@ -345,4 +387,3 @@ function mapDispatchToProps(dispatch) {
 }
 
 export default connect(mapStateToProps, mapDispatchToProps)(CrearProducto);
-
