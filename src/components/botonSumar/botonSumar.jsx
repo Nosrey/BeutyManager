@@ -121,11 +121,26 @@ function BotonSumar({ numeroASumar, setNumeroASumar, setGatilloSumar, precio, se
 
                 <input className='my-5 w-[50%] md:w-[40%] xl:w-[40%] py-1 border border-black border-2 rounded text-center font-bold text-4xl text-center text-blue-700' placeholder={placeholder} value={numero} onChange={(e) => setNumero(e.target.value)} />
             </div>
-            <button onClick={handleSumSubmit} className="bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md shadow-sm xl:hover:animate-bounce italic p-1 mb-2">
+
+            {/* <button onClick={handleSumSubmit} className="bg-blue-500 text-white px-3 font-semibold py-0.5 rounded-md shadow-sm xl:hover:animate-bounce italic p-1 mb-2">
                 <h2 className=''>
                     {(signo === "+") ? 'Sumar' : 'Restar'}
                 </h2>
+            </button> */}
+
+            <button class="text-center w-[90%] md:w-[80%] mx-auto mb-4" onClick={handleSumSubmit} >
+                <div class="flex-1 h-full w-auto mx-auto">
+                    <div class="flex flex-row items-center justify-center  bg-white shadow-md border rounded-lg py-4 px-16">
+                        <p class="m-auto inset-0 text-lg md:text-2xl font-semibold leading-7 text-center text-gray-800 mr-2 md:mr-6">Confirmar</p>
+                        <div class="">
+                            <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor">
+                                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M17 8l4 4m0 0l-4 4m4-4H3" />
+                            </svg>
+                        </div>
+                    </div>
+                </div>
             </button>
+
             <button className='font-serif bg-red-600 text-white absolute top-3 right-3 px-1.5 font-black hover:bg-red-300 text-3xl' onClick={cerrar}>X</button>
         </div>
     );

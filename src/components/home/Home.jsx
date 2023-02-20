@@ -540,7 +540,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                 </div>
 
                                 <div className={'flex-grow min-w-0 md:basis-[6.25%] basis-[15%]  flex flex-col items-center justify-center'}>
-                                    <button className="xl:hover:animate-pulse font-bold rounded block  flex flex-row items-center justify-center text-sm xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => {
+                                    {/* <button className="xl:hover:animate-pulse font-bold rounded block  flex flex-row items-center justify-center text-sm xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => {
                                         if (!activarGrupos) {
                                             handleClick(productoToEdit.group)
                                             setEdit(el.id, productos)
@@ -549,7 +549,40 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                     }>
                                         <h4>Editar</h4>
                                         <img src={editBtn} alt='pencil' className='w-6 h-6 xl:w-8 xl:h-8 hover:w-9 hover:h-9' />
+                                    </button> */}
+
+                                    <button onClick={() => {
+                                        if (!activarGrupos) {
+                                            handleClick(productoToEdit.group)
+                                            setEdit(el.id, productos)
+                                        }
+                                    }
+                                    } class="flex p-2.5 bg-slate-700 rounded-xl hover:rounded-3xl hover:bg-slate-500 transition-all duration-300 text-white " >
+                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-6 w-6" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+                                            <path stroke-linecap="round" stroke-linejoin="round" d="M11 5H6a2 2 0 00-2 2v11a2 2 0 002 2h11a2 2 0 002-2v-5m-1.414-9.414a2 2 0 112.828 2.828L11.828 15H9v-2.828l8.586-8.586z" />
+                                        </svg>
                                     </button>
+
+
+                                    {/* <button onClick={() => {
+                                        if (!activarGrupos) {
+                                            handleClick(productoToEdit.group)
+                                            setEdit(el.id, productos)
+                                        }
+                                    }
+                                    } class="mx-auto flex gap-10">
+                                        <div class="w-auto h-auto">
+                                            <div class="flex-1 h-full">
+                                                <div class="flex items-center justify-center flex-1 h-full p-2 border border-gray-400 rounded-lg">
+                                                    <div class="relative">
+                                                        <svg xmlns="http://www.w3.org/2000/svg" class="h-5 w-5" viewBox="0 0 20 20" fill="currentColor">
+                                                            <path d="M13.586 3.586a2 2 0 112.828 2.828l-.793.793-2.828-2.828.793-.793zM11.379 5.793L3 14.172V17h2.828l8.38-8.379-2.83-2.828z" />
+                                                        </svg>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </button> */}
                                 </div>
                             </li>
                         })}
