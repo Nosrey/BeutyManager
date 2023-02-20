@@ -8,9 +8,9 @@ function ConfirmarFormVentas({ gatillo, setGatillo, vender, calcularTotal, lista
     // creo el estado cargando
     
     return (
-        <div className={(gatillo) ? 'text-4xl rounded-xl w-[45%] left-[27.5%] md:w-[20%] md:left-[40%] xl:w-[20%] fixed top-[30%] xl:top-[20%] xl:left-[40%] z-30 md:top-[20%]' : 'hidden'}>
+        <div className={(gatillo) ? 'text-4xl rounded-xl w-[45%] left-[27.5%] md:w-[20%] md:left-[40%] xl:w-[15%] fixed top-[30%] xl:top-[20%] xl:left-[42.5%] z-30 md:top-[20%]' : 'hidden'}>
             <PantallaCargaVentas gatillo={cargando} />
-            <form className="flex flex-col bg-white border shadow text-center rounded-2xl p-4 xl:p-6 xl:pt-3 pt-2 justify-center items-center ">
+            <form className="flex flex-col bg-white border shadow text-center rounded-2xl p-4 xl:p-6 xl:py-0 pt-2 justify-center items-center ">
                 <button type="button" onClick={() => setGatillo(false)} className='w-[12%] md:w-[12%] md:right-4 absolute right-3 top-0 xl:right-2 xl:top-1 xl:w-[10%]'>
                     <img src={cancel} alt='cancel-btn' className='shadow-sm xl:hover:animate-pulse inline w-[100%]' />
                 </button>

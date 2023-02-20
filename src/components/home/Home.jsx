@@ -238,6 +238,9 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             }
             if (pagina <= 0) cambiarPagina(1)
         }
+        else {
+            cambiarPagina(1)
+        }
 
     }, [productosFiltrados, productos, pagina]) //eslint-disable-line
 
@@ -279,7 +282,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         for (let i = 0; i < totalPorGrupoCantidades.length; i++) {
             let item = {
                 id: i,
-                name: totalPorGrupoCantidades[i].group,
+                name: totalPorGrupoCantidades[i].group ? totalPorGrupoCantidades[i].group : 'Sin grupo',
                 imagen: groupImage,
                 stock: totalPorGrupoCantidades[i].totalStock,
                 stockDeposito: totalPorGrupoCantidades[i].totalStockDeposito,
@@ -288,7 +291,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 priceBuy: totalPorGrupoCantidades[i].totalPriceBuy.toFixed(2),
                 avaible: true,
                 categoryNames: '',
-                group: totalPorGrupoCantidades[i].group,
+                group: totalPorGrupoCantidades[i].group ? totalPorGrupoCantidades[i].group : 'Sin grupo',
             }
             objetoFinal.push(item)
         }
@@ -426,7 +429,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
             <div className='w-screen overflow-x-auto'>
 
-                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[100%] md:w-[100%] xl:w-[95%] xl:w-screen mx-auto text-xs md:text-sm xl:text-xl md:px-6 xl:pr-9  '>
+                <ul className='font-serif flex flex-col items-center justify-center text-center my-6 mt-0 flex justify-around overflow-x-auto w-[100%] md:w-[100%] xl:w-[95%] xl:w-screen mx-auto text-xs md:text-sm xl:text-xl md:px-3 xl:pr-9  '>
                     <li className='hidden font-serif md:flex flex-row my-3 font-bold flex w-full shadow pb-3'>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'>Img</h2>
                         <div className='font-serif flex-grow min-w-0 basis-[6.25%] flex flew-row items-center '>
@@ -472,7 +475,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarPrecio(productos, productosFiltrados, activo)} className='flex flex-row items-center justify-center hover:xl:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
                                 <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
-                                <h2>Venta</h2>
+                                <h2>Precio</h2>
                             </button>
                         </div>
 
@@ -480,7 +483,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                             {/* boton con una imagen dada */}
                             <button onClick={() => ordenarPrecioCompra(productos, productosFiltrados, activo)} className='flex flex-row items-center justify-center xl:hover:animate-pulse hover:shadow hover:border hover:rounded-lg hover:p-2 hover:italic mx-auto'>
                                 <img className='hidden md:w-6 md:h-6 ' src={flechaImagen} alt='flecha' />
-                                <h2 className=''>Compra</h2>
+                                <h2 className=''>Costo</h2>
                             </button>
                         </div>
                         <h2 className='font-serif flex-grow min-w-0 basis-[6.25%]'> </h2>
@@ -495,17 +498,17 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (!activarGrupos ? (productosFiltrados.length ? productosFiltrados : productos) : gruposJuntos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-6 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.68rem] md:text-base xl:text-2xl'>
-                                <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] basis-[25%] my-auto'>
-                                    <button onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
-                                        <img className='w-[90%] m-auto' src={el.imagen} alt="Product" />
+                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-2 md:py-0 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.68rem] md:text-base xl:text-2xl h-[12.5vh] md:h-[25vh] xl:h-[20vh]'>
+                                <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] w-full h-full basis-[25%] my-auto '>
+                                    <button className=' w-full h-full' onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
+                                        <img className='max-w-[85%] max-h-[85%] m-auto' src={el.imagen} alt="Product" />
                                     </button>
                                 </div>
 
                                 <h3 className='hidden md:flex justify-center items-center flex-grow min-w-0 md:basis-[6.25%] basis-[0%]  static italic text-sm xl:text-2xl'>{'#' + el.id}</h3>
 
                                 <div className='md:min-w-0 md:basis-[81.25%] md:flex md:flex-row flex items-center justify-center flex-col basis-[60%]'>
-                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] break-normal static text-[0.75rem] xl:text-xl md:mb-0 mb-3 px-4 md:text-sm text-center flex justify-center items-center'>{el.name}</h3>
+                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] break-normal static text-base xl:text-xl md:mb-0 mb-1 px-4 md:text-sm text-center flex justify-center items-center'>{el.name}</h3>
 
                                     <div className='md:min-w-0 md:basis-[76.923%] w-[80%] md:flex md:flex-row md:items-center md:justify-center text-left md:text-center'>
                                         <div className='flex flex-row flex-grow md:basis-[40%] relative justify-between md:justify-center items-center '>
@@ -527,11 +530,11 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                         <h3 className='md:text-center hidden md:flex md:items-center md:justify-center flex-grow min-w-0 md:basis-[20%]  font-bold'>{Number(el.stock) + Number(el.stockDeposito)}</h3>
                                         <div className='md:min-w-0 md:basis-[40%] flex flex-row items-center justify-between md:justify-center'>
                                             <div className='flex-grow md:min-w-0 md:basis-[50%]  font-bold flex flex-row items-center justify-start md:justify-center'>
-                                                <p className='md:hidden md:mr-0 mr-1'>Costo: </p>
+                                                <p className='md:hidden md:mr-0 mr-1'>Precio: </p>
                                                 <h3 className=''> {'$' + el.price}</h3>
                                             </div>
                                             <div className='flex-grow md:min-w-0 md:basis-[50%]  font-bold flex flex-row items-center justify-end md:justify-center'>
-                                                <p className='md:hidden md:mr-0 mr-1'>Precio: </p>
+                                                <p className='md:hidden md:mr-0 mr-1'>Costo: </p>
                                                 <h3 className=''> {'$' + el.priceBuy}</h3>
                                             </div>
                                         </div>
@@ -591,7 +594,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
             <div className='flex justify-center items-center my-6 mt-2 text-center'>
                 <button type='button'
-                    className='flex break-inside bg-black rounded-3xl px-6 py-4 mb-4 w-auto dark:bg-slate-700 font-bold dark:text-white' onClick={mostrarGrupos}>
+                    className='flex break-inside  rounded-3xl px-6 py-4 mb-4 w-auto bg-slate-700 font-bold text-white' onClick={mostrarGrupos}>
                     <div class='flex items-center justify-between flex-1'>
                         <span class='text-lg font-medium text-white mr-4'>Ordenar por grupo</span>
                         <svg width='17' height='17' viewBox='0 0 17 17' fill='none' xmlns='http://www.w3.org/2000/svg'>

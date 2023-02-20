@@ -120,7 +120,7 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                 } else {
                     pprice.value = '';
                     setCargando(false)
-                    alert('El precio de venta ingresado debe ser un numero, tu valor sera ignorado')
+                    alert('El Precio ingresado debe ser un numero, tu valor sera ignorado')
                 }
             }
 
@@ -139,7 +139,7 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                 } else {
                     ppriceBuy.value = '';
                     setCargando(false)
-                    alert('El precio de compra ingresado debe ser un numero, tu valor sera ignorado')
+                    alert('El Costo ingresado debe ser un numero, tu valor sera ignorado')
                 }
             }
 
@@ -299,13 +299,13 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                         <input type="number" step="1" name="pstockDeposito" placeholder='Cantidad en tienda...' className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de Venta</label>
+                        <label className="font-serif text-xl font-semibold text-center">Precio (Precio de venta)</label>
                         <input id="price" type="number" step="0.01" name="pprice" placeholder="Precio de venta..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
 
                     </div>
 
                     <div className="font-serif input-container w-[100%] mb-6">
-                        <label className="font-serif text-xl font-semibold text-center">Precio de Compra</label>
+                        <label className="font-serif text-xl font-semibold text-center">Costo (Costo de compra)</label>
                         <input id="priceBuy" type="number" step="0.01" name="ppriceBuy" placeholder="Precio de compra..." className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" required />
 
                     </div>

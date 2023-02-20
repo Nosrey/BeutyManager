@@ -374,14 +374,14 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
-                        <label className="font-serif text-xl font-semibold text-center mb-1">Precio de venta</label>
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Precio (Precio de venta)</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
                             <input type="number" step="0.01" name="pprice" value={precio} onChange={(e) => { setPrecio(e.target.value) }} placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" />
 
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
-                        <label className="font-serif text-xl font-semibold text-center mb-1">Precio de compra</label>
+                        <label className="font-serif text-xl font-semibold text-center mb-1">Costo (Costo de compra)</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
                             <input type="number" step="0.01" name="ppriceBuy" value={precioCompra} onChange={(e) => { setPrecioCompra(e.target.value) }} placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" />
 
