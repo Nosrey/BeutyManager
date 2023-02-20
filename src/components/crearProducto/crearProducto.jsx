@@ -12,7 +12,7 @@ let ready = true;
 let arranque = false;
 
 function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, setProductos, productos, filtrarProductos, categorias, cargando, setCargando, input1, gatilloGrupo, setGatilloGrupo, grupoTemporal, setGrupoTemporal, grupoSeleccionado, setGrupoSeleccionado }) {
-    
+
     // creo un estado llamado gruposExistentes
     const [gruposExistentes, setGruposExistentes] = useState([])
     // creo un useEffect donde reviso todos los productos y obtengo su valor en producto.group y lo guardo en gruposExistentes hasta tener uno de cada uno a menos que sea un espacio vacio o un string vacio
@@ -20,8 +20,8 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
         if (productos.length) {
             console.log('entre')
             let arrayTemp = []
-            for (let i = 0; i < productos.length; i++) {        
-                if (productos[i].group && !gruposExistentes.includes(productos[i].group)) {
+            for (let i = 0; i < productos.length; i++) {
+                if (productos[i].group && !arrayTemp.includes(productos[i].group)) {
                     arrayTemp.push(productos[i].group)
                 }
             }
@@ -29,7 +29,7 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
             console.log('sali, ahora el valor de grupoExistentes es: ', gruposExistentes)
             console.log('y el valor de arrayTemp es: ', arrayTemp)
         }
-    // eslint-disable-next-line
+        // eslint-disable-next-line
     }, [productos])
 
     if (visible) { arranque = true; }
@@ -311,22 +311,22 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
                     </div>
 
                     <div className='flex flex-col justify-center items-center mb-6 mt-2'>
-                    <label className="font-serif text-xl font-semibold text-center mb-2">Grupo del producto</label>
-                    <div className='flex flex-row justify-center items-center'>
+                        <label className="font-serif text-xl font-semibold text-center mb-2">Grupo del producto</label>
+                        <div className='flex flex-row justify-center items-center'>
 
-                        <select id="frutas" value={grupoSeleccionado} onChange={(e) => setGrupoSeleccionado(e.target.value)} name="pgroup" className='px-6 bg-white border rounded-lg text-center mr-2 py-1 md:mr-4 text-lg w-[100%] break-words'>
-                            <option value="Sin grupo" className='px-2 text-lg'>Sin grupo</option>
-                            {gruposExistentes.map((grupo, index) => {
-                                return <option key={index} value={grupo} className='px-2 text-lg'>{grupo}</option>
-                        
-                            })
-                            }
-                            {grupoTemporal.length ? <option value={grupoTemporal}>{grupoTemporal}</option> : null}
-                        </select>
-                        <button type='button' className='w-6 md:w-8' onClick={() => setGatilloGrupo(true)}>
-                            <img className='w-full h-auto' src={addBtn2} alt='addBtn'/>
-                        </button>
-                    </div>
+                            <select id="frutas" value={grupoSeleccionado} onChange={(e) => setGrupoSeleccionado(e.target.value)} name="pgroup" className='px-6 bg-white border rounded-lg text-center mr-2 py-1 md:mr-4 text-lg w-[100%] break-words'>
+                                <option value="Sin grupo" className='px-2 text-lg'>Sin grupo</option>
+                                {gruposExistentes.map((grupo, index) => {
+                                    return <option key={index} value={grupo} className='px-2 text-lg'>{grupo}</option>
+
+                                })
+                                }
+                                {grupoTemporal.length ? <option value={grupoTemporal}>{grupoTemporal}</option> : null}
+                            </select>
+                            <button type='button' className='w-6 md:w-8' onClick={() => setGatilloGrupo(true)}>
+                                <img className='w-full h-auto' src={addBtn2} alt='addBtn' />
+                            </button>
+                        </div>
                     </div>
                     <div className="font-serif input-container flex flex-col items-center w-[100%] mb-3">
                         <div className='text-center'>

@@ -10,9 +10,12 @@ let ready = true;
 let arranque = false;
 
 let textPrimeraVez = ''
-function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito, cargando, setCargando, input1 }) {
+function CambiarProducto({ setEdit, visible, setProductos, productos, productoToEdit, cambiarGatilloEliminar, activarSumar, sumar, setGatilloSumar, setNumeroASumar, precio, setPrecio, stock, setStock, precioCompra, setPrecioCompra, stockDeposito, setStockDeposito, cargando, setCargando, input1, gatilloGrupo, setGatilloGrupo, grupoTemporal, setGrupoTemporal, grupoSeleccionado, setGrupoSeleccionado }) {
 
     if (visible) { arranque = true; }
+    
+    let start = true;
+    console.log('soy start', start)
 
     const paleta = ["text-fuchsia-400", "text-purple-500", "text-violet-500", "text-indigo-500", "text-blue-500", "text-sky-500", "text-cyan-500", "text-teal-500"]
 
@@ -21,9 +24,26 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
     const imagenNotFound = 'https://www.freeiconspng.com/thumbs/no-image-icon/no-image-icon-4.png'
 
     const [image, setImage] = useState(imagenNotFound)
+    const [gruposExistentes, setGruposExistentes] = useState([])
     const [pcategory, setPcategory] = useState('')
     // declaro el estado primeraVez en true
     const [primeraVez, setPrimeraVez] = useState(true)
+
+    useEffect(() => {
+        if (productos.length) {
+            console.log('entre')
+            let arrayTemp = []
+            for (let i = 0; i < productos.length; i++) {
+                if (productos[i].group && !arrayTemp.includes(productos[i].group)) {
+                    arrayTemp.push(productos[i].group)
+                }
+            }
+            setGruposExistentes(arrayTemp)
+            console.log('sali, ahora el valor de grupoExistentes es: ', gruposExistentes)
+            console.log('y el valor de arrayTemp es: ', arrayTemp)
+        }
+        // eslint-disable-next-line
+    }, [productos])
 
     // declaro constantes para estados para hacer mis input type number en formularios controlados
 
@@ -56,14 +76,15 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
         textPrimeraVez = ''
         setPrimeraVez(true);
         setEdit(productoToEdit.id, productos)
-        var { pname, pimage  } = document.forms[2];
+        var { pname, pimage } = document.forms[2];
         pname.value = '';
         pimage.value = '';
-        setStock( parseInt("") );
-        setPrecio( parseInt("") );
+        setStock(parseInt(""));
+        setPrecio(parseInt(""));
         // hago lo mismo con setPrecioCompra y setStockDeposito
-        setPrecioCompra( parseInt("") );
-        setStockDeposito( parseInt("") );
+        setPrecioCompra(parseInt(""));
+        setStockDeposito(parseInt(""));
+        setGrupoSeleccionado('Sin grupo');
         setPcategory('')
         setImage(imagenNotFound)
     }
@@ -210,6 +231,8 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                 }
             }
 
+            if (!grupoSeleccionado) setGrupoSeleccionado('')
+
             let productData = {}
 
             for (let i = 0; i < productos.length; i++) {
@@ -225,6 +248,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             if (pprice.value) productData.price = pprice.value
             if (ppriceBuy.value) productData.priceBuy = ppriceBuy.value
             if (pcategory.value) productData.categoryNames = pcategory.value
+            if (grupoSeleccionado) productData.group = grupoSeleccionado
 
             if (image && image !== imagenNotFound) productData.imagen = image
 
@@ -238,11 +262,12 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                     pprice.value = '';
                     ppriceBuy.value = '';
                     pimage.value = ''
-                    setStock( parseInt("") );
-                    setPrecio( parseInt("") );
+                    setGrupoSeleccionado('Sin grupo');
+                    setStock(parseInt(""));
+                    setPrecio(parseInt(""));
                     // hago lo mismo con setPrecioCompra y setStockDeposito
-                    setPrecioCompra( parseInt("") );
-                    setStockDeposito( parseInt("") );
+                    setPrecioCompra(parseInt(""));
+                    setStockDeposito(parseInt(""));
                     setPcategory('')
                     setImage(imagenNotFound)
                     setPrimeraVez(true)
@@ -352,16 +377,37 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
                         <label className="font-serif text-xl font-semibold text-center mb-1">Precio de venta</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
                             <input type="number" step="0.01" name="pprice" value={precio} onChange={(e) => { setPrecio(e.target.value) }} placeholder={productoToEdit.price} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" />
-                     
+
                         </div>
                     </div>
                     <div className="font-serif input-container w-[100%] mb-6">
                         <label className="font-serif text-xl font-semibold text-center mb-1">Precio de compra</label>
                         <div className='flex flex-row w-auto items-center justify-center'>
                             <input type="number" step="0.01" name="ppriceBuy" value={precioCompra} onChange={(e) => { setPrecioCompra(e.target.value) }} placeholder={productoToEdit.priceBuy} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mt-2" />
-                       
+
                         </div>
                     </div>
+
+
+                    <div className='flex flex-col justify-center items-center mb-6 mt-2'>
+                        <label className="font-serif text-xl font-semibold text-center mb-2">Grupo del producto</label>
+                        <div className='flex flex-row justify-center items-center'>
+
+                            <select id="frutas" value={grupoSeleccionado} onChange={(e) => {setGrupoSeleccionado(e.target.value); start = false}} name="pgroup" className='px-6 bg-white border rounded-lg text-center mr-2 py-1 md:mr-4 text-lg w-[100%] break-words'>
+                                <option value="Sin grupo" className='px-2 text-lg'>Sin grupo</option>
+                                {gruposExistentes.map((grupo, index) => {
+                                    return <option key={index} value={grupo} className='px-2 text-lg'>{grupo}</option>
+
+                                })
+                                }
+                                {grupoTemporal.length ? <option value={grupoTemporal}>{grupoTemporal}</option> : null}
+                            </select>
+                            <button type='button' className='w-6 md:w-8' onClick={() => setGatilloGrupo(true)}>
+                                <img className='w-full h-auto' src={addBtn2} alt='addBtn' />
+                            </button>
+                        </div>
+                    </div>
+
                     <div className="font-serif input-container text-center w-[100%] mb-6">
                         <h2 className="font-serif text-xl font-semibold text-center mb-1">Categorias del producto</h2>
                         <input type="text" value={primeraVez ? productoToEdit.categoryNames : pcategory} onChange={handlePcategory} name="pcategory" placeholder={productoToEdit.categoryNames} className="font-serif   block w-full px-3 py-2 bg-white border border-slate-300 rounded-md text-lg shadow-sm placeholder-slate-400 focus:outline-none focus:border-sky-500 focus:ring-1 focus:ring-sky-500 disabled:bg-slate-50 disabled:text-slate-500 disabled:border-slate-200 disabled:shadow-none invalid:border-pink-500 invalid:text-pink-600 focus:invalid:border-pink-500 focus:invalid:ring-pink-500 text-xl mb-0 mt-2" />

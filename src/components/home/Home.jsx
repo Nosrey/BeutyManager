@@ -113,7 +113,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
     const [cargando, setCargando] = useState(false);
     const [gatilloGrupo, setGatilloGrupo] = useState(false);
     const [grupoTemporal, setGrupoTemporal] = useState('');
-    const [grupoSeleccionado, setGrupoSeleccionado] = useState('');
+    const [grupoSeleccionado, setGrupoSeleccionado] = useState('Sin grupo');
 
     const flechaImagen = 'https://cdn-icons-png.flaticon.com/512/37/37808.png'
 
@@ -284,8 +284,8 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                 stock: totalPorGrupoCantidades[i].totalStock,
                 stockDeposito: totalPorGrupoCantidades[i].totalStockDeposito,
                 stockTotal: totalPorGrupoCantidades[i].total,
-                price: totalPorGrupoCantidades[i].totalPrice,
-                priceBuy: totalPorGrupoCantidades[i].totalPriceBuy,
+                price: totalPorGrupoCantidades[i].totalPrice.toFixed(2),
+                priceBuy: totalPorGrupoCantidades[i].totalPriceBuy.toFixed(2),
                 avaible: true,
                 categoryNames: '',
                 group: totalPorGrupoCantidades[i].group,
@@ -294,6 +294,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
         }
         setGruposJuntos(objetoFinal)
     }
+
+    function handleClick(edit) {
+        setGrupoSeleccionado(edit);
+    }
+
+    useEffect(() => {
+        setGrupoSeleccionado(productoToEdit.group);
+    }, [productoToEdit]);
 
     return (
         <div className=''>
@@ -412,7 +420,7 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
             </nav>
 
             <CrearProducto visible={mostrarForm} cargando={cargando} setCargando={setCargando} gatilloGrupo={gatilloGrupo} setGatilloGrupo={setGatilloGrupo} grupoTemporal={grupoTemporal} setGrupoTemporal={setGrupoTemporal} grupoSeleccionado={grupoSeleccionado} setGrupoSeleccionado={setGrupoSeleccionado} />
-            <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} cargando={cargando} setCargando={setCargando} />
+            <CambiarProducto visible={mostrarEdit} setGatilloSumar={setGatilloSumar} gatilloSumar={gatilloSumar} setNumeroASumar={setNumeroASumar} precio={precio} setPrecio={setPrecio} precioCompra={precioCompra} setPrecioCompra={setPrecioCompra} stock={stock} setStock={setStock} stockDeposito={stockDeposito} setStockDeposito={setStockDeposito} cargando={cargando} setCargando={setCargando} gatilloGrupo={gatilloGrupo} setGatilloGrupo={setGatilloGrupo} grupoTemporal={grupoTemporal} setGrupoTemporal={setGrupoTemporal} grupoSeleccionado={grupoSeleccionado} setGrupoSeleccionado={setGrupoSeleccionado} />
 
             <Paginado />
             {(input1.length && !productosFiltrados.length) ? <h1 className='text-center text-xl xl:text-2xl font-serif bg-red-600 mx-3 xl:mx-[10vw] text-white font-bold py-[2.5vh] mx-[5vw] px-4 md:mx-[10vw] xl:py-4 mt-[2.5vh] xl:my-[5vh] mb-[5vh] xl:my-6 rounded'>No hay productos que coincidan con tu busqueda</h1> : null}
@@ -531,8 +539,14 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
                                     </div>
                                 </div>
 
-                                <div className='flex-grow min-w-0 md:basis-[6.25%] basis-[15%]  flex flex-col items-center justify-center'>
-                                    <button className="xl:hover:animate-pulse font-bold rounded block  flex flex-row items-center justify-center text-sm xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => setEdit(el.id, productos)}>
+                                <div className={'flex-grow min-w-0 md:basis-[6.25%] basis-[15%]  flex flex-col items-center justify-center'}>
+                                    <button className="xl:hover:animate-pulse font-bold rounded block  flex flex-row items-center justify-center text-sm xl:text-base md:text-sm md:hover:text-base hover:shadow hover:border hover:rounded-lg hover:p-2 xl:hover:text-xl flex flex-col justify-center items-center md:mr-2" onClick={() => {
+                                        if (!activarGrupos) {
+                                            handleClick(productoToEdit.group)
+                                            setEdit(el.id, productos)
+                                        }
+                                    }
+                                    }>
                                         <h4>Editar</h4>
                                         <img src={editBtn} alt='pencil' className='w-6 h-6 xl:w-8 xl:h-8 hover:w-9 hover:h-9' />
                                     </button>
