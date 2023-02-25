@@ -1,3 +1,16 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+
+@media (max-width: 763px ) and (max-height: 450px) {
+    .motoe5 {
+        /* height: 50vh;
+        background-color: tomato; */
+        background-color: black;
+    }
+}
+
+/* .motoe5 {
+    background-color: black;
+} */
+

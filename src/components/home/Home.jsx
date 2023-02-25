@@ -39,6 +39,7 @@ import loadingIcon from '../../images/loadingIcon.png'
 import OpcionesMobile from '../OpcionesMobile/OpcionesMobile.jsx'
 import CrearGrupo from '../CrearGrupo/CrearGrupo.jsx';
 import { ipRuta } from '../../App';
+import './Home.css'
 
 
 
@@ -498,17 +499,17 @@ function Home({ mostrarForm, setForm, setProductos, productos, mostrarEdit, prod
 
                         : (!activarGrupos ? (productosFiltrados.length ? productosFiltrados : productos) : gruposJuntos).slice((pagina * cantidadPagina) - cantidadPagina, (pagina * cantidadPagina)).map(el => {
                             // permitir que mi elemento li se expanda a lo anchos de la pantalla
-                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-2 md:py-0 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.68rem] md:text-base xl:text-2xl h-[12.5vh] md:h-[25vh] xl:h-[20vh]'>
+                            return <li className='border-4 border-x-0 md:border-4 shadow-2xl rounded font-serif flex flex-row py-2 md:py-0 odd:bg-white even:bg-slate-100 last:border-b-4 border-b-0 w-full relative font-bold text-[0.68rem] md:text-xl xl:text-2xl h-[25vw] md:h-[15vw] xl:h-[20vh]'>
                                 <div className='xl:ml-2 flex-grow min-w-0 md:basis-[6.25%] w-full h-full basis-[25%] my-auto '>
                                     <button className=' w-full h-full' onClick={() => { setGatilloImagen({ gatillo: true, imagen: el.imagen }) }}>
                                         <img className='max-w-[85%] max-h-[85%] m-auto' src={el.imagen} alt="Product" />
                                     </button>
                                 </div>
 
-                                <h3 className='hidden md:flex justify-center items-center flex-grow min-w-0 md:basis-[6.25%] basis-[0%]  static italic text-sm xl:text-2xl'>{'#' + el.id}</h3>
+                                <h3 className='hidden md:flex justify-center items-center flex-grow min-w-0 md:basis-[6.25%] basis-[0%]  static italic text-sm md:text-xl xl:text-2xl'>{'#' + el.id}</h3>
 
                                 <div className='md:min-w-0 md:basis-[81.25%] md:flex md:flex-row flex items-center justify-center flex-col basis-[60%]'>
-                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] break-normal static text-base xl:text-xl md:mb-0 mb-1 px-4 md:text-sm text-center flex justify-center items-center'>{el.name}</h3>
+                                    <h3 className='flex-grow min-w-0 md:basis-[23.076%] break-normal static text-base xl:text-xl md:mb-0 mb-1 px-4 md:text-xl text-center flex justify-center items-center'>{el.name}</h3>
 
                                     <div className='md:min-w-0 md:basis-[76.923%] w-[80%] md:flex md:flex-row md:items-center md:justify-center text-left md:text-center'>
                                         <div className='flex flex-row flex-grow md:basis-[40%] relative justify-between md:justify-center items-center '>
