@@ -1,5 +1,7 @@
 # Inventario de Ventas: Administra tus productos de manera eficiente
 
+Link al proyecto: https://nosrey.github.io/beautyManager/#/inventario
+
 ![2023-01-15 13_14_46-Shop Manager](https://user-images.githubusercontent.com/106562225/212558128-1439ab02-2327-4043-9dfc-7e8cca6c90fa.png)
 
 
