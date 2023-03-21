@@ -34,7 +34,7 @@ function CambiarProducto({ setEdit, visible, setProductos, productos, productoTo
             console.log('entre')
             let arrayTemp = []
             for (let i = 0; i < productos.length; i++) {
-                if (productos[i].group && !arrayTemp.includes(productos[i].group)) {
+                if (productos[i].group && !arrayTemp.includes(productos[i].group) && productos[i].group !== 'Sin grupo') {
                     arrayTemp.push(productos[i].group)
                 }
             }
