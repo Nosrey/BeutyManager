@@ -51,11 +51,11 @@ export default function ProductosElegidosVentas({ productosElegidos, setCantidad
                                     <img src={paper} alt='paper' className="w-[50%] md:w-[40%] xl:w-[25%] mx-auto inline" />
                                 </button>
                                 <div className="flex flex-row justify-between items-center w-[80%]">
-                                    <p className='w-[20%] break-words text-sm md:text-lg'>{producto.name}</p>
-                                    <p className='w-[20%]'>{producto.stock}</p>
-                                    <p className='w-[20%]'>${producto.price}</p>
+                                    <p className='w-[20%] break-words text-xs md:text-lg'>{producto.name}</p>
+                                    <p className='w-[20%] text-sm'>{producto.stock}</p>
+                                    <p className='w-[20%] text-sm'>${producto.price}</p>
                                     <img src={producto.imagen} alt="producto" className='mx-auto px-2 max-h-[5vh] md:max-h-[12vh] max-w-[20%] xl:max-h-[10vh]' />
-                                    <p className='w-[20%]'>{
+                                    <p className='w-[20%] text-sm'>{
                                         // accedo al objeto cantidades con el id del producto de turno y muestro la cantidad aca
                                         cantidades[producto.id]
                                     }</p>

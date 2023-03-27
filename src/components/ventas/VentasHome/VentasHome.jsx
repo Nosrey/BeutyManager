@@ -10,6 +10,8 @@ import ProductosElegidosVentas from '../ProductosElegidosVentas/ProductosElegido
 // importo la action setProductos
 import { setProductos } from '../../../actions/index'
 import TotalPrecioVentas from '../TotalPrecioVentas/TotalPrecioVentas';
+import CortinaBlancaVentas from '../CortinaBlancaVentas/CortinaBlancaVentas'
+import VentanaDescuentosVentas from '../VentanaDescuentosVentas/VentanaDescuentosVentas'
 // importo ip de Home.jsx
 import { ip } from '../../home/Home'
 
@@ -21,6 +23,10 @@ function VentasHome({ setProductos }) {
 
     const [cantidades, setCantidades] = useState({})
 
+    // estados para el descuento
+    const [descuento, setDescuento] = useState(100)
+    const [fondoBlancoDescuento, setFondoBlancoDescuento] = useState(false)
+
     // creo un useEffect para que cuando inicie solo por primera vez se pidan los productos
     useEffect(() => {
         // Your code here
@@ -30,11 +36,13 @@ function VentasHome({ setProductos }) {
     return (
         <div className="pb-4 xl:pb-4">
             <HeaderVentas />
+            <CortinaBlancaVentas gatillo={fondoBlancoDescuento} setGatillo={setFondoBlancoDescuento} />
+            <VentanaDescuentosVentas visible={fondoBlancoDescuento} setVisible={setFondoBlancoDescuento} descuento={descuento} setDescuento={setDescuento} />
             <BuscadorVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} />
-            
+
             <ProductosElegidosVentas setProductosElegidos={setProductosElegidos} productosElegidos={productosElegidos} cantidades={cantidades} setCantidades={setCantidades} />
-            <hr/>
-            <TotalPrecioVentas lista={productosElegidos} setLista={setProductosElegidos} cantidades={cantidades} setCantidades={setCantidades} ip={ip} />
+            <hr />
+            <TotalPrecioVentas lista={productosElegidos} setLista={setProductosElegidos} cantidades={cantidades} setCantidades={setCantidades} ip={ip} descuento={descuento} setDescuento={setDescuento} fondoBlancoDescuento={fondoBlancoDescuento} setFondoBlancoDescuento={setFondoBlancoDescuento} />
         </div>
     )
 }

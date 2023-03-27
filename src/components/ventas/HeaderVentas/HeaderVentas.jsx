@@ -28,7 +28,7 @@ export default function HeaderVentas() {
                     </button>
                 </div>
 
-                <div className={"hidden xl:flex flex-col xl:flex-row bg-cyan-800 items-center justify-between p-1 fixed w-full top-0 px-8 z-10 xl:bg-[url(" + bannerVentas2 + ")] bg-no-repeat xl:bg-[length:100vw_auto] bg-[position:0_0] bg-fixed h-[20vh] xl:h-auto xl:pb-4 shadow-xl xl:rounded-xl shadow xl:rounded-t-none py-3 bg-sky-600 bg-cover bg-center xl:bg-contain  bg-fixed"}>
+                <div className={"hidden xl:flex flex-col xl:flex-row bg-cyan-800 items-center justify-between p-1 fixed w-full top-0 px-8 z-10 xl:bg-[url(" + bannerVentas2 + ")] bg-no-repeat xl:bg-[length:100vw_auto] bg-[position:0_0] bg-fixed h-[20vh] xl:h-auto xl:pb-4 shadow-xl xl:rounded-xl shadow xl:rounded-t-none py-3 bg-cover bg-center xl:bg-contain  bg-fixed"}>
                     <div></div>
                     <ul className='text-white w-[60%] text-2xl italic hidden xl:flex flex-row justify-end items-center'>
                         <li className='border-l-2 px-3 pr-2 pb-1 rounded-xl rounded-l-none shadow-xl font-bold text-2xl mr-4 not-italic'>
