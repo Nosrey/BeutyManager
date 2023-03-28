@@ -16,7 +16,7 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
         if (valor[0] === '0') {
             valor = valor.slice(1)
         }
-        
+        if (valor < 0) valor = 0;
         setDescuento(valor)
     }
 

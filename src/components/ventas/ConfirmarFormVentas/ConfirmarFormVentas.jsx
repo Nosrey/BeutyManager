@@ -3,12 +3,26 @@ import { connect } from "react-redux";
 import cancel from '../../../images/cancel.png'
 import PantallaCargaVentas from '../PantallaCargaVentas/PantallaCargaVentas'
 // importo useState
+import { useState } from 'react'
 
 function ConfirmarFormVentas({ gatillo, setGatillo, vender, calcularTotal, lista, cantidades, cargando, setCargando }) {
-    // creo el estado cargando
-    
+    // creo el estado para el cambio
+    const [cambio, setCambio] = useState(0)
+
+    const calcularCambio = () => {
+        if ((cambio - calcularTotal(lista, cantidades)) > 0) {        
+            return 'Cambio: $' + (cambio - calcularTotal(lista, cantidades)).toFixed(2)
+        } else {
+            return 'Cambio: $0'
+        }
+    }
+
+    const handleCambioChange = (e) => {
+        setCambio(e.target.value)
+    }
+
     return (
-        <div className={(gatillo) ? 'text-4xl rounded-xl w-[45%] left-[27.5%] md:w-[20%] md:left-[40%] xl:w-[15%] fixed top-[30%] xl:top-[20%] xl:left-[42.5%] z-30 md:top-[20%]' : 'hidden'}>
+        <div className={(gatillo) ? 'text-4xl rounded-xl w-[50%] left-[25%] md:w-[25%] md:left-[37.5%] xl:w-[20%] fixed top-[20%] xl:top-[20%] xl:left-[40%] z-30 md:top-[10%]' : 'hidden'}>
             <PantallaCargaVentas gatillo={cargando} />
             <form className="flex flex-col bg-white border shadow text-center rounded-2xl p-4 xl:p-6 xl:py-0 pt-2 justify-center items-center ">
                 <button type="button" onClick={() => setGatillo(false)} className='w-[12%] md:w-[12%] md:right-4 absolute right-3 top-0 xl:right-2 xl:top-1 xl:w-[10%]'>
@@ -16,15 +30,14 @@ function ConfirmarFormVentas({ gatillo, setGatillo, vender, calcularTotal, lista
                 </button>
                 <label htmlFor="cantidad" className="w-[80%] md:w-[90%] mt-4 mb-2 text-3xl md:text-3xl xl:text-4xl text-stone-800">Total</label>
                 <h1 className="font-bold text-2xl md:mb-2 mb-3">{'$' + calcularTotal(lista, cantidades)}</h1>
-                <div className="flex flex-row justify-center items-center w-[35%] md:w-[30%] xl:w-[30%] xl:mt-2 mb-4">
-                    {/* <button type="button" onClick={() => {
-                        setCargando(true);
-                        vender();
-                    }} >
-                        <img src={confirm} alt='confirm-btn' className='shadow-sm xl:hover:animate-pulse inline w-[100%]' />
-                    </button> */}
 
+                <label className="text-gray-400 text-xl mb-2 mt-4">Cambio</label>
+                <input type="nunber" className="w-[70%] mb-4 text-center px-2 py-2 border rounded-md outline-none focus:border-blue-500 text-gray-400 text-xl" value={cambio} onChange={(e) => handleCambioChange(e)}/>
+                <p className={cambio > 0 ? "text-base italic text-gray-500" : "hidden"}>{calcularCambio()}</p>
+
+                <div className="flex flex-row justify-center items-center w-[35%] md:w-[30%] xl:w-[30%] xl:mt-2 mb-4">
                     <button onClick={() => {
+                        setCambio(0);
                         setCargando(true);
                         vender();
                     }} type="button" class="mt-2 text-white bg-slate-700 hover:bg-slate-800 focus:ring-4 focus:outline-none focus:ring-slate-300 font-medium rounded-lg text-sm px-5 py-2.5 text-center inline-flex items-center mr-2 dark:bg-slate-600 dark:hover:bg-slate-700 dark:focus:ring-slate-800">
