@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.css": "/beautyManager/static/css/main.f7ed86af.css",
-    "main.js": "/beautyManager/static/js/main.69abb4cd.js",
+    "main.css": "/beautyManager/static/css/main.844fa8bb.css",
+    "main.js": "/beautyManager/static/js/main.434f3ea8.js",
     "static/js/787.bfc4d8a3.chunk.js": "/beautyManager/static/js/787.bfc4d8a3.chunk.js",
     "static/media/bg2.jpg": "/beautyManager/static/media/bg2.7ceea1bc1013cb8d6728.jpg",
     "static/media/bg3.jpg": "/beautyManager/static/media/bg3.d5b73d976cf6ea86b990.jpg",
@@ -15,6 +15,7 @@
     "static/media/X.png": "/beautyManager/static/media/X.eacb1f2f5dea8737739b.png",
     "static/media/rightArrow.png": "/beautyManager/static/media/rightArrow.2c71d600391345c02506.png",
     "static/media/leftArrow.png": "/beautyManager/static/media/leftArrow.2f433d6e9ac32003e284.png",
+    "static/media/percentage.png": "/beautyManager/static/media/percentage.a9b118fad4ab6f2dd189.png",
     "static/media/allow.png": "/beautyManager/static/media/allow.da4d9be05a055ed6c550.png",
     "static/media/tasa.png": "/beautyManager/static/media/tasa.af1d487f2f1461efbfe4.png",
     "static/media/loadingIcon.png": "/beautyManager/static/media/loadingIcon.9cac09b090449ff5ba8f.png",
@@ -24,12 +25,12 @@
     "static/media/boton3bars.png": "/beautyManager/static/media/boton3bars.11566e85371fc38a4578.png",
     "static/media/cancel.png": "/beautyManager/static/media/cancel.d47f0e1ad5abb6bff151.png",
     "index.html": "/beautyManager/index.html",
-    "main.f7ed86af.css.map": "/beautyManager/static/css/main.f7ed86af.css.map",
-    "main.69abb4cd.js.map": "/beautyManager/static/js/main.69abb4cd.js.map",
+    "main.844fa8bb.css.map": "/beautyManager/static/css/main.844fa8bb.css.map",
+    "main.434f3ea8.js.map": "/beautyManager/static/js/main.434f3ea8.js.map",
     "787.bfc4d8a3.chunk.js.map": "/beautyManager/static/js/787.bfc4d8a3.chunk.js.map"
   },
   "entrypoints": [
-    "static/css/main.f7ed86af.css",
-    "static/js/main.69abb4cd.js"
+    "static/css/main.844fa8bb.css",
+    "static/js/main.434f3ea8.js"
   ]
 }
