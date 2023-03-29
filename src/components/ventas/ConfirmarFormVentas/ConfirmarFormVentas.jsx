@@ -10,7 +10,7 @@ function ConfirmarFormVentas({ gatillo, setGatillo, vender, calcularTotal, lista
     const [cambio, setCambio] = useState(0)
 
     const calcularCambio = () => {
-        if ((cambio - calcularTotal(lista, cantidades)) > 0) {        
+        if ((cambio - calcularTotal(lista, cantidades)) > 0) {
             return 'Cambio: $' + (cambio - calcularTotal(lista, cantidades)).toFixed(2)
         } else {
             return 'Cambio: $0'
@@ -18,7 +18,12 @@ function ConfirmarFormVentas({ gatillo, setGatillo, vender, calcularTotal, lista
     }
 
     const handleCambioChange = (e) => {
-        setCambio(e.target.value)
+        let valor = e.target.value
+        // si el primer elemento es un 0 lo elimino
+        if (valor[0] === '0') {
+            if (valor[0] === '0' && valor.length > 1) valor = valor.slice(1)
+        }
+        setCambio(valor)
     }
 
     return (
@@ -32,7 +37,7 @@ function ConfirmarFormVentas({ gatillo, setGatillo, vender, calcularTotal, lista
                 <h1 className="font-bold text-2xl md:mb-2 mb-3">{'$' + calcularTotal(lista, cantidades)}</h1>
 
                 <label className="text-gray-400 text-xl mb-2 mt-4">Cambio</label>
-                <input type="nunber" className="w-[70%] mb-4 text-center px-2 py-2 border rounded-md outline-none focus:border-blue-500 text-gray-400 text-xl" value={cambio} onChange={(e) => handleCambioChange(e)}/>
+                <input type="nunber" className="w-[70%] mb-4 text-center px-2 py-2 border rounded-md outline-none focus:border-blue-500 text-gray-400 text-xl" value={cambio} onChange={(e) => handleCambioChange(e)} />
                 <p className={cambio > 0 ? "text-base italic text-gray-500" : "hidden"}>{calcularCambio()}</p>
 
                 <div className="flex flex-row justify-center items-center w-[35%] md:w-[30%] xl:w-[30%] xl:mt-2 mb-4">

@@ -14,7 +14,7 @@ import { useState } from 'react'
 // importo la imagen tasa.png
 import tasa from '../../../images/tasa.png'
 
-function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, setProductos, setFondoBlancoDescuento, fondoBlancoDescuento, descuento, setDescuento }) {
+function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, setProductos, setFondoBlancoDescuento, fondoBlancoDescuento, descuento, setDescuento, precios, setPrecios }) {
     // creo los estados gatilloConfirmar
     const [gatilloConfirmar, setGatilloConfirmar] = useState(false)
     const [cargando, setCargando] = useState(false);
@@ -22,8 +22,8 @@ function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
     // creo una funcion para calcular el total tomando en cuenta cuantos elementos se venderan en base a sus cantidades en cantidades
     const calcularTotal = (lista, cantidades) => {
         let total = 0;
-        lista.forEach(element => {
-            total += element.price * cantidades[element.id]
+        precios.forEach(element => {
+            total += element.precio * cantidades[element.id]
         });
         // aplico la tasa de descuento o incremento, si es 100 el precio es igual, pero si es 90 se tomara el 90% del precio por ejemplo, pero si descuento es igual a 0 entonces no aplico el cambio
         if (descuento !== 0) {

@@ -3,12 +3,11 @@ import { connect } from "react-redux";
 import { useEffect } from "react";
 import cancel from '../../../images/cancel.png'
 
-function SumarFormVentas({ numero, setNumero, gatillo, id, productos, setGatillo }) {
+function SumarFormVentas({ numero, setNumero, gatillo, id, productosLista, setGatillo }) {
     // creo un useEffect donde se revisa si numero es mayor a stock con su id, si lo es entonces lo iguala para que no supere el limite, tambien revisa si es menor a 0, si lo es entonces lo lleva a 0
     useEffect(() => {
-        if (productos.length) {
-            console.log('entre')
-            let productoEncontrado = productos.find((el) => el.id === id)
+        if (productosLista.length && numero[id]) {
+            let productoEncontrado = productosLista.find((el) => el.id === id)
             if (numero[id] > productoEncontrado.stock) setNumero({ ...numero, [id]: productoEncontrado.stock })
             else if (numero[id] < 0 || !numero[id] || isNaN(numero[id])) setNumero({ ...numero, [id]: 0 })
             else if (numero[id][0] === '0' && numero[id].length > 1) setNumero({ ...numero, [id]: numero[id].slice(1) })
@@ -18,7 +17,7 @@ function SumarFormVentas({ numero, setNumero, gatillo, id, productos, setGatillo
 
     // declaro la function sacarPlaceholder la cual obtiene el producto cuyo id sea igual a la recibida en el componente y luego retorna el valor de stock de dicho producto
     const sacarPlaceholder = () => {
-        let productoEncontrado = productos.find((el) => el.id === id)
+        let productoEncontrado = productosLista.find((el) => el.id === id)
         if (!productoEncontrado) return 0
         else return productoEncontrado.stock
     }
@@ -59,7 +58,6 @@ function SumarFormVentas({ numero, setNumero, gatillo, id, productos, setGatillo
     )
 }
 
-// traigo productos de state
 const mapStateToProps = (state) => {
     return {
     }
