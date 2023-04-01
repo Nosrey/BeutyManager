@@ -21,7 +21,7 @@ export default function PorcentajeFormVentas({ visible, setVisible, preciosLista
         if (valor[0] === '0' && valor.length > 1) {
             valor = valor.slice(1)
         }
-        if (valor < 1) valor = 0;
+        if (valor < 1) valor = 1;
         let copiaPrecios = [...preciosLista]
         preciosLista?.forEach(precio => {
             if (precio.id === productoId) {
@@ -35,6 +35,7 @@ export default function PorcentajeFormVentas({ visible, setVisible, preciosLista
     // declaro un useEffect donde cada vez que visible cambie se ejecutara para actualizar el valor de item al del elemento en precios que tenga productoId
     useEffect(() => {
         setItem(encontrarPrecioPorId(productoId))
+        // eslint-disable-next-line
     }, [visible])
 
     // creo la funcion cerrar
@@ -59,7 +60,7 @@ export default function PorcentajeFormVentas({ visible, setVisible, preciosLista
         if (item.porcentaje > 100) {
             return 'text-green-500'
         }
-        else if (!item.porcentaje.length) {
+        else if (!item.porcentaje.length && !item.porcentaje < 0) {
             return 'text-black'
         }
         else if (item.porcentaje < 100) {
@@ -78,7 +79,7 @@ export default function PorcentajeFormVentas({ visible, setVisible, preciosLista
                 <label class="mb-4 text-gray-500 pointer-events-none labelsin text-xl">Tasa de precio</label>
 
                 <input type="number" className="w-[70%] mb-4 text-center px-4 py-2 border rounded-md outline-none focus:border-blue-500 text-gray-400" placeholder="Tasa..." value={item?.porcentaje} onChange={(e) => handleInputChange(e)} />
-                <h3 className={'font-bold text-4xl ' + colorTexto()}>{item.porcentaje?.length ? item.porcentaje : 100}%</h3>
+                <h3 className={'font-bold text-4xl ' + colorTexto()}>{(item.porcentaje?.length || item.porcentaje > 0)? item.porcentaje : 100}%</h3>
             </div>
         </div>
     ) 

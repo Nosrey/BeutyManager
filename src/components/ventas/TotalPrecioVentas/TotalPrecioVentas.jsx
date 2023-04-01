@@ -29,8 +29,9 @@ function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
         if (descuento !== 0) {
             total = total * (descuento / 100)
             // me aseguro de que total no tenga mas de 2 decimales
-            total = total.toFixed(2)
         }
+        
+        total = total.toFixed(2)
 
         return total
     }

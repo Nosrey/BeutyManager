@@ -16,7 +16,7 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
         if (valor[0] === '0' && valor.length > 1) {
             valor = valor.slice(1)
         }
-        if (valor < 1) valor = 0;
+        if (valor < 1) valor = 1;
         setDescuento(valor)
     }
 
@@ -26,6 +26,8 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
         // reviso si la variable descuento.length es igual a 0, si lo es entonces establezco el valor de descuento a 0 para evitar quede vacio
         if (descuento.length === 0) {
             setDescuento(100)
+        } else if (descuento < 1) {
+            setDescuento(100)
         }
     }
 
@@ -34,7 +36,7 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
         if (descuento > 100) {
             return 'text-green-500'
         } 
-        else if (!descuento.length) {
+        else if (!descuento.length && descuento < 1) {
             return 'text-black'
         }
         else if (descuento < 100) {
@@ -52,7 +54,7 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
                 <label class="mb-4 text-gray-500 pointer-events-none labelsin text-xl">Tasa de precio</label>
 
                 <input type="number" className="w-[70%] mb-4 text-center px-4 py-2 border rounded-md outline-none focus:border-blue-500 text-gray-400" placeholder="Tasa..." value={descuento} onChange={(e) => handleInputChange(e)} />
-                <h3 className={'font-bold text-4xl ' + colorTexto()}>{descuento.length ? descuento : 100}%</h3>
+                <h3 className={'font-bold text-4xl ' + colorTexto()}>{(descuento.length || descuento > 0) ? descuento : 100}%</h3>
 
             </div>
         </div>
