@@ -23,7 +23,7 @@ function TotalPrecioVentas({ lista, cantidades, setLista, setCantidades, ip, set
     const calcularTotal = (lista, cantidades) => {
         let total = 0;
         precios.forEach(element => {
-            total += element.precio * cantidades[element.id]
+            total += (element.precio * (element.porcentaje / 100)) * cantidades[element.id]
         });
         // aplico la tasa de descuento o incremento, si es 100 el precio es igual, pero si es 90 se tomara el 90% del precio por ejemplo, pero si descuento es igual a 0 entonces no aplico el cambio
         if (descuento !== 0) {

@@ -1,0 +1,34 @@
+.close-button2 {
+    position: absolute;
+    top: 5px;
+    right: 5px;
+    width: 30px;
+    height: 30px;
+    background-color: transparent;
+    border: none;
+    /* Establecer estilos de botón */
+}
+
+/* Estilos para la "x" del botón de cerrar */
+.close-button2:before,
+.close-button2:after {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 50%;
+    width: 2px;
+    height: 100%;
+    background-color: black;
+}
+
+.close-button2:before {
+    transform: rotate(45deg);
+}
+
+.close-button2:after {
+    transform: rotate(-45deg);
+}
+
+.labelsin {
+    transition: all 0.2s ease-out
+}

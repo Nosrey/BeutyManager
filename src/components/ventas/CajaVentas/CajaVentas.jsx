@@ -2,7 +2,7 @@
 import React from 'react';
 import { connect } from "react-redux";
 
-function CajaVentas({ productosVentas, setProductosElegidos, setCantidades, cantidades, productosElegidos, setInput, setProductosVentas }) {
+function CajaVentas({ precios, setPrecios, productosVentas, setProductosElegidos, setCantidades, cantidades, productosElegidos, setInput, setProductosVentas }) {
     return (
         <div className={productosVentas.length ? "w-full opacity-95 absolute top-0 bg-white rounded-b-xl z-10" : 'hidden'}>
             {/* creo una lista en ul de li elements donde cada li element es un producto de productosVentas */}
@@ -29,6 +29,7 @@ function CajaVentas({ productosVentas, setProductosElegidos, setCantidades, cant
                                 if (!existencia.length) {
                                     setProductosElegidos([...productosElegidos, producto])
                                     setCantidades({ ...cantidades, [producto.id]: 1 })
+                                    setPrecios([...precios, { id: producto.id, precio: producto.price, porcentaje: 100 }])
                                 } else {
                                     setCantidades({ ...cantidades, [producto.id]: cantidades[producto.id] + 1 })
                                 }

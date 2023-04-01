@@ -13,10 +13,10 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
         let valor = e.target.value;
 
         // reviso si el primer elemento del string es un 0, de ser asi entonces lo elimino
-        if (valor[0] === '0') {
+        if (valor[0] === '0' && valor.length > 1) {
             valor = valor.slice(1)
         }
-        if (valor < 0) valor = 0;
+        if (valor < 1) valor = 0;
         setDescuento(valor)
     }
 
@@ -25,7 +25,7 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
         setVisible(false)
         // reviso si la variable descuento.length es igual a 0, si lo es entonces establezco el valor de descuento a 0 para evitar quede vacio
         if (descuento.length === 0) {
-            setDescuento(0)
+            setDescuento(100)
         }
     }
 
@@ -33,7 +33,11 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
     const colorTexto = () => {
         if (descuento > 100) {
             return 'text-green-500'
-        } else if (descuento < 100) {
+        } 
+        else if (!descuento.length) {
+            return 'text-black'
+        }
+        else if (descuento < 100) {
             return 'text-red-500'
         } else {
             return 'text-black'
@@ -48,7 +52,7 @@ export default function VentanaDescuentosVentas({ visible, setVisible, descuento
                 <label class="mb-4 text-gray-500 pointer-events-none labelsin text-xl">Tasa de precio</label>
 
                 <input type="number" className="w-[70%] mb-4 text-center px-4 py-2 border rounded-md outline-none focus:border-blue-500 text-gray-400" placeholder="Tasa..." value={descuento} onChange={(e) => handleInputChange(e)} />
-                <h3 className={'font-bold text-4xl ' + colorTexto()}>{descuento.length ? descuento : 0}%</h3>
+                <h3 className={'font-bold text-4xl ' + colorTexto()}>{descuento.length ? descuento : 100}%</h3>
 
             </div>
         </div>

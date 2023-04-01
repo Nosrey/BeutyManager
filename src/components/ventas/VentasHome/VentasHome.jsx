@@ -25,7 +25,7 @@ function VentasHome({ setProductos, productos }) {
 
     // estados para el descuento
     const [descuento, setDescuento] = useState(100)
-    const [fondoBlancoDescuento, setFondoBlancoDescuento] = useState(false)
+    const [fondoBlancoDescuento, setFondoBlancoDescuento] = useState(false) 
 
     // para guardar los precios
     const [precios, setPrecios] = useState([])
@@ -41,7 +41,7 @@ function VentasHome({ setProductos, productos }) {
             <HeaderVentas />
             <CortinaBlancaVentas gatillo={fondoBlancoDescuento} setGatillo={setFondoBlancoDescuento} />
             <VentanaDescuentosVentas visible={fondoBlancoDescuento} setVisible={setFondoBlancoDescuento} descuento={descuento} setDescuento={setDescuento} />
-            <BuscadorVentas productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} />
+            <BuscadorVentas precios={precios} setPrecios={setPrecios} productosVentas={productosVentas} setProductosVentas={setProductosVentas} setProductosElegidos={setProductosElegidos} setCantidades={setCantidades} cantidades={cantidades} productosElegidos={productosElegidos} />
             <ProductosElegidosVentas setProductosElegidos={setProductosElegidos} productosElegidos={productosElegidos} cantidades={cantidades} setCantidades={setCantidades} precios={precios} setPrecios={setPrecios} />
             <hr />
             <TotalPrecioVentas lista={productosElegidos} setLista={setProductosElegidos} cantidades={cantidades} setCantidades={setCantidades} ip={ip} descuento={descuento} setDescuento={setDescuento} fondoBlancoDescuento={fondoBlancoDescuento} setFondoBlancoDescuento={setFondoBlancoDescuento} precios={precios} setPrecios={setPrecios} />

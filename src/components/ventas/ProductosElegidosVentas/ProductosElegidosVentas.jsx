@@ -1,6 +1,7 @@
 import React from "react";
 import { useState, useEffect } from "react";
 import CortinaBlancaVentas from "../CortinaBlancaVentas/CortinaBlancaVentas";
+import PorcentajeFormVentas from "../PorcentajeFormVentas/PorcentajeFormVentas.jsx";
 import SumarFormVentas from "../SumarFormVentas/SumarFormVentas";
 // importo la imagen paper.png
 import paper from '../../../images/paper.png'
@@ -15,34 +16,57 @@ import { connect } from "react-redux";
 function ProductosElegidosVentas({ productosElegidos, setCantidades, cantidades, setProductosElegidos, productos, precios, setPrecios }) {
     const [gatilloSumar, setGatilloSumar] = useState(false)
     const [editable, setEditable] = useState(0)
+    const [gatilloPorcentaje, setGatilloPorcentaje] = useState(false)
+    const [productoId, setProductoId] = useState(0)
 
     // creo un useEffect donde si cambia productosElegidos entonces tomo el precio de cada uno y lo asigno a un objeto con su id:precio
-    useEffect(() => {
-        if (productosElegidos.length) {
-            let precios = []
-            productosElegidos.forEach(producto => {
-                precios.push({ id: producto.id, precio: producto.price })
-            })
-            setPrecios(precios)
-        }
-        // eslint-disable-next-line
-    }, [productosElegidos])
+    // useEffect(() => {
+    //     if (productosElegidos.length) {
+    //         let precios = []
+    //         productosElegidos.forEach(producto => {
+    //             precios.push({ id: producto.id, precio: producto.price, porcentaje: 100 })
+    //         })
+    //         setPrecios(precios)
+    //     }
+    //     // eslint-disable-next-line
+    // }, [productosElegidos])
 
     // una funcion llamada encontrarPrecio que ubica en base a la id recibida
     const encontrarPrecio = (id) => {
         if (precios.length) {
             let final = precios.filter(precio => precio.id === id)
-            if (final.length) return final[0].precio
+            if (final.length) {
+                let resultado = (final[0].precio * (final[0].porcentaje / 100))
+                // reviso si resultado tiene decimales, de tenerlos entonces los redondeo a 2 decimales, pero si estos decimales son 0 entonces no los muestro
+                if (resultado % 1 !== 0) {
+                    let resultado2 = resultado.toFixed(2)
+                    if (resultado2 % 1 === 0) {
+                        return resultado2.split(".")[0]
+                    }                   
+                    else {
+                        return resultado2
+                    }
+                }
+                else {
+                    return resultado
+                }
+            }
             else return 0
         }
         else return 0
     }
 
+    const activarPorcentaje = (id) => {
+        setProductoId(id)
+        setGatilloPorcentaje(true)
+    }
 
     return (
         <div>
             <SumarFormVentas productosLista={productosElegidos} gatillo={gatilloSumar} numero={cantidades} setNumero={setCantidades} id={editable} setGatillo={setGatilloSumar} />
+            <PorcentajeFormVentas visible={gatilloPorcentaje} setVisible={setGatilloPorcentaje} preciosLista={precios} setPreciosLista={setPrecios} productoId={productoId} setProductoId={setProductoId} />
             <CortinaBlancaVentas gatillo={gatilloSumar} setGatillo={setGatilloSumar} />
+            <CortinaBlancaVentas gatillo={gatilloPorcentaje} setGatillo={setGatilloPorcentaje} />
             <ul className="text-center mb-4 xl:text-xl">
                 <li key={'-1'} className={'font-serif flex flex-row my-3 mb-1 font-bold flex w-full py-1 text-xs md:text-lg xl:text-xl'}>
                     <div className="w-[10%]"></div>
@@ -75,6 +99,8 @@ function ProductosElegidosVentas({ productosElegidos, setCantidades, cantidades,
                                         setProductosElegidos(productosElegidos.filter((prod) => prod.id !== producto.id))
                                         // elimino de cantidades el id y el valor de producto que eliminare
                                         delete cantidades[producto.id]
+                                        // elimino de precios el id y el valor de producto que eliminare
+                                        setPrecios(precios.filter((prod) => prod.id !== producto.id))
                                         console.log('soy productosElegidos', productosElegidos)
                                     }
                                 }>
@@ -89,7 +115,7 @@ function ProductosElegidosVentas({ productosElegidos, setCantidades, cantidades,
                                     }</p>
                                     <img src={producto.imagen} alt="producto" className='mx-auto px-2 max-h-[5vh] md:max-h-[12vh] max-w-[20%] xl:max-h-[10vh]' />
                                     <div className="flex flex-row justify-center items-center text-center w-[30%]">
-                                        <input className="border-2 text-xs py-1 md:text-lg xl:text-xl xl:py-0 text-center w-[60%] md:w-[35%] xl:w-[30%] rounded mx-1 md:mx-2" type="number" value={encontrarPrecio(producto.id)} onChange={(e) => {
+                                        <input className="border-2 text-xs py-1 md:text-lg xl:text-xl xl:py-0 text-center w-[60%] md:w-[35%] xl:w-[30%] rounded mx-1 md:mx-2" type="number" value={Number(encontrarPrecio(producto.id))} onChange={(e) => {
                                             // al cambiar el precio del producto debo cambiar el precio en el array precios
                                             // primero creo una copia del array precios
                                             let valor = e.target.value
@@ -98,13 +124,17 @@ function ProductosElegidosVentas({ productosElegidos, setCantidades, cantidades,
                                             let copiaPrecios = [...precios]
                                             // busco el precio con el id del producto de turno y lo reemplazo por el nuevo precio
                                             copiaPrecios.forEach(precio => {
-                                                if (precio.id === producto.id) precio.precio = valor
+                                                if (precio.id === producto.id) {
+                                                    precio.precio = valor
+                                                    precio.porcentaje = 100
+                                                }
+                                                
                                             })
                                             // seteo el array precios con la copia modificada
                                             setPrecios(copiaPrecios)
                                         }
                                         } />
-                                        <button type="button" className="w-[25%] md:w-[13%] xl:w-[9%]">
+                                        <button onClick={() => activarPorcentaje(producto.id)} type="button" className="w-[25%] md:w-[13%] xl:w-[9%]">
                                             <img src={percentage} alt="percentage" className="w-full" />
                                         </button>
                                     </div>
