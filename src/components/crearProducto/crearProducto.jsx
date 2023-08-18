@@ -18,16 +18,13 @@ function CrearProducto({ productoToEdit, setEdit, setInput1, setForm, visible, s
     // creo un useEffect donde reviso todos los productos y obtengo su valor en producto.group y lo guardo en gruposExistentes hasta tener uno de cada uno a menos que sea un espacio vacio o un string vacio
     useEffect(() => {
         if (productos.length) {
-            console.log('entre')
             let arrayTemp = []
             for (let i = 0; i < productos.length; i++) {
-                if (productos[i].group && !arrayTemp.includes(productos[i].group)) {
+                if (productos[i].group && !arrayTemp.includes(productos[i].group) && productos[i].group !== 'Sin grupo') {
                     arrayTemp.push(productos[i].group)
                 }
             }
             setGruposExistentes(arrayTemp)
-            console.log('sali, ahora el valor de grupoExistentes es: ', gruposExistentes)
-            console.log('y el valor de arrayTemp es: ', arrayTemp)
         }
         // eslint-disable-next-line
     }, [productos])
